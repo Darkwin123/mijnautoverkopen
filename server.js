@@ -48,7 +48,7 @@ const upload = multer({
     fileFilter: fileFilter
 });
 const app = express();
-const port = 3001;
+const port = process.env.PORT || process.env.RENDER_PORT || 3001;
 
 // Ensure data directory exists
 const DATA_DIR = process.env.RENDER_DISK_PATH ? process.env.RENDER_DISK_PATH : path.join(__dirname, 'data');
@@ -1392,9 +1392,9 @@ function errorHandler(err, req, res, next) {
 app.use(errorHandler);
 
 // Start the server
-app.listen(process.env.PORT || port, () => {
+app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
     addSampleData();
-    addSampleBlogs(); // Initialize sample blog posts
-    migrateBlogsToAddCategories(); // Add this line to ensure all blogs have categories
+    addSampleBlogs();
+    migrateBlogsToAddCategories();
 });
