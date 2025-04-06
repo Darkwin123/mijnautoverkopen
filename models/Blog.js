@@ -1,6 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const BlogSchema = new mongoose.Schema({
+  id: {
+    type: String,
+    default: function() {
+      return Date.now().toString();
+    }
+  },
   title: {
     type: String,
     required: true
@@ -34,4 +40,12 @@ const BlogSchema = new mongoose.Schema({
   updatedAt: Date
 });
 
-module.exports = mongoose.model('Blog', BlogSchema);
+// Add this pre-save hook to ensure id is always set
+BlogSchema.pre('save', function(next) {
+  if (!this.id) {
+    this.id = Date.now().toString();
+  }
+  next();
+});
+
+module.exports = mongoose.model("Blog", BlogSchema);

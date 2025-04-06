@@ -1,6 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const InquirySchema = new mongoose.Schema({
+  id: {
+    type: String,
+    default: function() {
+      return Date.now().toString();
+    }
+  },
   kenteken: String,
   merk: String,
   model: String,
@@ -33,4 +39,12 @@ const InquirySchema = new mongoose.Schema({
   updatedAt: Date
 });
 
-module.exports = mongoose.model('Inquiry', InquirySchema);
+// Add this pre-save hook to ensure id is always set
+InquirySchema.pre('save', function(next) {
+  if (!this.id) {
+    this.id = Date.now().toString();
+  }
+  next();
+});
+
+module.exports = mongoose.model("Inquiry", InquirySchema);
