@@ -58,6 +58,7 @@ const upload = multer({
 });
 
 const app = express();
+app.set('trust proxy', 1);
 const port = process.env.PORT || process.env.RENDER_PORT || 3001;
 
 // Initialize admin
