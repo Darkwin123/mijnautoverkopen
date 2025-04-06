@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algemene Voorwaarden - Mijnautoverkopen.be</title>
+    <style>
+        /* Base styles matching your main site */
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
+            --primary-dark: #3730a3;
+            --secondary: #ec4899;
+            --secondary-light: #f472b6;
+            --accent: #06b6d4;
+            --bg-main: #f1f5f9;
+            --bg-light: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: rgba(0, 0, 0, 0.05);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--bg-main) 0%, var(--bg-light) 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, var(--primary-light) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, var(--secondary-light) 0%, transparent 25%);
+            opacity: 0.05;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            z-index: 1;
+            position: relative;
+        }
+        
+        /* Header & Navigation */
+        header {
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background: var(--bg-light);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Page Content */
+        .page-content {
+            padding: 60px 0;
+            flex-grow: 1;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+        
+        .page-header p {
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .content-card {
+            background: var(--bg-light);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .content-card h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            color: var(--text-dark);
+        }
+        
+        .content-card h2:first-child {
+            margin-top: 0;
+        }
+        
+        .content-card h3 {
+            font-size: 1.3rem;
+            margin: 25px 0 10px;
+            color: var(--text-dark);
+        }
+        
+        .content-card p {
+            margin-bottom: 20px;
+        }
+        
+        .content-card ul, .content-card ol {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+        
+        .content-card li {
+            margin-bottom: 10px;
+        }
+        
+        .content-card a {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px solid currentColor;
+            transition: border-color 0.3s;
+        }
+        
+        .content-card a:hover {
+            border-bottom-color: transparent;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--bg-main);
+            padding: 40px 0 20px;
+            margin-top: auto;
+            border-top: 1px solid rgba(79, 70, 229, 0.1);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-col h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: inline-block;
+            position: relative;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-links a::before {
+            content: '›';
+            margin-right: 8px;
+            color: var(--primary);
+        }
+        
+        .footer-bottom {
+            padding-top: 20px;
+            border-top: 1px solid rgba(79, 70, 229, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            border: 1px solid rgba(79, 70, 229, 0.1);
+        }
+        
+        .social-link:hover {
+            background: rgba(79, 70, 229, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .social-link svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--primary);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .content-card {
+                padding: 25px;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="/" class="logo">Mijnautoverkopen.be</a>
+                <div class="nav-links">
+                    <a href="/">Home</a>
+                    <a href="/#hoe-het-werkt">Hoe het werkt</a>
+                    <a href="/#voordelen">Voordelen</a>
+                    <a href="/blog">Blog</a>
+                    <a href="/#contact">Contact</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Algemene Voorwaarden</h1>
+                <p>Lees onze algemene voorwaarden zorgvuldig door voordat u gebruik maakt van onze diensten.</p>
+            </div>
+            
+            <div class="content-card">
+                <h2>1. Definities</h2>
+                <p>In deze Algemene Voorwaarden wordt verstaan onder:</p>
+                <ul>
+                    <li><strong>Mijnautoverkopen.be:</strong> Handelsnaam van AutoCash BV, gevestigd te Brussel, KBO-nummer 0123.456.789.</li>
+                    <li><strong>Klant:</strong> De natuurlijke persoon of rechtspersoon die een overeenkomst aangaat met Mijnautoverkopen.be.</li>
+                    <li><strong>Overeenkomst:</strong> De overeenkomst tussen Mijnautoverkopen.be en Klant inzake de verkoop van een voertuig.</li>
+                    <li><strong>Voertuig:</strong> De personenauto, bestelwagen of motorfiets die onderwerp is van de overeenkomst.</li>
+                </ul>
+
+                <h2>2. Toepasselijkheid</h2>
+                <p>Deze Algemene Voorwaarden zijn van toepassing op alle aanbiedingen, offertes en overeenkomsten tussen Mijnautoverkopen.be en Klant, tenzij uitdrukkelijk schriftelijk anders is overeengekomen.</p>
+                <p>Afwijkingen van deze Algemene Voorwaarden zijn slechts geldig indien deze uitdrukkelijk schriftelijk zijn overeengekomen. In dat geval blijven de overige bepalingen van deze Algemene Voorwaarden onverminderd van kracht.</p>
+
+                <h2>3. Aanbiedingen en Totstandkoming van de Overeenkomst</h2>
+                <p>Alle aanbiedingen van Mijnautoverkopen.be zijn vrijblijvend en kunnen door Mijnautoverkopen.be worden herroepen, ook indien zij een termijn voor aanvaarding bevatten.</p>
+                <p>Een overeenkomst komt tot stand nadat Mijnautoverkopen.be een door Klant ingediend aanbod schriftelijk heeft aanvaard of nadat Mijnautoverkopen.be uitvoering geeft aan een verzoek tot dienstverlening.</p>
+                <p>Mijnautoverkopen.be is niet gebonden aan haar aanbod indien dit een kennelijke vergissing of verschrijving bevat.</p>
+
+                <h2>4. Taxatie en Bod</h2>
+                <p>Het op de website aangegeven bedrag is slechts een indicatie. Pas na fysieke inspectie van het voertuig kan een definitief bod worden uitgebracht.</p>
+                <p>Onvolledige of onjuiste informatie verstrekt door Klant kan leiden tot aanpassing van het bod of vernietiging van de overeenkomst.</p>
+                <p>Een bod is geldig gedurende 7 dagen na dagtekening, tenzij anders vermeld.</p>
+
+                <h2>5. Verplichtingen van de Klant</h2>
+                <p>De Klant is verplicht om:</p>
+                <ul>
+                    <li>Correcte en volledige informatie te verstrekken over het voertuig.</li>
+                    <li>Eigenaar te zijn van het voertuig of gemachtigd te zijn om het voertuig te verkopen.</li>
+                    <li>Alle bij het voertuig behorende documenten en sleutels te overhandigen.</li>
+                    <li>Het voertuig in dezelfde staat te houden als tijdens de taxatie tot het moment van overdracht.</li>
+                </ul>
+
+                <h2>6. Overdracht en Betaling</h2>
+                <p>Betaling vindt plaats direct na overdracht van het voertuig en alle bijbehorende documenten middels bankoverschrijving of contante betaling, afhankelijk van de overeengekomen wijze.</p>
+                <p>Het eigendom van het voertuig gaat over op Mijnautoverkopen.be op het moment dat de volledige betaling is verricht.</p>
+                <p>Mijnautoverkopen.be verzorgt de tenaamstelling van het voertuig en alle bijbehorende administratieve handelingen.</p>
+
+                <h2>7. Ontbinding en Annulering</h2>
+                <p>Mijnautoverkopen.be heeft het recht de overeenkomst te ontbinden indien:</p>
+                <ul>
+                    <li>De door Klant verstrekte informatie niet correct blijkt te zijn.</li>
+                    <li>Het voertuig gebreken vertoont die niet zijn vermeld tijdens de taxatie.</li>
+                    <li>De Klant niet kan aantonen rechtmatig eigenaar te zijn van het voertuig.</li>
+                    <li>Er sprake is van een achterstallige financiering of andere lasten op het voertuig.</li>
+                </ul>
+                <p>De Klant kan de overeenkomst kosteloos annuleren tot het moment van overdracht van het voertuig.</p>
+
+                <h2>8. Garantie en Aansprakelijkheid</h2>
+                <p>Mijnautoverkopen.be aanvaardt geen aansprakelijkheid voor schade die voortvloeit uit het gebruik van haar diensten, tenzij er sprake is van opzet of grove nalatigheid.</p>
+                <p>De aansprakelijkheid van Mijnautoverkopen.be is te allen tijde beperkt tot het bedrag dat in het desbetreffende geval onder de aansprakelijkheidsverzekering wordt uitbetaald.</p>
+
+                <h2>9. Privacy en Gegevensbescherming</h2>
+                <p>Mijnautoverkopen.be behandelt alle persoonsgegevens conform haar privacybeleid, welke te vinden is op de website.</p>
+                <p>Voor meer informatie over hoe wij omgaan met uw gegevens verwijzen wij u naar ons <a href="/privacybeleid.html">privacybeleid</a>.</p>
+
+                <h2>10. Klachten</h2>
+                <p>Klachten over de dienstverlening van Mijnautoverkopen.be dienen binnen 14 dagen na het ontstaan van de klacht schriftelijk te worden ingediend.</p>
+                <p>Mijnautoverkopen.be streeft ernaar klachten binnen 14 dagen na ontvangst te behandelen.</p>
+
+                <h2>11. Toepasselijk Recht en Geschillen</h2>
+                <p>Op alle overeenkomsten tussen Mijnautoverkopen.be en Klant is Belgisch recht van toepassing.</p>
+                <p>Geschillen worden voorgelegd aan de bevoegde rechter in het arrondissement waar Mijnautoverkopen.be gevestigd is, tenzij de wet dwingend anders voorschrijft.</p>
+
+                <h2>12. Wijzigingen</h2>
+                <p>Mijnautoverkopen.be behoudt zich het recht voor deze Algemene Voorwaarden te wijzigen. Wijzigingen worden op de website gepubliceerd.</p>
+                <p>De meest actuele versie van de Algemene Voorwaarden is te allen tijde op de website te raadplegen.</p>
+
+                <h2>13. Contact</h2>
+                <p>Voor vragen over deze Algemene Voorwaarden kunt u contact opnemen via:</p>
+                <p>
+                    Mijnautoverkopen.be<br>
+                    Industrieweg 10<br>
+                    1050 Brussel<br>
+                    E-mail: info@mijnautoverkopen.be<br>
+                    Telefoon: 0800-1234567
+                </p>
+
+                <p>Laatste update: 15 maart 2025</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>AutoCash</h4>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/#hoe-het-werkt">Hoe het werkt</a></li>
+                        <li><a href="/#voordelen">Voordelen</a></li>
+                        <li><a href="/#testimonials">Klantervaringen</a></li>
+                        <li><a href="/#veelgestelde-vragen">Veelgestelde vragen</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="/#contact">Neem contact op</a></li>
+                        <li><a href="tel:0800-1234567">0800-1234567 (gratis)</a></li>
+                        <li><a href="mailto:info@mijnautoverkopen.be">info@mijnautoverkopen.be</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Juridisch</h4>
+                    <ul class="footer-links">
+                        <li><a href="/algemene-voorwaarden.html" class="active">Algemene voorwaarden</a></li>
+                        <li><a href="/privacybeleid.html">Privacybeleid</a></li>
+                        <li><a href="/cookiebeleid.html">Cookiebeleid</a></li>
+                        <li><a href="/disclaimer.html">Disclaimer</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Blog</h4>
+                    <ul class="footer-links">
+                        <li><a href="/blog">Alle artikelen</a></li>
+                        <li><a href="/blog/category/verkoop-tips">Verkoop tips</a></li>
+                        <li><a href="/blog/category/auto-onderhoud">Auto onderhoud</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 AutoCash. Alle rechten voorbehouden.
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

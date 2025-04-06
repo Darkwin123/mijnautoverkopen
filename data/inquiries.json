@@ -1,0 +1,344 @@
+[
+  {
+    "id": "1678610481000",
+    "kenteken": "AB-123-Z",
+    "merk": "Volkswagen",
+    "model": "Golf",
+    "bouwjaar": 2018,
+    "brandstof": "benzine",
+    "kilometerstand": 85000,
+    "transmissie": "handgeschakeld",
+    "schade": "geen",
+    "apk": "2024-06",
+    "opties": [
+      "navigatiesysteem",
+      "trekhaak",
+      "panoramadak"
+    ],
+    "extraInfo": "Auto is in zeer goede staat en heeft altijd dealeronderhoud gehad.",
+    "naam": "Jan de Vries",
+    "email": "jan.devries@example.com",
+    "telefoon": "06-12345678",
+    "postcode": "1234 AB",
+    "status": "new",
+    "createdAt": "2023-03-12T09:30:00.000Z"
+  },
+  {
+    "id": "1678620481000",
+    "kenteken": "XY-789-P",
+    "merk": "BMW",
+    "model": "3-serie",
+    "bouwjaar": 2019,
+    "brandstof": "diesel",
+    "kilometerstand": 65000,
+    "transmissie": "automaat",
+    "schade": "licht",
+    "apk": "2024-08",
+    "opties": [
+      "leer",
+      "navigatiesysteem",
+      "xenon"
+    ],
+    "extraInfo": "Kleine parkeerschade aan de rechterkant.",
+    "naam": "Lisa Jansen",
+    "email": "l.jansen@example.com",
+    "telefoon": "06-87654321",
+    "postcode": "5678 CD",
+    "status": "contacted",
+    "notes": "Klant heeft voorkeur om de auto binnen 2 weken te verkopen.",
+    "createdAt": "2023-03-12T12:15:00.000Z"
+  },
+  {
+    "id": "1678630481000",
+    "kenteken": "GH-456-R",
+    "merk": "Audi",
+    "model": "A4",
+    "bouwjaar": 2017,
+    "brandstof": "benzine",
+    "kilometerstand": 98000,
+    "transmissie": "automaat",
+    "schade": "geen",
+    "apk": "2023-12",
+    "opties": [
+      "leer",
+      "panoramadak"
+    ],
+    "extraInfo": "Volledig dealeronderhoud, net grote beurt gehad.",
+    "naam": "Peter Bakker",
+    "email": "peter.bakker@example.com",
+    "telefoon": "06-23456789",
+    "postcode": "3456 EF",
+    "status": "offered",
+    "notes": "Bod uitgebracht van €19.500. Klant denkt erover na.",
+    "createdAt": "2023-03-12T15:45:00.000Z",
+    "updatedAt": "2025-03-12T09:11:16.747Z"
+  },
+  {
+    "id": "1742022587693",
+    "status": "new",
+    "createdAt": "2025-03-15T07:09:47.693Z"
+  },
+  {
+    "id": "1742582925718",
+    "kenteken": "1-ABC-323",
+    "merk": "audi",
+    "model": "Golf",
+    "bouwjaar": 2018,
+    "brandstof": "benzine",
+    "kilometerstand": 120000,
+    "transmissie": "handgeschakeld",
+    "schade": "licht",
+    "apk": "2029",
+    "opties": [
+      "navi"
+    ],
+    "extraInfo": "Niets",
+    "naam": "Niels Van den Brand",
+    "email": "nielsvandenbrande123@outlook.com",
+    "telefoon": "04 76 25 93 84",
+    "postcode": "1000",
+    "images": [
+      {
+        "filename": "car-1742582925710-627241645.jpg",
+        "path": "/uploads/car-1742582925710-627241645.jpg",
+        "size": 746677
+      }
+    ],
+    "status": "new",
+    "createdAt": "2025-03-21T18:48:45.718Z"
+  },
+  {
+    "id": "1742634029077",
+    "kenteken": "1-ABC-323",
+    "merk": "audi",
+    "model": "Golf",
+    "bouwjaar": 2018,
+    "brandstof": "benzine",
+    "kilometerstand": 100000,
+    "transmissie": "automaat",
+    "schade": "zwaar",
+    "apk": "2029",
+    "opties": [
+      "leer",
+      "navi",
+      "trekhaak"
+    ],
+    "extraInfo": "Niets",
+    "naam": "Niels Van den Brande",
+    "email": "nielsvandenbrande123@outlook.com",
+    "telefoon": "0476259384",
+    "postcode": "1000",
+    "images": [
+      {
+        "filename": "car-1742634029059-528006237.jpg",
+        "path": "/uploads/car-1742634029059-528006237.jpg",
+        "size": 746677
+      }
+    ],
+    "status": "new",
+    "createdAt": "2025-03-22T09:00:29.077Z"
+  },
+  {
+    "id": "1742634491029",
+    "kenteken": "1-ABC-323",
+    "merk": "audi",
+    "model": "gfdsf",
+    "bouwjaar": 2018,
+    "brandstof": "benzine",
+    "kilometerstand": 233,
+    "transmissie": "handgeschakeld",
+    "schade": "licht",
+    "apk": "2028",
+    "opties": [
+      "navi"
+    ],
+    "extraInfo": "sdfsfd",
+    "naam": "sdfsdfdsf",
+    "email": "nielsvandenbrande123@outlook.com",
+    "telefoon": "0476259384",
+    "postcode": "1000",
+    "images": [
+      {
+        "filename": "car-1742634491026-528589962.jpg",
+        "path": "/uploads/car-1742634491026-528589962.jpg",
+        "size": 746677
+      }
+    ],
+    "status": "new",
+    "createdAt": "2025-03-22T09:08:11.029Z"
+  },
+  {
+    "id": "1742634782982",
+    "kenteken": "1-ABC-323",
+    "merk": "audi",
+    "model": "gfdsf",
+    "bouwjaar": 2018,
+    "brandstof": "benzine",
+    "kilometerstand": 233,
+    "transmissie": "handgeschakeld",
+    "schade": "licht",
+    "apk": "2028",
+    "opties": [
+      "navi"
+    ],
+    "extraInfo": "sdfsfd",
+    "naam": "sdfsdfdsf",
+    "email": "nielsvandenbrande123@outlook.com",
+    "telefoon": "0476259384",
+    "postcode": "1000",
+    "images": [
+      {
+        "filename": "car-1742634782979-638465600.jpg",
+        "path": "/uploads/car-1742634782979-638465600.jpg",
+        "size": 746677
+      }
+    ],
+    "status": "new",
+    "createdAt": "2025-03-22T09:13:02.982Z"
+  },
+  {
+    "id": "1742634839538",
+    "kenteken": "1-ABC-322",
+    "merk": "mercedes",
+    "model": "C223",
+    "bouwjaar": 1991,
+    "brandstof": "diesel",
+    "kilometerstand": 123231,
+    "transmissie": "handgeschakeld",
+    "schade": "licht",
+    "apk": "2028",
+    "opties": [
+      "panorama"
+    ],
+    "extraInfo": "sdfsdf",
+    "naam": "Niels Van den Brande",
+    "email": "nielsvandenbrande123@outlook.com",
+    "telefoon": "0476259384",
+    "postcode": "1000",
+    "images": [
+      {
+        "filename": "car-1742634839536-131068590.jpg",
+        "path": "/uploads/car-1742634839536-131068590.jpg",
+        "size": 746677
+      }
+    ],
+    "status": "new",
+    "createdAt": "2025-03-22T09:13:59.538Z"
+  },
+  {
+    "id": "1742634997928",
+    "kenteken": "1-ABC-323",
+    "merk": "audi",
+    "model": "sfddsf",
+    "bouwjaar": 2022,
+    "brandstof": "lpg",
+    "kilometerstand": 12313,
+    "transmissie": "handgeschakeld",
+    "schade": "licht",
+    "apk": "2025",
+    "opties": [],
+    "extraInfo": "",
+    "naam": "Niels Van den Brande",
+    "email": "nielsvandenbrande123@outlook.com",
+    "telefoon": "0476259384",
+    "postcode": "1232",
+    "images": [
+      {
+        "filename": "car-1742634997926-926223449.jpg",
+        "path": "/uploads/car-1742634997926-926223449.jpg",
+        "size": 746677
+      }
+    ],
+    "status": "new",
+    "createdAt": "2025-03-22T09:16:37.928Z"
+  },
+  {
+    "id": "1742661181014",
+    "kenteken": "1-ABC-324",
+    "merk": "volkswagen",
+    "model": "Golf",
+    "bouwjaar": 2006,
+    "brandstof": "hybride",
+    "kilometerstand": 10000,
+    "transmissie": "automaat",
+    "schade": "zwaar",
+    "apk": "2029",
+    "opties": [
+      "navi"
+    ],
+    "extraInfo": "Niet echt bijzonderheden",
+    "naam": "Peter pan",
+    "email": "peterpan@email.nl",
+    "telefoon": "0476259384",
+    "postcode": "9100",
+    "images": [
+      {
+        "filename": "car-1742661181011-937017338.jpg",
+        "path": "/uploads/car-1742661181011-937017338.jpg",
+        "size": 746677
+      }
+    ],
+    "status": "new",
+    "createdAt": "2025-03-22T16:33:01.014Z"
+  },
+  {
+    "id": "1742661436367",
+    "kenteken": "1-ABC-322",
+    "merk": "ford",
+    "model": "sdfs",
+    "bouwjaar": 1990,
+    "brandstof": "benzine",
+    "kilometerstand": 12300,
+    "transmissie": "handgeschakeld",
+    "schade": "geen",
+    "apk": "2025",
+    "opties": [
+      "navi"
+    ],
+    "extraInfo": "Niets",
+    "naam": "Peter pan",
+    "email": "peterpan@email.nl",
+    "telefoon": "0476259384",
+    "postcode": "1000",
+    "images": [
+      {
+        "filename": "car-1742661436363-606569004.jpg",
+        "path": "/uploads/car-1742661436363-606569004.jpg",
+        "size": 746677
+      }
+    ],
+    "status": "new",
+    "createdAt": "2025-03-22T16:37:16.367Z"
+  },
+  {
+    "id": "1742661614498",
+    "kenteken": "1-ABC-323",
+    "merk": "audi",
+    "model": "fds",
+    "bouwjaar": 2018,
+    "brandstof": "diesel",
+    "kilometerstand": 2112,
+    "transmissie": "handgeschakeld",
+    "schade": "geen",
+    "apk": "2029",
+    "opties": [
+      "leer",
+      "navi",
+      "panorama"
+    ],
+    "extraInfo": "g",
+    "naam": "sdfsdfdsf",
+    "email": "nielsvandenbrande123@outlook.com",
+    "telefoon": "0476259384",
+    "postcode": "1000",
+    "images": [
+      {
+        "filename": "car-1742661614495-686667902.jpg",
+        "path": "/uploads/car-1742661614495-686667902.jpg",
+        "size": 746677
+      }
+    ],
+    "status": "new",
+    "createdAt": "2025-03-22T16:40:14.498Z"
+  }
+]

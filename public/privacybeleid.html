@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacybeleid - Mijnautoverkopen.be</title>
+    <style>
+        /* Base styles matching your main site */
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
+            --primary-dark: #3730a3;
+            --secondary: #ec4899;
+            --secondary-light: #f472b6;
+            --accent: #06b6d4;
+            --bg-main: #f1f5f9;
+            --bg-light: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: rgba(0, 0, 0, 0.05);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--bg-main) 0%, var(--bg-light) 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, var(--primary-light) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, var(--secondary-light) 0%, transparent 25%);
+            opacity: 0.05;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            z-index: 1;
+            position: relative;
+        }
+        
+        /* Header & Navigation */
+        header {
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background: var(--bg-light);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Page Content */
+        .page-content {
+            padding: 60px 0;
+            flex-grow: 1;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+        
+        .page-header p {
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .content-card {
+            background: var(--bg-light);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .content-card h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            color: var(--text-dark);
+        }
+        
+        .content-card h2:first-child {
+            margin-top: 0;
+        }
+        
+        .content-card h3 {
+            font-size: 1.3rem;
+            margin: 25px 0 10px;
+            color: var(--text-dark);
+        }
+        
+        .content-card p {
+            margin-bottom: 20px;
+        }
+        
+        .content-card ul, .content-card ol {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+        
+        .content-card li {
+            margin-bottom: 10px;
+        }
+        
+        .content-card a {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px solid currentColor;
+            transition: border-color 0.3s;
+        }
+        
+        .content-card a:hover {
+            border-bottom-color: transparent;
+        }
+        
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        th {
+            background-color: rgba(79, 70, 229, 0.05);
+            font-weight: 600;
+        }
+        
+        tbody tr:hover {
+            background-color: rgba(79, 70, 229, 0.02);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--bg-main);
+            padding: 40px 0 20px;
+            margin-top: auto;
+            border-top: 1px solid rgba(79, 70, 229, 0.1);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-col h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: inline-block;
+            position: relative;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-links a::before {
+            content: '›';
+            margin-right: 8px;
+            color: var(--primary);
+        }
+        
+        .footer-bottom {
+            padding-top: 20px;
+            border-top: 1px solid rgba(79, 70, 229, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            border: 1px solid rgba(79, 70, 229, 0.1);
+        }
+        
+        .social-link:hover {
+            background: rgba(79, 70, 229, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .social-link svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--primary);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .content-card {
+                padding: 25px;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="/" class="logo">Mijnautoverkopen.be</a>
+                <div class="nav-links">
+                    <a href="/">Home</a>
+                    <a href="/#hoe-het-werkt">Hoe het werkt</a>
+                    <a href="/#voordelen">Voordelen</a>
+                    <a href="/blog">Blog</a>
+                    <a href="/#contact">Contact</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Privacybeleid</h1>
+                <p>Hoe wij uw privacy respecteren en uw gegevens beschermen</p>
+            </div>
+            
+            <div class="content-card">
+                <h2>1. Inleiding</h2>
+                <p>Bij Mijnautoverkopen.be (handelsnaam van AutoCash BV) hechten wij grote waarde aan de bescherming van uw privacy en persoonsgegevens. Dit privacybeleid is opgesteld om u duidelijk te informeren over welke gegevens wij verzamelen, waarom we deze verzamelen, en hoe we deze gebruiken en beschermen.</p>
+                <p>Mijnautoverkopen.be verwerkt persoonsgegevens in overeenstemming met de geldende privacywetgeving, waaronder de Algemene Verordening Gegevensbescherming (AVG).</p>
+
+                <h2>2. Verwerkingsverantwoordelijke</h2>
+                <p>De verwerkingsverantwoordelijke voor uw persoonsgegevens is:</p>
+                <p>
+                    AutoCash BV<br>
+                    Handelend onder de naam: Mijnautoverkopen.be<br>
+                    Industrieweg 10<br>
+                    1050 Brussel<br>
+                    KvK-nummer: 12345678<br>
+                    E-mail: privacy@mijnautoverkopen.be
+                </p>
+
+                <h2>3. Welke persoonsgegevens verzamelen wij</h2>
+                <p>Afhankelijk van de diensten die u bij ons afneemt, kunnen wij de volgende persoonsgegevens verzamelen:</p>
+                <ul>
+                    <li><strong>Contactgegevens:</strong> naam, adres, e-mailadres, telefoonnummer en postcode</li>
+                    <li><strong>Voertuiggegevens:</strong> kenteken, merk, model, bouwjaar, kilometerstand, brandstoftype, en andere relevante gegevens over uw auto</li>
+                    <li><strong>Financiële gegevens:</strong> bankrekeningnummer (alleen indien noodzakelijk voor een transactie)</li>
+                    <li><strong>Identificatiegegevens:</strong> kopie van identiteitsbewijzen (indien wettelijk vereist bij autoverkoop)</li>
+                    <li><strong>Gebruiksgegevens:</strong> IP-adres, browsertype, besturingssysteem, bezochte pagina's en klikgedrag op onze website</li>
+                </ul>
+
+                <h2>4. Doeleinden van gegevensverwerking</h2>
+                <p>Wij verzamelen en verwerken uw persoonsgegevens voor de volgende doeleinden:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Doel</th>
+                            <th>Rechtsgrond</th>
+                            <th>Bewaartermijn</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Het taxeren en inkopen van uw auto</td>
+                            <td>Uitvoering overeenkomst</td>
+                            <td>7 jaar (fiscale bewaarplicht)</td>
+                        </tr>
+                        <tr>
+                            <td>Het afhandelen van de verkoop en overdracht van het voertuig</td>
+                            <td>Uitvoering overeenkomst</td>
+                            <td>7 jaar (fiscale bewaarplicht)</td>
+                        </tr>
+                        <tr>
+                            <td>Het verstrekken van informatie en offertes</td>
+                            <td>Toestemming / Gerechtvaardigd belang</td>
+                            <td>2 jaar na laatste contact</td>
+                        </tr>
+                        <tr>
+                            <td>Klantenservice en communicatie</td>
+                            <td>Uitvoering overeenkomst / Gerechtvaardigd belang</td>
+                            <td>2 jaar na laatste contact</td>
+                        </tr>
+                        <tr>
+                            <td>Marketing en verbetering van onze dienstverlening</td>
+                            <td>Toestemming / Gerechtvaardigd belang</td>
+                            <td>Tot intrekking toestemming of bezwaar</td>
+                        </tr>
+                        <tr>
+                            <td>Het voldoen aan wettelijke verplichtingen</td>
+                            <td>Wettelijke verplichting</td>
+                            <td>Conform wettelijke termijnen</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>5. Delen van persoonsgegevens met derden</h2>
+                <p>Uw gegevens worden alleen met derden gedeeld indien dit noodzakelijk is voor de uitvoering van onze dienstverlening of om te voldoen aan wettelijke verplichtingen. Wij delen uw persoonsgegevens met:</p>
+                <ul>
+                    <li><strong>Verwerkers:</strong> partijen die in onze opdracht persoonsgegevens verwerken, zoals IT-dienstverleners, e-mailmarketingproviders en administratieve dienstverleners</li>
+                    <li><strong>DIV (Dienst voor Inschrijvingen van Voertuigen):</strong> voor het afhandelen van de eigendomsoverdracht van uw voertuig</li>
+                    <li><strong>Financiële instellingen:</strong> voor het afhandelen van betalingen</li>
+                    <li><strong>Belastingdienst en andere overheidsinstellingen:</strong> indien wettelijk verplicht</li>
+                </ul>
+                <p>Met alle verwerkers sluiten wij verwerkersovereenkomsten af waarin wij afspraken maken over de beveiliging en het gebruik van uw persoonsgegevens.</p>
+
+                <h2>6. Beveiliging van uw gegevens</h2>
+                <p>Wij nemen passende technische en organisatorische maatregelen om uw persoonsgegevens te beveiligen tegen verlies, ongeautoriseerde toegang, publicatie en onrechtmatige verwerking. Deze maatregelen omvatten onder andere:</p>
+                <ul>
+                    <li>Versleutelde communicatie via SSL</li>
+                    <li>Beperkte toegang tot persoonsgegevens (alleen voor geautoriseerd personeel)</li>
+                    <li>Regelmatige beveiligingsupdates en -controles</li>
+                    <li>Periodieke back-ups en herstelprocedures</li>
+                    <li>Bewustwordingstraining voor medewerkers over privacy en informatiebeveiliging</li>
+                </ul>
+
+                <h2>7. Cookiebeleid</h2>
+                <p>Onze website maakt gebruik van cookies en vergelijkbare technieken. Voor meer informatie over welke cookies wij gebruiken en waarom, verwijzen wij u naar ons <a href="/cookiebeleid.html">cookiebeleid</a>.</p>
+
+                <h2>8. Uw rechten</h2>
+                <p>Op grond van de AVG heeft u als betrokkene de volgende rechten:</p>
+                <ul>
+                    <li><strong>Recht op inzage:</strong> u heeft het recht om te weten welke persoonsgegevens wij van u verwerken</li>
+                    <li><strong>Recht op rectificatie:</strong> u kunt ons vragen om onjuiste gegevens te corrigeren</li>
+                    <li><strong>Recht op vergetelheid:</strong> u kunt ons verzoeken om uw persoonsgegevens te verwijderen</li>
+                    <li><strong>Recht op beperking van de verwerking:</strong> u kunt ons vragen de verwerking van uw gegevens tijdelijk te stoppen</li>
+                    <li><strong>Recht op dataportabiliteit:</strong> u kunt ons vragen uw gegevens in een gestructureerd formaat aan u of een andere partij te verstrekken</li>
+                    <li><strong>Recht van bezwaar:</strong> u kunt bezwaar maken tegen de verwerking van uw gegevens voor marketingdoeleinden of op basis van gerechtvaardigd belang</li>
+                    <li><strong>Recht om niet onderworpen te worden aan geautomatiseerde besluitvorming:</strong> u heeft het recht dat een besluit dat gevolgen voor u heeft door een mens wordt genomen</li>
+                </ul>
+                <p>Om gebruik te maken van deze rechten, kunt u contact met ons opnemen via privacy@mijnautoverkopen.be. Wij streven ernaar binnen 30 dagen op uw verzoek te reageren.</p>
+
+                <h2>9. Klachten</h2>
+                <p>Indien u een klacht heeft over de verwerking van uw persoonsgegevens, neem dan contact met ons op via privacy@mijnautoverkopen.be. Wij zullen ons best doen om uw klacht naar tevredenheid op te lossen.</p>
+                <p>U heeft ook het recht om een klacht in te dienen bij de Gegevensbeschermingsautoriteit (GBA). Meer informatie hierover vindt u op de website van de GBA: <a href="https://www.gegevensbeschermingsautoriteit.be" target="_blank">www.gegevensbeschermingsautoriteit.be</a>.</p>
+
+                <h2>10. Wijzigingen in het privacybeleid</h2>
+                <p>Wij behouden ons het recht voor om dit privacybeleid periodiek te wijzigen. Wijzigingen worden op deze pagina gepubliceerd. Wij raden u aan deze pagina regelmatig te raadplegen, zodat u op de hoogte blijft van eventuele veranderingen.</p>
+
+                <h2>11. Contact</h2>
+                <p>Heeft u vragen of opmerkingen over ons privacybeleid, neem dan contact met ons op:</p>
+                <p>
+                    Mijnautoverkopen.be<br>
+                    T.a.v. Privacy Officer<br>
+                    Industrieweg 10<br>
+                    1234 AB Amsterdam<br>
+                    E-mail: privacy@mijnautoverkopen.be<br>
+                    Telefoon: 0800-1234567
+                </p>
+
+                <p>Laatste update: 15 maart 2025</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>AutoCash</h4>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/#hoe-het-werkt">Hoe het werkt</a></li>
+                        <li><a href="/#voordelen">Voordelen</a></li>
+                        <li><a href="/#testimonials">Klantervaringen</a></li>
+                        <li><a href="/#veelgestelde-vragen">Veelgestelde vragen</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="/#contact">Neem contact op</a></li>
+                        <li><a href="tel:0800-1234567">0800-1234567 (gratis)</a></li>
+                        <li><a href="mailto:info@mijnautoverkopen.be">info@mijnautoverkopen.be</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Juridisch</h4>
+                    <ul class="footer-links">
+                        <li><a href="/algemene-voorwaarden.html">Algemene voorwaarden</a></li>
+                        <li><a href="/privacybeleid.html" class="active">Privacybeleid</a></li>
+                        <li><a href="/cookiebeleid.html">Cookiebeleid</a></li>
+                        <li><a href="/disclaimer.html">Disclaimer</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Blog</h4>
+                    <ul class="footer-links">
+                        <li><a href="/blog">Alle artikelen</a></li>
+                        <li><a href="/blog/category/verkoop-tips">Verkoop tips</a></li>
+                        <li><a href="/blog/category/auto-onderhoud">Auto onderhoud</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 AutoCash. Alle rechten voorbehouden.
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
