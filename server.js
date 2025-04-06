@@ -11,6 +11,15 @@ const bcrypt = require('bcrypt');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
+const connectDB = require('./db'); // Import MongoDB connection
+
+// Import Mongoose Models
+const Admin = require('./models/Admin');
+const Blog = require('./models/Blog');
+const Inquiry = require('./models/Inquiry');
+
+// Connect to MongoDB
+connectDB();
 
 // Set up storage configuration for car images
 const storage = multer.diskStorage({
@@ -47,101 +56,30 @@ const upload = multer({
     },
     fileFilter: fileFilter
 });
+
 const app = express();
 const port = process.env.PORT || process.env.RENDER_PORT || 3001;
 
-// Ensure data directory exists
-const DATA_DIR = process.env.RENDER_DISK_PATH ? process.env.RENDER_DISK_PATH : path.join(__dirname, 'data');
-const INQUIRIES_FILE = path.join(DATA_DIR, 'inquiries.json');
-const ADMIN_FILE = path.join(DATA_DIR, 'admin.json');
-const BLOGS_FILE = path.join(DATA_DIR, 'blogs.json');
-
-// Create data directory if it doesn't exist
-if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-    console.log('Created data directory');
-}
-
-// Initialize inquiries file if it doesn't exist
-if (!fs.existsSync(INQUIRIES_FILE)) {
-    fs.writeFileSync(INQUIRIES_FILE, JSON.stringify([], null, 2));
-    console.log('Created empty inquiries file');
-}
-
-// Initialize blogs file if it doesn't exist
-if (!fs.existsSync(BLOGS_FILE)) {
-    fs.writeFileSync(BLOGS_FILE, JSON.stringify([], null, 2));
-    console.log('Created empty blogs file');
-}
-
-// Create default admin user if admin file doesn't exist
+// Initialize admin
 async function initializeAdmin() {
     try {
-        if (!fs.existsSync(ADMIN_FILE)) {
+        const adminCount = await Admin.countDocuments();
+        if (adminCount === 0) {
             // Use environment variable or a strong fallback password
             const hashedPassword = await bcrypt.hash(
                 process.env.ADMIN_PASSWORD || 'StrongDefaultPassword123!@#', 
                 parseInt(process.env.BCRYPT_SALT_ROUNDS || 12)
             );
             
-            const admin = [{
+            await Admin.create({
                 username: 'admin',
-                password: hashedPassword,
-                createdAt: new Date().toISOString()
-            }];
+                password: hashedPassword
+            });
             
-            fs.writeFileSync(ADMIN_FILE, JSON.stringify(admin, null, 2));
             console.log('Default admin user created');
         }
     } catch (err) {
         console.error('Error creating default admin:', err);
-    }
-}
-
-// Helper functions for file-based DB
-function readInquiries() {
-    try {
-        if (!fs.existsSync(INQUIRIES_FILE)) {
-            return [];
-        }
-        const data = fs.readFileSync(INQUIRIES_FILE, 'utf8');
-        return JSON.parse(data);
-    } catch (err) {
-        console.error('Error reading inquiries:', err);
-        return [];
-    }
-}
-
-function writeInquiries(inquiries) {
-    try {
-        fs.writeFileSync(INQUIRIES_FILE, JSON.stringify(inquiries, null, 2));
-        return true;
-    } catch (err) {
-        console.error('Error writing inquiries:', err);
-        return false;
-    }
-}
-
-function readBlogs() {
-    try {
-        if (!fs.existsSync(BLOGS_FILE)) {
-            return [];
-        }
-        const data = fs.readFileSync(BLOGS_FILE, 'utf8');
-        return JSON.parse(data);
-    } catch (err) {
-        console.error('Error reading blogs:', err);
-        return [];
-    }
-}
-
-function writeBlogs(blogs) {
-    try {
-        fs.writeFileSync(BLOGS_FILE, JSON.stringify(blogs, null, 2));
-        return true;
-    } catch (err) {
-        console.error('Error writing blogs:', err);
-        return false;
     }
 }
 
@@ -155,58 +93,29 @@ function createSlug(title) {
                    .replace(/^-+/, '')
                    .replace(/-+$/, '');
     
-    // Check if slug already exists and make it unique if needed
-    const blogs = readBlogs();
-    let originalSlug = slug;
-    let counter = 1;
-    
-    while (blogs.some(blog => blog.slug === slug)) {
-        slug = `${originalSlug}-${counter}`;
-        counter++;
-    }
-    
     return slug;
 }
 
-function readAdmins() {
-    try {
-        if (!fs.existsSync(ADMIN_FILE)) {
-            return [];
-        }
-        const data = fs.readFileSync(ADMIN_FILE, 'utf8');
-        return JSON.parse(data);
-    } catch (err) {
-        console.error('Error reading admins:', err);
-        return [];
-    }
+function escapeHtml(text) {
+  if (!text) return '';
+  return String(text)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
 }
 
-function writeAdmins(admins) {
+// Utility to ensure categories are applied to all blogs
+async function migrateBlogsToAddCategories() {
     try {
-        fs.writeFileSync(ADMIN_FILE, JSON.stringify(admins, null, 2));
-        return true;
-    } catch (err) {
-        console.error('Error writing admins:', err);
-        return false;
-    }
-}
-
-// Add these category-related helper functions
-function migrateBlogsToAddCategories() {
-    try {
-        const blogs = readBlogs();
-        let updated = false;
+        const blogs = await Blog.find({ category: { $exists: false } });
         
-        blogs.forEach(blog => {
-            if (!blog.category) {
-                // Set a default category if none exists
+        if (blogs.length > 0) {
+            for (const blog of blogs) {
                 blog.category = "algemeen";
-                updated = true;
+                await blog.save();
             }
-        });
-        
-        if (updated) {
-            writeBlogs(blogs);
             console.log('Migrated blogs to include categories');
         }
     } catch (err) {
@@ -214,18 +123,11 @@ function migrateBlogsToAddCategories() {
     }
 }
 
-function getAllCategories() {
+// Function to get all categories
+async function getAllCategories() {
     try {
-        const blogs = readBlogs();
-        const categories = new Set();
-        
-        blogs.forEach(blog => {
-            if (blog.category) {
-                categories.add(blog.category);
-            }
-        });
-        
-        return Array.from(categories);
+        const categories = await Blog.distinct('category');
+        return categories;
     } catch (err) {
         console.error('Error getting categories:', err);
         return [];
@@ -241,67 +143,138 @@ function createCategorySlug(categoryName) {
         .replace(/-+$/, '');
 }
 
-function escapeHtml(text) {
-  if (!text) return '';
-  return String(text)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+// Add sample blogs if none exist
+async function addSampleBlogs() {
+    try {
+        const blogCount = await Blog.countDocuments();
+        
+        if (blogCount === 0) {
+            const sampleData = [
+                {
+                    "id": "1678640481000",
+                    "title": "De beste tijd om uw auto te verkopen",
+                    "slug": "de-beste-tijd-om-uw-auto-te-verkopen",
+                    "content": `<p>Het verkopen van een auto kan een strategische beslissing zijn...</p>`,
+                    "excerpt": "Ontdek wanneer het financieel gezien het meest voordelig is om uw auto te verkopen, en welke factoren de waarde van uw auto beïnvloeden.",
+                    "author": "Autoverkoop Team",
+                    "status": "published",
+                    "category": "verkoop-tips",
+                    "tags": ["verkoop timing", "waardevermindering", "automarkt"],
+                    "createdAt": "2023-03-12T18:15:00.000Z",
+                    "updatedAt": "2023-03-12T18:15:00.000Z"
+                },
+                {
+                    "id": "1678750481000",
+                    "title": "Hoe bereidt u uw auto voor op verkoop?",
+                    "slug": "hoe-bereidt-u-uw-auto-voor-op-verkoop",
+                    "content": `<p>Een goed voorbereide auto maakt niet alleen een betere indruk...</p>`,
+                    "excerpt": "Leer hoe u uw auto optimaal kunt voorbereiden voor verkoop om de hoogste prijs te krijgen en een snelle verkoop te realiseren.",
+                    "author": "Autoverkoop Team",
+                    "status": "published",
+                    "category": "verkoop-tips",
+                    "tags": ["voorbereiding", "auto verkopen", "waarde verhogen"],
+                    "createdAt": "2023-04-15T14:30:00.000Z",
+                    "updatedAt": "2023-04-15T14:30:00.000Z"
+                },
+                {
+                    "id": "1678850481000",
+                    "title": "Particulier verkopen of inruilen: wat is voordelig?",
+                    "slug": "particulier-verkopen-of-inruilen-wat-is-voordelig",
+                    "content": `<p>Wanneer u uw huidige auto wilt vervangen, heeft u verschillende opties...</p>`,
+                    "excerpt": "Vergelijk de verschillende manieren om uw auto te verkopen en ontdek welke optie het beste bij uw situatie past.",
+                    "author": "Autoverkoop Team",
+                    "status": "published",
+                    "category": "verkoop-opties",
+                    "tags": ["particulier verkopen", "inruilen", "auto inkoop"],
+                    "createdAt": "2023-05-20T10:45:00.000Z",
+                    "updatedAt": "2023-05-20T10:45:00.000Z"
+                }
+            ];
+            
+            await Blog.insertMany(sampleData);
+            console.log('Added sample blog data');
+        }
+    } catch (err) {
+        console.error('Error adding sample blogs:', err);
+    }
 }
 
-// Initialize admin
-initializeAdmin().catch(console.error);
-
-// Add these helper functions to create sample blog posts if the file is empty
-function addSampleBlogs() {
-    const blogs = readBlogs();
-    if (blogs.length === 0) {
-      const sampleData = [
-    {
-        "id": "1678640481000",
-        "title": "De beste tijd om uw auto te verkopen",
-        "slug": "de-beste-tijd-om-uw-auto-te-verkopen",
-        "content": `<p>Het verkopen van een auto kan een strategische beslissing zijn...</p>`,
-        "excerpt": "Ontdek wanneer het financieel gezien het meest voordelig is om uw auto te verkopen, en welke factoren de waarde van uw auto beïnvloeden.",
-        "author": "Autoverkoop Team",
-        "status": "published",
-        "category": "verkoop-tips", // Added category
-        "tags": ["verkoop timing", "waardevermindering", "automarkt"],
-        "createdAt": "2023-03-12T18:15:00.000Z",
-        "updatedAt": "2023-03-12T18:15:00.000Z"
-    },
-    {
-        "id": "1678750481000",
-        "title": "Hoe bereidt u uw auto voor op verkoop?",
-        "slug": "hoe-bereidt-u-uw-auto-voor-op-verkoop",
-        "content": `<p>Een goed voorbereide auto maakt niet alleen een betere indruk...</p>`,
-        "excerpt": "Leer hoe u uw auto optimaal kunt voorbereiden voor verkoop om de hoogste prijs te krijgen en een snelle verkoop te realiseren.",
-        "author": "Autoverkoop Team",
-        "status": "published",
-        "category": "verkoop-tips", // Added category
-        "tags": ["voorbereiding", "auto verkopen", "waarde verhogen"],
-        "createdAt": "2023-04-15T14:30:00.000Z",
-        "updatedAt": "2023-04-15T14:30:00.000Z"
-    },
-    {
-        "id": "1678850481000",
-        "title": "Particulier verkopen of inruilen: wat is voordelig?",
-        "slug": "particulier-verkopen-of-inruilen-wat-is-voordelig",
-        "content": `<p>Wanneer u uw huidige auto wilt vervangen, heeft u verschillende opties...</p>`,
-        "excerpt": "Vergelijk de verschillende manieren om uw auto te verkopen en ontdek welke optie het beste bij uw situatie past.",
-        "author": "Autoverkoop Team",
-        "status": "published",
-        "category": "verkoop-opties", // Added category
-        "tags": ["particulier verkopen", "inruilen", "auto inkoop"],
-        "createdAt": "2023-05-20T10:45:00.000Z",
-        "updatedAt": "2023-05-20T10:45:00.000Z"
-    }
-];
+// Add sample inquiries if none exist
+async function addSampleData() {
+    try {
+        const inquiryCount = await Inquiry.countDocuments();
         
-        writeBlogs(sampleData);
-        console.log('Added sample blog data');
+        if (inquiryCount === 0) {
+            const sampleData = [
+                {
+                    "id": "1678610481000",
+                    "kenteken": "AB-123-Z",
+                    "merk": "Volkswagen",
+                    "model": "Golf",
+                    "bouwjaar": 2018,
+                    "brandstof": "benzine",
+                    "kilometerstand": 85000,
+                    "transmissie": "handgeschakeld",
+                    "schade": "geen",
+                    "apk": "2024-06",
+                    "opties": ["navigatiesysteem", "trekhaak", "panoramadak"],
+                    "extraInfo": "Auto is in zeer goede staat en heeft altijd dealeronderhoud gehad.",
+                    "naam": "Jan de Vries",
+                    "email": "jan.devries@example.com",
+                    "telefoon": "06-12345678",
+                    "postcode": "1234 AB",
+                    "status": "new",
+                    "createdAt": "2023-03-12T09:30:00.000Z"
+                },
+                {
+                    "id": "1678620481000",
+                    "kenteken": "XY-789-P",
+                    "merk": "BMW",
+                    "model": "3-serie",
+                    "bouwjaar": 2019,
+                    "brandstof": "diesel",
+                    "kilometerstand": 65000,
+                    "transmissie": "automaat",
+                    "schade": "licht",
+                    "apk": "2024-08",
+                    "opties": ["leer", "navigatiesysteem", "xenon"],
+                    "extraInfo": "Kleine parkeerschade aan de rechterkant.",
+                    "naam": "Lisa Jansen",
+                    "email": "l.jansen@example.com",
+                    "telefoon": "06-87654321",
+                    "postcode": "5678 CD",
+                    "status": "contacted",
+                    "notes": "Klant heeft voorkeur om de auto binnen 2 weken te verkopen.",
+                    "createdAt": "2023-03-12T12:15:00.000Z"
+                },
+                {
+                    "id": "1678630481000",
+                    "kenteken": "GH-456-R",
+                    "merk": "Audi",
+                    "model": "A4",
+                    "bouwjaar": 2017,
+                    "brandstof": "benzine",
+                    "kilometerstand": 98000,
+                    "transmissie": "automaat",
+                    "schade": "geen",
+                    "apk": "2023-12",
+                    "opties": ["leer", "panoramadak"],
+                    "extraInfo": "Volledig dealeronderhoud, net grote beurt gehad.",
+                    "naam": "Peter Bakker",
+                    "email": "peter.bakker@example.com",
+                    "telefoon": "06-23456789",
+                    "postcode": "3456 EF",
+                    "status": "offered",
+                    "notes": "Bod uitgebracht van €19.500. Klant denkt erover na.",
+                    "createdAt": "2023-03-12T15:45:00.000Z"
+                }
+            ];
+            
+            await Inquiry.insertMany(sampleData);
+            console.log('Added sample inquiry data');
+        }
+    } catch (err) {
+        console.error('Error adding sample data:', err);
     }
 }
 
@@ -350,7 +323,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
-
 // Configure rate limiting for login attempts
 const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -371,7 +343,6 @@ function isAuthenticated(req, res, next) {
     }
 }
 
-
 // Admin login page
 app.get('/admin/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/admin/login.html'));
@@ -390,8 +361,7 @@ app.post('/admin/login', loginLimiter, async (req, res) => {
     }
     
     try {
-        const admins = readAdmins();
-        const admin = admins.find(a => a.username === username);
+        const admin = await Admin.findOne({ username });
         
         if (!admin) {
             await bcrypt.compare(password, '$2b$12$invalidhashforcomparison');
@@ -424,7 +394,6 @@ app.post('/admin/login', loginLimiter, async (req, res) => {
     }
 });
 
-
 // Admin logout
 app.get('/admin/logout', (req, res) => {
     req.session.destroy((err) => {
@@ -451,17 +420,16 @@ app.post('/admin/change-password', isAuthenticated, async (req, res) => {
     const { currentPassword, newPassword } = req.body;
     
     try {
-        const admins = readAdmins();
-        const adminIndex = admins.findIndex(a => a.username === req.session.username);
+        const admin = await Admin.findOne({ username: req.session.username });
         
-        if (adminIndex === -1) {
+        if (!admin) {
             return res.status(404).json({ 
                 success: false, 
                 message: 'Admin niet gevonden' 
             });
         }
         
-        const passwordMatch = await bcrypt.compare(currentPassword, admins[adminIndex].password);
+        const passwordMatch = await bcrypt.compare(currentPassword, admin.password);
         
         if (!passwordMatch) {
             return res.status(401).json({ 
@@ -471,8 +439,8 @@ app.post('/admin/change-password', isAuthenticated, async (req, res) => {
         }
         
         const hashedPassword = await bcrypt.hash(newPassword, 10);
-        admins[adminIndex].password = hashedPassword;
-        writeAdmins(admins);
+        admin.password = hashedPassword;
+        await admin.save();
         
         return res.json({ 
             success: true, 
@@ -488,11 +456,9 @@ app.post('/admin/change-password', isAuthenticated, async (req, res) => {
 });
 
 // API Endpoints for the admin panel
-app.get('/api/inquiries', isAuthenticated, (req, res) => {
+app.get('/api/inquiries', isAuthenticated, async (req, res) => {
     try {
-        const inquiries = readInquiries();
-        // Sort by creation date (newest first)
-        inquiries.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const inquiries = await Inquiry.find().sort({ createdAt: -1 });
         res.json(inquiries);
     } catch (err) {
         console.error('Error fetching inquiries:', err);
@@ -503,10 +469,9 @@ app.get('/api/inquiries', isAuthenticated, (req, res) => {
     }
 });
 
-app.get('/api/inquiries/:id', isAuthenticated, (req, res) => {
+app.get('/api/inquiries/:id', isAuthenticated, async (req, res) => {
     try {
-        const inquiries = readInquiries();
-        const inquiry = inquiries.find(i => i.id === req.params.id);
+        const inquiry = await Inquiry.findOne({ id: req.params.id });
         
         if (!inquiry) {
             return res.status(404).json({ 
@@ -525,29 +490,28 @@ app.get('/api/inquiries/:id', isAuthenticated, (req, res) => {
     }
 });
 
-app.put('/api/inquiries/:id', isAuthenticated, (req, res) => {
+app.put('/api/inquiries/:id', isAuthenticated, async (req, res) => {
     try {
         const { status, notes } = req.body;
-        const inquiries = readInquiries();
-        const inquiryIndex = inquiries.findIndex(i => i.id === req.params.id);
+        const inquiry = await Inquiry.findOne({ id: req.params.id });
         
-        if (inquiryIndex === -1) {
+        if (!inquiry) {
             return res.status(404).json({ 
                 success: false, 
                 message: 'Aanvraag niet gevonden' 
             });
         }
         
-        inquiries[inquiryIndex].status = status;
-        inquiries[inquiryIndex].notes = notes;
-        inquiries[inquiryIndex].updatedAt = new Date().toISOString();
+        inquiry.status = status;
+        inquiry.notes = notes;
+        inquiry.updatedAt = new Date();
         
-        writeInquiries(inquiries);
+        await inquiry.save();
         
         res.json({ 
             success: true, 
             message: 'Aanvraag bijgewerkt', 
-            inquiry: inquiries[inquiryIndex] 
+            inquiry: inquiry 
         });
     } catch (err) {
         console.error('Error updating inquiry:', err);
@@ -583,7 +547,7 @@ function sanitizeInput(input) {
 }
 
 // Endpoint to handle form submission
-app.post('/submit-car', upload.array('carImages', 5), (req, res) => {
+app.post('/submit-car', upload.array('carImages', 5), async (req, res) => {
     const formData = sanitizeInput(req.body);
     
     try {
@@ -629,7 +593,7 @@ app.post('/submit-car', upload.array('carImages', 5), (req, res) => {
         });
         
         // Create a new car inquiry with sanitized data
-        const newInquiry = {
+        const newInquiry = new Inquiry({
             id: id,
             kenteken: formData.kenteken,
             merk: formData.merk,
@@ -646,15 +610,12 @@ app.post('/submit-car', upload.array('carImages', 5), (req, res) => {
             email: formData.email,
             telefoon: formData.telefoon,
             postcode: formData.postcode,
-            images: images, // Add images array to the inquiry
+            images: images,
             status: 'new',
-            createdAt: new Date().toISOString()
-        };
+            createdAt: new Date()
+        });
         
-        // Read existing inquiries, add the new one, and write back to file
-        const inquiries = readInquiries();
-        inquiries.push(newInquiry);
-        writeInquiries(inquiries);
+        await newInquiry.save();
         
         res.json({
             success: true,
@@ -671,25 +632,38 @@ app.post('/submit-car', upload.array('carImages', 5), (req, res) => {
 });
 
 // Stats API for dashboard
-app.get('/api/stats', isAuthenticated, (req, res) => {
+app.get('/api/stats', isAuthenticated, async (req, res) => {
     try {
-        const inquiries = readInquiries();
-        
-        const stats = {
-            total: inquiries.length,
-            new: inquiries.filter(i => i.status === 'new').length,
-            contacted: inquiries.filter(i => i.status === 'contacted').length,
-            offered: inquiries.filter(i => i.status === 'offered').length,
-            accepted: inquiries.filter(i => i.status === 'accepted').length,
-            rejected: inquiries.filter(i => i.status === 'rejected').length,
-            completed: inquiries.filter(i => i.status === 'completed').length
-        };
+        const total = await Inquiry.countDocuments();
+        const newCount = await Inquiry.countDocuments({ status: 'new' });
+        const contacted = await Inquiry.countDocuments({ status: 'contacted' });
+        const offered = await Inquiry.countDocuments({ status: 'offered' });
+        const accepted = await Inquiry.countDocuments({ status: 'accepted' });
+        const rejected = await Inquiry.countDocuments({ status: 'rejected' });
+        const completed = await Inquiry.countDocuments({ status: 'completed' });
         
         // Get today's date in YYYY-MM-DD format
         const today = new Date().toISOString().split('T')[0];
         
         // Count today's inquiries
-        stats.today = inquiries.filter(i => i.createdAt.startsWith(today)).length;
+        const todayStart = new Date(today);
+        const todayEnd = new Date(today);
+        todayEnd.setDate(todayEnd.getDate() + 1);
+        
+        const todayCount = await Inquiry.countDocuments({
+            createdAt: { $gte: todayStart, $lt: todayEnd }
+        });
+        
+        const stats = {
+            total,
+            new: newCount,
+            contacted,
+            offered,
+            accepted,
+            rejected,
+            completed,
+            today: todayCount
+        };
         
         res.json(stats);
     } catch (err) {
@@ -701,86 +675,10 @@ app.get('/api/stats', isAuthenticated, (req, res) => {
     }
 });
 
-// Add some sample data if the file is empty
-function addSampleData() {
-    const inquiries = readInquiries();
-    if (inquiries.length === 0) {
-        const sampleData = [
-            {
-                "id": "1678610481000",
-                "kenteken": "AB-123-Z",
-                "merk": "Volkswagen",
-                "model": "Golf",
-                "bouwjaar": 2018,
-                "brandstof": "benzine",
-                "kilometerstand": 85000,
-                "transmissie": "handgeschakeld",
-                "schade": "geen",
-                "apk": "2024-06",
-                "opties": ["navigatiesysteem", "trekhaak", "panoramadak"],
-                "extraInfo": "Auto is in zeer goede staat en heeft altijd dealeronderhoud gehad.",
-                "naam": "Jan de Vries",
-                "email": "jan.devries@example.com",
-                "telefoon": "06-12345678",
-                "postcode": "1234 AB",
-                "status": "new",
-                "createdAt": "2023-03-12T09:30:00.000Z"
-            },
-            {
-                "id": "1678620481000",
-                "kenteken": "XY-789-P",
-                "merk": "BMW",
-                "model": "3-serie",
-                "bouwjaar": 2019,
-                "brandstof": "diesel",
-                "kilometerstand": 65000,
-                "transmissie": "automaat",
-                "schade": "licht",
-                "apk": "2024-08",
-                "opties": ["leer", "navigatiesysteem", "xenon"],
-                "extraInfo": "Kleine parkeerschade aan de rechterkant.",
-                "naam": "Lisa Jansen",
-                "email": "l.jansen@example.com",
-                "telefoon": "06-87654321",
-                "postcode": "5678 CD",
-                "status": "contacted",
-                "notes": "Klant heeft voorkeur om de auto binnen 2 weken te verkopen.",
-                "createdAt": "2023-03-12T12:15:00.000Z"
-            },
-            {
-                "id": "1678630481000",
-                "kenteken": "GH-456-R",
-                "merk": "Audi",
-                "model": "A4",
-                "bouwjaar": 2017,
-                "brandstof": "benzine",
-                "kilometerstand": 98000,
-                "transmissie": "automaat",
-                "schade": "geen",
-                "apk": "2023-12",
-                "opties": ["leer", "panoramadak"],
-                "extraInfo": "Volledig dealeronderhoud, net grote beurt gehad.",
-                "naam": "Peter Bakker",
-                "email": "peter.bakker@example.com",
-                "telefoon": "06-23456789",
-                "postcode": "3456 EF",
-                "status": "offered",
-                "notes": "Bod uitgebracht van €19.500. Klant denkt erover na.",
-                "createdAt": "2023-03-12T15:45:00.000Z"
-            }
-        ];
-        
-        writeInquiries(sampleData);
-        console.log('Added sample inquiry data');
-    }
-}
-
 // Blog API endpoints
-app.get('/api/blogs', (req, res) => {
+app.get('/api/blogs', async (req, res) => {
     try {
-        const blogs = readBlogs();
-        // Sort by creation date (newest first)
-        blogs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const blogs = await Blog.find().sort({ createdAt: -1 });
         res.json(blogs);
     } catch (err) {
         console.error('Error fetching blogs:', err);
@@ -791,10 +689,14 @@ app.get('/api/blogs', (req, res) => {
     }
 });
 
-app.get('/api/blogs/:id', (req, res) => {
+app.get('/api/blogs/:id', async (req, res) => {
     try {
-        const blogs = readBlogs();
-        const blog = blogs.find(b => b.id === req.params.id || b.slug === req.params.id);
+        const blog = await Blog.findOne({ 
+            $or: [
+                { id: req.params.id },
+                { slug: req.params.id }
+            ]
+        });
         
         if (!blog) {
             return res.status(404).json({ 
@@ -813,20 +715,15 @@ app.get('/api/blogs/:id', (req, res) => {
     }
 });
 
-app.get('/api/blogs/tag/:tag', (req, res) => {
+app.get('/api/blogs/tag/:tag', async (req, res) => {
     try {
         const tag = req.params.tag.toLowerCase();
-        const blogs = readBlogs();
         
         // Filter blogs by tag and published status
-        const filteredBlogs = blogs.filter(blog => 
-            blog.status === 'published' && 
-            Array.isArray(blog.tags) && 
-            blog.tags.some(t => t.toLowerCase() === tag)
-        );
-        
-        // Sort by creation date (newest first)
-        filteredBlogs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const filteredBlogs = await Blog.find({
+            status: 'published',
+            tags: { $in: [tag] }
+        }).sort({ createdAt: -1 });
         
         res.json(filteredBlogs);
     } catch (err) {
@@ -839,9 +736,9 @@ app.get('/api/blogs/tag/:tag', (req, res) => {
 });
 
 // Get all categories
-app.get('/api/categories', (req, res) => {
+app.get('/api/categories', async (req, res) => {
     try {
-        const categories = getAllCategories();
+        const categories = await getAllCategories();
         res.json(categories);
     } catch (err) {
         console.error('Error fetching categories:', err);
@@ -853,19 +750,15 @@ app.get('/api/categories', (req, res) => {
 });
 
 // Get blogs by category
-app.get('/api/blogs/category/:category', (req, res) => {
+app.get('/api/blogs/category/:category', async (req, res) => {
     try {
         const category = req.params.category.toLowerCase();
-        const blogs = readBlogs();
         
         // Filter blogs by category and published status
-        const filteredBlogs = blogs.filter(blog => 
-            blog.status === 'published' && 
-            blog.category && blog.category.toLowerCase() === category
-        );
-        
-        // Sort by creation date (newest first)
-        filteredBlogs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const filteredBlogs = await Blog.find({
+            status: 'published',
+            category: category
+        }).sort({ createdAt: -1 });
         
         res.json(filteredBlogs);
     } catch (err) {
@@ -880,13 +773,12 @@ app.get('/api/blogs/category/:category', (req, res) => {
 app.get('/blog/category/:category', async (req, res) => {
     try {
         const category = req.params.category.toLowerCase();
-        const blogs = readBlogs();
         
         // Filter blogs by category and published status
-        const filteredBlogs = blogs.filter(blog => 
-            blog.status === 'published' && 
-            blog.category && blog.category.toLowerCase() === category
-        );
+        const filteredBlogs = await Blog.find({
+            status: 'published',
+            category: category
+        }).sort({ createdAt: -1 });
         
         if (filteredBlogs.length === 0) {
             return res.redirect('/blog');
@@ -906,7 +798,7 @@ app.get('/blog/category/:category', async (req, res) => {
         htmlTemplate = htmlTemplate.replace('<link rel="canonical" href="" id="canonical-link">', 
             `<link rel="canonical" href="https://mijnautoverkopen.be/blog/category/${category}" id="canonical-link">`);
         
-        // Add ItemList structured data - ADD THIS SECTION HERE
+        // Add ItemList structured data
         const structuredData = {
             "@context": "https://schema.org",
             "@type": "ItemList",
@@ -920,7 +812,6 @@ app.get('/blog/category/:category', async (req, res) => {
         
         htmlTemplate = htmlTemplate.replace('</head>', 
             `<script type="application/ld+json">${JSON.stringify(structuredData)}</script></head>`);
-        // END OF ADDITION
         
         // Add markers to help client-side JavaScript
         htmlTemplate = htmlTemplate.replace('<body>', 
@@ -932,7 +823,8 @@ app.get('/blog/category/:category', async (req, res) => {
         res.redirect('/blog');
     }
 });
-app.post('/api/blogs', isAuthenticated, (req, res) => {
+
+app.post('/api/blogs', isAuthenticated, async (req, res) => {
     try {
         const { title, excerpt, tags, status, category } = req.body;
         let { content } = req.body;
@@ -945,7 +837,7 @@ app.post('/api/blogs', isAuthenticated, (req, res) => {
             });
         }
         
-        // Sanitize the blog content - ADD THIS CODE HERE
+        // Sanitize the blog content
         const sanitizedContent = sanitizeHtml(content, {
           allowedTags: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol', 'li', 
                        'b', 'i', 'strong', 'em', 'strike', 'br', 'div', 'table', 'thead', 'tbody', 
@@ -968,27 +860,27 @@ app.post('/api/blogs', isAuthenticated, (req, res) => {
           }
         });
         
+        // Create a slug
+        const slug = createSlug(title);
+        
         // Create blog post object with sanitized content
-        const newBlog = {
+        const newBlog = new Blog({
             id: Date.now().toString(),
             title,
-            slug: createSlug(title),
+            slug,
             content: sanitizedContent,
-    excerpt: excerpt || content.substring(0, 150) + '...',
-    featuredImage: req.body.featuredImage || '', // Add this line
-    imageAlt: req.body.imageAlt || '',           // Add this line
-    author: req.session.username,
-    status: status || 'draft',
-    category: category || 'algemeen',
-    tags: tags || [],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-};
+            excerpt: excerpt || sanitizedContent.substring(0, 150) + '...',
+            featuredImage: req.body.featuredImage || '',
+            imageAlt: req.body.imageAlt || '',
+            author: req.session.username,
+            status: status || 'draft',
+            category: category || 'algemeen',
+            tags: tags || [],
+            createdAt: new Date(),
+            updatedAt: new Date()
+        });
         
-        // Save to database
-        const blogs = readBlogs();
-        blogs.push(newBlog);
-        writeBlogs(blogs);
+        await newBlog.save();
         
         res.status(201).json({
             success: true,
@@ -1004,21 +896,21 @@ app.post('/api/blogs', isAuthenticated, (req, res) => {
     }
 });
 
-app.put('/api/blogs/:id', isAuthenticated, (req, res) => {
+app.put('/api/blogs/:id', isAuthenticated, async (req, res) => {
     try {
         const { title, excerpt, tags, status, category } = req.body;
         let { content } = req.body;
-        const blogs = readBlogs();
-        const blogIndex = blogs.findIndex(b => b.id === req.params.id);
         
-        if (blogIndex === -1) {
+        const blog = await Blog.findOne({ id: req.params.id });
+        
+        if (!blog) {
             return res.status(404).json({ 
                 success: false, 
                 message: 'Blog post niet gevonden' 
             });
         }
         
-        // Sanitize blog content if it's being updated - ADD THIS CODE HERE
+        // Sanitize blog content if it's being updated
         if (content) {
             content = sanitizeHtml(content, {
               allowedTags: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol', 'li', 
@@ -1044,31 +936,27 @@ app.put('/api/blogs/:id', isAuthenticated, (req, res) => {
         }
         
         // Update fields with sanitized content
-        const updatedBlog = {
-            ...blogs[blogIndex],
-            title: title || blogs[blogIndex].title,
-            content: content || blogs[blogIndex].content,
-    excerpt: excerpt || blogs[blogIndex].excerpt,
-    featuredImage: req.body.featuredImage || blogs[blogIndex].featuredImage || '', // Add this line
-    imageAlt: req.body.imageAlt || blogs[blogIndex].imageAlt || '',                // Add this line
-    status: status || blogs[blogIndex].status,
-    category: category || blogs[blogIndex].category || 'algemeen',
-    tags: tags || blogs[blogIndex].tags,
-    updatedAt: new Date().toISOString()
-};
+        if (title) blog.title = title;
+        if (content) blog.content = content;
+        if (excerpt) blog.excerpt = excerpt;
+        if (req.body.featuredImage) blog.featuredImage = req.body.featuredImage;
+        if (req.body.imageAlt) blog.imageAlt = req.body.imageAlt;
+        if (status) blog.status = status;
+        if (category) blog.category = category;
+        if (tags) blog.tags = tags;
+        blog.updatedAt = new Date();
         
         // Update slug if title changed
-        if (title && title !== blogs[blogIndex].title) {
-            updatedBlog.slug = createSlug(title);
+        if (title && title !== blog.title) {
+            blog.slug = createSlug(title);
         }
         
-        blogs[blogIndex] = updatedBlog;
-        writeBlogs(blogs);
+        await blog.save();
         
         res.json({
             success: true,
             message: 'Blog post succesvol bijgewerkt',
-            blog: updatedBlog
+            blog: blog
         });
     } catch (err) {
         console.error('Error updating blog:', err);
@@ -1079,20 +967,16 @@ app.put('/api/blogs/:id', isAuthenticated, (req, res) => {
     }
 });
 
-app.delete('/api/blogs/:id', isAuthenticated, (req, res) => {
+app.delete('/api/blogs/:id', isAuthenticated, async (req, res) => {
     try {
-        const blogs = readBlogs();
-        const blogIndex = blogs.findIndex(b => b.id === req.params.id);
+        const blog = await Blog.findOneAndDelete({ id: req.params.id });
         
-        if (blogIndex === -1) {
+        if (!blog) {
             return res.status(404).json({ 
                 success: false, 
                 message: 'Blog post niet gevonden' 
             });
         }
-        
-        blogs.splice(blogIndex, 1);
-        writeBlogs(blogs);
         
         res.json({
             success: true,
@@ -1110,10 +994,12 @@ app.delete('/api/blogs/:id', isAuthenticated, (req, res) => {
 // In server.js, update the `/blog/:slug` route:
 app.get('/blog/:slug', async (req, res) => {
     try {
-        const blogs = readBlogs();
-        const blog = blogs.find(b => b.slug === req.params.slug);
+        const blog = await Blog.findOne({ 
+            slug: req.params.slug,
+            status: 'published'
+        });
         
-        if (!blog || blog.status !== 'published') {
+        if (!blog) {
             return res.redirect('/blog');
         }
         
@@ -1130,44 +1016,42 @@ app.get('/blog/:slug', async (req, res) => {
         htmlTemplate = htmlTemplate.replace('<link rel="canonical" href="" id="canonical-link">', 
             `<link rel="canonical" href="https://mijnautoverkopen.be/blog/${blog.slug}" id="canonical-link">`);
 
-// In the loadSingleBlog function or where you're rendering the blog post HTML:
+        // Format the title for social sharing
+        const socialTitle = `${blog.title} - Mijnautoverkopen.be Blog`;
 
-// Format the title for social sharing
-const socialTitle = `${blog.title} - Mijnautoverkopen.be Blog`;
+        // Get excerpt or create one
+        const socialDescription = blog.excerpt || blog.content.substring(0, 150).replace(/<[^>]*>/g, '') + '...';
 
-// Get excerpt or create one
-const socialDescription = blog.excerpt || blog.content.substring(0, 150).replace(/<[^>]*>/g, '') + '...';
+        // Get image for sharing
+        const socialImage = blog.featuredImage && blog.featuredImage.trim() !== '' 
+            ? blog.featuredImage 
+            : 'https://mijnautoverkopen.be/images/default-social-share.jpg';
 
-// Get image for sharing
-const socialImage = blog.featuredImage && blog.featuredImage.trim() !== '' 
-    ? blog.featuredImage 
-    : 'https://mijnautoverkopen.be/images/default-social-share.jpg';
+        // Create Open Graph and Twitter Card meta tags
+        let socialMetaTags = `
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://mijnautoverkopen.be/blog/${blog.slug}" />
+        <meta property="og:title" content="${escapeHtml(socialTitle)}" />
+        <meta property="og:description" content="${escapeHtml(socialDescription)}" />
+        <meta property="og:image" content="${escapeHtml(socialImage)}" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:locale" content="nl_NL" />
+        <meta property="og:site_name" content="Mijnautoverkopen.be" />
+        <meta property="article:published_time" content="${blog.createdAt}" />
+        <meta property="article:modified_time" content="${blog.updatedAt || blog.createdAt}" />
+        ${blog.category ? `<meta property="article:section" content="${escapeHtml(blog.category)}" />` : ''}
+        ${Array.isArray(blog.tags) && blog.tags.length > 0 ? blog.tags.map(tag => `<meta property="article:tag" content="${escapeHtml(tag)}" />`).join('\n') : ''}
 
-// Create Open Graph and Twitter Card meta tags
-let socialMetaTags = `
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://mijnautoverkopen.be/blog/${blog.slug}" />
-<meta property="og:title" content="${escapeHtml(socialTitle)}" />
-<meta property="og:description" content="${escapeHtml(socialDescription)}" />
-<meta property="og:image" content="${escapeHtml(socialImage)}" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta property="og:locale" content="nl_NL" />
-<meta property="og:site_name" content="Mijnautoverkopen.be" />
-<meta property="article:published_time" content="${blog.createdAt}" />
-<meta property="article:modified_time" content="${blog.updatedAt || blog.createdAt}" />
-${blog.category ? `<meta property="article:section" content="${escapeHtml(blog.category)}" />` : ''}
-${Array.isArray(blog.tags) && blog.tags.length > 0 ? blog.tags.map(tag => `<meta property="article:tag" content="${escapeHtml(tag)}" />`).join('\n') : ''}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://mijnautoverkopen.be/blog/${blog.slug}" />
+        <meta name="twitter:title" content="${escapeHtml(socialTitle)}" />
+        <meta name="twitter:description" content="${escapeHtml(socialDescription)}" />
+        <meta name="twitter:image" content="${escapeHtml(socialImage)}" />
+        `;
 
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:url" content="https://mijnautoverkopen.be/blog/${blog.slug}" />
-<meta name="twitter:title" content="${escapeHtml(socialTitle)}" />
-<meta name="twitter:description" content="${escapeHtml(socialDescription)}" />
-<meta name="twitter:image" content="${escapeHtml(socialImage)}" />
-`;
-
-// Inject the social meta tags into the HTML
-htmlTemplate = htmlTemplate.replace('</head>', socialMetaTags + '</head>');
+        // Inject the social meta tags into the HTML
+        htmlTemplate = htmlTemplate.replace('</head>', socialMetaTags + '</head>');
         
         // Create blog post structured data
         const structuredData = {
@@ -1189,7 +1073,7 @@ htmlTemplate = htmlTemplate.replace('</head>', socialMetaTags + '</head>');
             }
         };
         
-        // THIS IS THE KEY CHANGE - Replace existing structured data instead of adding new one
+        // Replace existing structured data instead of adding new one
         const structuredDataRegex = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/;
         htmlTemplate = htmlTemplate.replace(
             structuredDataRegex, 
@@ -1270,6 +1154,7 @@ htmlTemplate = htmlTemplate.replace('</head>', socialMetaTags + '</head>');
         res.redirect('/blog');
     }
 });
+
 // Public endpoint to get published blogs for the frontend
 app.get('/blog', (req, res) => {
   // Just serve the static file with hardcoded meta tags
@@ -1279,14 +1164,12 @@ app.get('/blog', (req, res) => {
 app.get('/blog/tag/:tag', async (req, res) => {
     try {
         const tag = req.params.tag.toLowerCase();
-        const blogs = readBlogs();
         
         // Filter by tag and published status
-        const filteredBlogs = blogs.filter(blog => 
-            blog.status === 'published' && 
-            Array.isArray(blog.tags) && 
-            blog.tags.some(t => t.toLowerCase() === tag)
-        );
+        const filteredBlogs = await Blog.find({
+            status: 'published',
+            tags: { $in: [tag] }
+        }).sort({ createdAt: -1 });
         
         if (filteredBlogs.length === 0) {
             return res.redirect('/blog');
@@ -1328,10 +1211,11 @@ app.get('/blog/tag/:tag', async (req, res) => {
         res.redirect('/blog');
     }
 });
+
 // Add after your other routes
-app.get('/sitemap.xml', (req, res) => {
+app.get('/sitemap.xml', async (req, res) => {
     try {
-        const blogs = readBlogs().filter(b => b.status === 'published');
+        const blogs = await Blog.find({ status: 'published' });
         
         // Create XML sitemap
         let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
@@ -1392,9 +1276,10 @@ function errorHandler(err, req, res, next) {
 app.use(errorHandler);
 
 // Start the server
-app.listen(port, () => {
+app.listen(port, async () => {
     console.log(`Server running at http://localhost:${port}`);
-    addSampleData();
-    addSampleBlogs();
-    migrateBlogsToAddCategories();
+    await initializeAdmin();
+    await addSampleData();
+    await addSampleBlogs();
+    await migrateBlogsToAddCategories();
 });
