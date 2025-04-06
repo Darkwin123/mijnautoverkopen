@@ -326,7 +326,7 @@ app.get('/', (req, res) => {
 // Configure rate limiting for login attempts
 const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5, // 5 requests per window
+    max: 100, // 5 requests per window
     message: 'Te veel inlogpogingen, probeer het later opnieuw',
     standardHeaders: true,
     legacyHeaders: false,
