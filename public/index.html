@@ -761,36 +761,33 @@ header.scrolled {
     margin-top: 5px;
 }
 
-        /* Features Section */
-        /* Add more space between hero and features section */
-        .features {
-            padding-top: 20px; /* Increase this value */
-            position: relative;
-        }
+/* Features Section */
+.features {
+    padding-top: 20px;
+    position: relative;
+}
 
-        /* Add media query for mobile screens */
-        @media (max-width: 768px) {
-            .hero {
-                padding-bottom: 180px; /* More padding on mobile */
-            }
-            
-            .features {
-                padding-top: 20px; /* More padding on mobile */
-            }
-            
-           
-        }
+/* Add media query for mobile screens */
+@media (max-width: 768px) {
+    .hero {
+        padding-bottom: 180px; /* More padding on mobile */
+    }
+    
+    .features {
+        padding-top: 20px; /* More padding on mobile */
+    }
+}
 
-        /* For very small screens */
-        @media (max-width: 480px) {
-            .hero {
-                padding-bottom: 220px;
-            }
-            
-            .features {
-                padding-top: 250px;
-            }
-        }
+/* For very small screens */
+@media (max-width: 480px) {
+    .hero {
+        padding-bottom: 220px;
+    }
+    
+    .features {
+        padding-top: 250px;
+    }
+}
         
         .section-header {
             text-align: center;
@@ -868,80 +865,174 @@ header.scrolled {
             color: var(--text-muted);
         }
         
-        /* How It Works Section */
-        .how-it-works {
+        /* Recent Articles Section (New) */
+        .recent-articles {
             padding: 100px 0;
+            position: relative;
             background: rgba(241, 245, 249, 0.7);
-            position: relative;
         }
-        
-        .process-steps {
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        
-        .process-step {
-            display: flex;
-            align-items: flex-start;
+
+        .blog-posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 30px;
-            padding: 30px;
-            margin-bottom: 30px;
-            position: relative;
+            margin-top: 40px;
         }
-        
-        .process-step:last-child {
-            margin-bottom: 0;
-        }
-        
-        .step-number {
-            flex-shrink: 0;
-            width: 60px;
-            height: 60px;
-            background: var(--primary);
-            border-radius: 50%;
+
+        .blog-card {
+            background: var(--bg-light);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: white;
-            position: relative;
-            z-index: 1;
+            flex-direction: column;
+            height: 100%;
         }
-        
-        .step-content {
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-card-image {
+            height: 200px;
+            background: var(--primary-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .blog-card:hover .blog-card-image img {
+            transform: scale(1.05);
+        }
+
+        .blog-card-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-date {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+       .blog-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+            line-height: 1.3;
+        }
+
+        .blog-excerpt {
+            color: var(--text-muted);
+            margin-bottom: 20px;
             flex-grow: 1;
         }
-        
-        .step-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--text-dark);
+
+        .blog-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
         }
-        
-        .step-content p {
-            color: var(--text-muted);
-            margin-bottom: 15px;
+
+        .blog-tag {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
-        
-        .step-action {
-            margin-top: 20px;
+
+        .blog-tag a {
+            color: var(--primary);
+            text-decoration: none;
         }
-        
-        .step-connection {
-            position: absolute;
-            top: 90px;
-            left: 30px;
-            width: 2px;
-            height: calc(100% - 60px);
+
+        .blog-tag:hover {
             background: rgba(79, 70, 229, 0.2);
-            z-index: 0;
         }
-        
-        .process-step:last-child .step-connection {
-            display: none;
+
+        .blog-link {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            align-self: flex-start;
+            transition: background 0.3s;
+        }
+
+        .blog-link:hover {
+            background: var(--primary-dark);
+        }
+
+        .blog-category {
+            margin-bottom: 10px;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .category-badge:hover {
+            background: var(--primary-dark);
+        }
+
+        .view-all-posts {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(79, 70, 229, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 0;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .blog-posts-grid {
+                grid-template-columns: 1fr;
+            }
         }
         
         /* Testimonials Section */
@@ -1618,14 +1709,6 @@ header.scrolled {
                 grid-template-columns: 1fr;
             }
             
-            .process-step {
-                flex-direction: column;
-            }
-            
-            .step-connection {
-                left: 30px;
-            }
-            
             .trust-badges {
                 gap: 15px;
             }
@@ -1820,7 +1903,7 @@ header.scrolled {
 <div class="mobile-nav-backdrop" id="mobile-backdrop"></div>
 <div class="mobile-nav" id="mobile-nav">
     <div class="mobile-nav-links">
-        <a href="#hoe-het-werkt">Hoe het werkt</a>
+        <a href="#recent-articles">Recent Artikelen</a>
         <a href="#voordelen">Voordelen</a>
         <a href="#testimonials">Ervaringen</a>
         <a href="#veelgestelde-vragen">FAQ</a>
@@ -1833,7 +1916,7 @@ header.scrolled {
     <div class="glow-circle glow-2"></div>
     <div class="glow-circle glow-3"></div>
 
-    <header>
+   <header>
         <div class="container">
             <nav>
                 <div class="logo">Mijnautoverkopen.be</div>
@@ -1843,7 +1926,7 @@ header.scrolled {
     <span></span>
 </div>
                 <div class="nav-links">
-                    <a href="#hoe-het-werkt">Hoe het werkt</a>
+                    <a href="#recent-articles">Recent Artikelen</a>
                     <a href="#voordelen">Voordelen</a>
                     <a href="#testimonials">Ervaringen</a>
                     <a href="#veelgestelde-vragen">FAQ</a>
@@ -2276,55 +2359,27 @@ header.scrolled {
         </div>
     </section>
 
-    <section id="hoe-het-werkt" class="how-it-works">
+    <!-- NEW SECTION: Recent Articles -->
+    <section id="recent-articles" class="recent-articles">
         <div class="container">
             <div class="section-header">
-                <h2>Hoe het werkt</h2>
-                <p>In 4 simpele stappen is uw auto verkocht en heeft u het geld op uw rekening</p>
+                <h2>Recent Artikelen</h2>
+                <p>Ontdek de nieuwste tips en adviezen over het verkopen van uw auto</p>
             </div>
             
-            <div class="process-steps">
-                <div class="process-step glass-card">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Vul uw autogegevens in</h3>
-                        <p>Vul het formulier in met de gegevens van uw auto. Het invullen duurt slechts 2 minuten.</p>
-                        <div class="step-action">
-                            <a href="#" class="btn btn-outline">Formulier invullen</a>
-                        </div>
-                    </div>
-                    <div class="step-connection"></div>
-                </div>
-                
-                <div class="process-step glass-card">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>Ontvang een eerlijk bod</h3>
-                        <p>Binnen 24 uur ontvangt u van ons een eerlijk en vrijblijvend bod via e-mail en telefoon.</p>
-                    </div>
-                    <div class="step-connection"></div>
-                </div>
-                
-                <div class="process-step glass-card">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Plan de inspectie & overdracht</h3>
-                        <p>Als u akkoord gaat met ons bod, maken we een afspraak voor een korte inspectie en overdracht.</p>
-                        <p>U kunt kiezen uit verschillende locaties bij u in de buurt of wij komen kosteloos bij u thuis.</p>
-                    </div>
-                    <div class="step-connection"></div>
-                </div>
-                
-                <div class="process-step glass-card">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3>Directe betaling</h3>
-                        <p>Na akkoord maken wij het volledige bedrag direct over naar uw rekening. Wij regelen alle papierwerk.</p>
-                        <div class="step-action">
-                            <a href="#" class="btn btn-primary"><span>Start nu uw verkoop</span></a>
-                        </div>
-                    </div>
-                </div>
+            <div id="blog-loading" class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+            
+            <div class="blog-posts-grid" id="latest-blog-posts">
+                <!-- Blog posts will be loaded dynamically here -->
+            </div>
+            
+            <div class="view-all-posts">
+                <a href="/blog" class="btn btn-outline">
+                    <span>Bekijk alle artikelen</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
@@ -2412,7 +2467,7 @@ header.scrolled {
                         <div class="accordion-icon"></div>
                     </div>
                     <div class="accordion-content">
-                        <div class="accordion-content-inner">
+                   <div class="accordion-content-inner">
                             Wij kopen auto's in alle staten in, ook met schade. Het is belangrijk dat u eventuele schade eerlijk vermeldt bij het aanvragen van een bod. De schade wordt meegenomen in onze prijsbepaling, maar wij garanderen nog steeds een eerlijke prijs.
                         </div>
                     </div>
@@ -2483,7 +2538,7 @@ header.scrolled {
                 <div class="footer-col">
                     <h4>Mijnautoverkopen</h4>
                     <ul class="footer-links">
-                        <li><a href="#hoe-het-werkt">Hoe het werkt</a></li>
+                        <li><a href="#recent-articles">Recent Artikelen</a></li>
                         <li><a href="#voordelen">Voordelen</a></li>
                         <li><a href="#testimonials">Klantervaringen</a></li>
                         <li><a href="#veelgestelde-vragen">Veelgestelde vragen</a></li>
@@ -2967,6 +3022,89 @@ carValueForm.addEventListener('submit', function(e) {
     });
 });
 
+// Function to load the latest blog posts
+async function loadLatestBlogPosts() {
+    const blogLoading = document.getElementById('blog-loading');
+    const latestBlogPosts = document.getElementById('latest-blog-posts');
+    
+    if (!blogLoading || !latestBlogPosts) {
+        console.error('Blog section elements not found');
+        return;
+    }
+    
+    try {
+        blogLoading.style.display = 'flex';
+        latestBlogPosts.style.display = 'none';
+        
+        // Fetch blogs from the API
+        const response = await fetch('/api/blogs');
+        let blogs = await response.json();
+        
+        // Filter only published blogs
+        blogs = blogs.filter(blog => blog.status === 'published');
+        
+        // Sort by date (newest first) and take only the first 3
+        blogs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const recentBlogs = blogs.slice(0, 3);
+        
+        if (recentBlogs.length === 0) {
+            latestBlogPosts.innerHTML = '<p class="text-center">Geen blog posts gevonden</p>';
+            blogLoading.style.display = 'none';
+            latestBlogPosts.style.display = 'block';
+            return;
+        }
+        
+        // Generate HTML for each blog post
+        let html = '';
+        
+        recentBlogs.forEach(blog => {
+            // Format date
+            const createdDate = new Date(blog.createdAt);
+            const formattedDate = createdDate.toLocaleDateString('nl-NL', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            // Determine image source - use featured image if available, otherwise fallback to placeholder
+            const imageSource = blog.featuredImage && blog.featuredImage.trim() !== '' 
+                ? blog.featuredImage 
+                : '/api/placeholder/400/200';
+            
+            // Use image alt text if available
+            const imageAlt = blog.imageAlt && blog.imageAlt.trim() !== '' 
+                ? blog.imageAlt 
+                : blog.title;
+                
+            html += `
+                <div class="blog-card">
+                    <div class="blog-card-image">
+                        <img src="${imageSource}" alt="${imageAlt}">
+                    </div>
+                    <div class="blog-card-content">
+                        <div class="blog-date">${formattedDate}</div>
+                        ${blog.category ? `<div class="blog-category"><a href="/blog/category/${blog.category}" class="category-badge">${blog.category.replace('-', ' ')}</a></div>` : ''}
+                        <h2 class="blog-title">${blog.title}</h2>
+                        <div class="blog-excerpt">${blog.excerpt || ''}</div>
+                        <a href="/blog/${blog.slug}" class="blog-link">
+                            Lees meer <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+        });
+        
+        latestBlogPosts.innerHTML = html;
+        
+    } catch (error) {
+        console.error('Error loading latest blog posts:', error);
+        latestBlogPosts.innerHTML = '<p class="text-center">Er is een fout opgetreden bij het laden van de blog posts</p>';
+    } finally {
+        blogLoading.style.display = 'none';
+        latestBlogPosts.style.display = 'grid';
+    }
+}
+
 // Accordion functionality for FAQ section
         const accordionHeaders = document.querySelectorAll('.accordion-header');
         
@@ -2976,7 +3114,7 @@ carValueForm.addEventListener('submit', function(e) {
                 const accordionContent = header.nextElementSibling;
                 const accordionContentInner = accordionContent.querySelector('.accordion-content-inner');
                 
-                // Close all other accordion items
+               // Close all other accordion items
                 document.querySelectorAll('.accordion-item').forEach(item => {
                     if (item !== accordionItem) {
                         item.classList.remove('active');
@@ -3067,6 +3205,9 @@ function resetForm() {
        
     // Initialize: Add visible state to first data-step
 document.addEventListener('DOMContentLoaded', function() {
+    // Load the latest blog posts
+    loadLatestBlogPosts();
+    
     // Show the first option in the multiple select as a tip
     const optiesMessage = document.getElementById('opties-message');
     if (optiesMessage) {
