@@ -9,171 +9,174 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="canonical" href="https://mijnautoverkopen.be/" />
     <style>
-        /* Reset and Base Styles */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        :root {
-            --primary: #4361ee;
-            --primary-dark: #3a56d4;
-            --primary-light: #637aff;
-            --secondary: #f72585;
-            --secondary-dark: #d61c76;
-            --accent: #4cc9f0;
-            --dark: #1e293b;
-            --gray-dark: #334155;
-            --gray: #64748b;
-            --gray-light: #94a3b8;
-            --light: #f8fafc;
-            --off-white: #f1f5f9;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --error: #ef4444;
-            --border-radius: 12px;
-            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
-        }
-        
+        /* Base styles */
         html, body {
             height: 100%;
-            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-            font-size: 16px;
-            line-height: 1.5;
-            color: var(--dark);
-            background-color: var(--light);
+            margin: 0;
+            padding: 0;
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
         
+        :root {
+            --primary: #3b5998;
+            --primary-light: #8b9dc3;
+            --primary-dark: #2a4374;
+            --secondary: #e74c3c;
+            --bg-main: #f7f8fc;
+            --bg-light: #ffffff;
+            --bg-dark: #1a212c;
+            --text-dark: #232a34;
+            --text-muted: #6c757d;
+            --border-light: #e6e7e9;
+            --error: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+        }
+        
         body {
+            background: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
             display: flex;
             flex-direction: column;
         }
         
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-        
-        /* Layout */
         .container {
-            width: 100%;
-            max-width: 1280px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-        
-        .section {
-            padding: 5rem 0;
+            padding: 0 20px;
             position: relative;
         }
         
-        .section-title {
+        section {
+            scroll-margin-top: 80px; /* Ensures anchor links don't hide content under fixed header */
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--bg-light);
+            border-radius: 10px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 1rem;
             text-align: center;
-            margin-bottom: 3rem;
+            border: none;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
         
-        .section-title h2 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .section-title h2:after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
+        .btn-primary {
             background: var(--primary);
-            border-radius: 2px;
+            color: white;
         }
         
-        .section-title p {
-            max-width: 800px;
-            margin: 0 auto;
-            color: var(--gray);
-            font-size: 1.125rem;
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
         }
         
-        /* Header and Navigation */
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(59, 89, 152, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .btn-lg {
+            padding: 16px 32px;
+            font-size: 1.1rem;
+        }
+        
+        /* Header */
         header {
+            padding: 15px 0;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            z-index: 100;
-            background-color: white;
+            background: white;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: var(--transition);
+            z-index: 1000;
+            transition: all 0.3s;
         }
         
-        .header-container {
+        header.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        nav {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 1.25rem 0;
+            align-items: center;
         }
         
         .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
+            font-size: 24px;
+            font-weight: 700;
             color: var(--primary);
             text-decoration: none;
-            position: relative;
-        }
-        
-        .logo::after {
-            content: '';
-            display: block;
-            width: 100%;
-            height: 3px;
-            background: var(--secondary);
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            border-radius: 2px;
-            transform: scaleX(0.6);
-            transition: var(--transition);
-        }
-        
-        .logo:hover::after {
-            transform: scaleX(1);
         }
         
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 25px;
         }
         
         .nav-links a {
-            color: var(--gray-dark);
+            color: var(--text-dark);
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 0;
             position: relative;
-            padding: 0.25rem 0;
-            transition: var(--transition);
         }
         
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: -2px;
+            bottom: 0;
             left: 0;
-            width: 100%;
+            width: 0;
             height: 2px;
             background: var(--primary);
-            transform: scaleX(0);
-            transition: var(--transition);
-            transform-origin: right;
+            transition: width 0.3s;
         }
         
         .nav-links a:hover {
@@ -181,58 +184,20 @@
         }
         
         .nav-links a:hover::after {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
-        
-        .mobile-menu-toggle {
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 30px;
-            height: 21px;
-            cursor: pointer;
-            z-index: 1001;
-        }
-        
-        .mobile-menu-toggle span {
-            display: block;
-            height: 3px;
             width: 100%;
-            border-radius: 3px;
-            background: var(--primary);
-            transition: var(--transition);
         }
         
-        /* Hero Section */
+        /* Hero Section with Split Content */
         .hero {
-            min-height: 100vh;
-            padding-top: 120px;
-            padding-bottom: 60px;
-            background-color: white;
+            padding: 140px 0 60px;
+            background-color: var(--bg-light);
             position: relative;
-            overflow: hidden;
         }
-        
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('/images/hero-bg.webp');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.05;
-            z-index: 0;
-        }
-        
+
         .hero-container {
-            position: relative;
-            z-index: 2;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3rem;
+            gap: 30px;
             align-items: center;
         }
         
@@ -241,124 +206,92 @@
         }
         
         .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            color: var(--dark);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            color: var(--text-dark);
         }
         
         .hero h1 .highlight {
             color: var(--primary);
             position: relative;
-            display: inline-block;
-        }
-        
-        .hero h1 .highlight::after {
-            content: '';
-            position: absolute;
-            bottom: 5px;
-            left: 0;
-            width: 100%;
-            height: 10px;
-            background: var(--secondary);
-            opacity: 0.2;
-            z-index: -1;
-            border-radius: 10px;
         }
         
         .hero p {
-            font-size: 1.25rem;
-            margin-bottom: 2.5rem;
-            color: var(--gray);
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            margin-bottom: 30px;
+            color: var(--text-muted);
         }
         
         .hero-badges {
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 15px;
+            margin-top: 25px;
         }
         
         .badge {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            background: rgba(67, 97, 238, 0.1);
-            padding: 0.5rem 1rem;
+            gap: 8px;
+            background: #f8f9fa;
+            padding: 8px 15px;
             border-radius: 50px;
             font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--primary-dark);
+            color: var(--text-muted);
         }
         
         .badge i {
-            font-size: 1rem;
             color: var(--primary);
         }
         
-        .hero-image {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .hero-image img {
-            width: 100%;
-            max-width: 600px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-        }
-        
-        .hero-image::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            width: 100%;
-            height: 100%;
-            border-radius: var(--border-radius);
-            background: var(--primary);
-            z-index: -1;
-            opacity: 0.2;
-        }
-        
-        /* Calculator Card */
+        /* Calculator Card positioned directly in the hero section */
         .calculator-card {
+            width: 100%;
+            padding: 30px;
             background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            overflow: hidden;
-            margin-top: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .calculator-card:hover {
+            transform: translateY(-5px);
         }
         
         .calculator-header {
-            background: var(--primary);
-            color: white;
-            padding: 1.5rem;
             text-align: center;
+            margin-bottom: 30px;
         }
         
         .calculator-header h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+            color: var(--text-dark);
         }
         
         .calculator-header p {
-            font-size: 1rem;
-            margin-bottom: 0;
-            opacity: 0.9;
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
         
         .calculator-body {
-            padding: 2rem;
             position: relative;
+        }
+        
+        .calculator-step {
+            display: none;
+        }
+        
+        .calculator-step.active {
+            display: block;
         }
         
         .calculator-progress {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 2rem;
+            margin-bottom: 30px;
             position: relative;
         }
         
@@ -369,18 +302,7 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background: rgba(67, 97, 238, 0.1);
-            z-index: 0;
-        }
-        
-        .progress-connection {
-            position: absolute;
-            top: 12px;
-            left: 0;
-            height: 2px;
-            background: var(--primary);
-            width: 0%;
-            transition: width 0.4s ease;
+            background: #e6e7e9;
             z-index: 0;
         }
         
@@ -389,15 +311,15 @@
             height: 25px;
             border-radius: 50%;
             background: white;
-            border: 2px solid rgba(67, 97, 238, 0.2);
+            border: 2px solid #e6e7e9;
             position: relative;
             z-index: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--gray-dark);
+            font-weight: 600;
+            color: var(--text-muted);
         }
         
         .progress-step.active {
@@ -416,455 +338,442 @@
             content: '✓';
             color: white;
         }
-        
-        .calculator-step {
-            display: none;
-        }
-        
-        .calculator-step.active {
-            display: block;
-        }
-        
-        .step-indicator {
-            font-size: 0.9rem;
-            color: var(--gray);
-            margin-bottom: 1.5rem;
+
+        .progress-connection {
+            position: absolute;
+            top: 12px;
+            left: 0;
+            height: 2px;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.4s ease;
+            z-index: 0;
         }
         
         .calculator-fields {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+            gap: 20px;
         }
         
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--gray-dark);
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
         }
         
         .form-control {
             width: 100%;
-            padding: 0.875rem 1rem;
-            background: var(--off-white);
-            border: 1px solid rgba(67, 97, 238, 0.2);
-            border-radius: 8px;
-            color: var(--dark);
+            padding: 12px;
+            background: #f8f9fa;
+            border: 1px solid #e6e7e9;
+            border-radius: 6px;
+            color: var(--text-dark);
             font-size: 1rem;
-            transition: var(--transition);
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
         
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            background: white;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+            box-shadow: 0 0 0 3px rgba(59, 89, 152, 0.1);
         }
         
+        .form-control::placeholder {
+            color: #adb5bd;
+        }
+
         .form-control.invalid {
             border-color: var(--error);
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
         }
-        
+
         .form-control.valid {
             border-color: var(--success);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
         }
-        
+
         .error-message {
             color: var(--error);
             font-size: 0.85rem;
-            margin-top: 0.5rem;
+            margin-top: 5px;
             display: none;
         }
-        
+
         .error-message.visible {
             display: block;
         }
         
         select.form-control {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234361ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23232a34' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1.25rem;
-            padding-right: 2.5rem;
+            background-position: right 10px center;
+            background-size: 16px;
+            padding-right: 30px;
         }
         
         .calculator-actions {
             display: flex;
             justify-content: space-between;
-            margin-top: 2rem;
+            margin-top: 30px;
         }
         
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.875rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: var(--transition);
-            cursor: pointer;
-            font-size: 1rem;
+        .step-indicator {
+            position: absolute;
+            top: -15px;
+            left: 0;
+            width: 100%;
             text-align: center;
-            border: none;
-            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Process Section */
+        .process-section {
+            padding: 80px 0;
+            background-color: var(--bg-main);
         }
         
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
-        }
-        
-        .btn-secondary {
-            background: var(--secondary);
-            color: white;
-        }
-        
-        .btn-secondary:hover {
-            background: var(--secondary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(247, 37, 133, 0.2);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-        }
-        
-        .btn-outline:hover {
-            background: rgba(67, 97, 238, 0.05);
-            transform: translateY(-2px);
-        }
-        
-        .btn-lg {
-            padding: 1rem 2rem;
-            font-size: 1.125rem;
-        }
-        
-        /* Summary Styles */
-        .summary-section {
-            margin-bottom: 2rem;
-            background: var(--off-white);
-            padding: 1.5rem;
-            border-radius: 8px;
-        }
-        
-        .summary-section h3 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            color: var(--dark);
-            border-bottom: 1px solid rgba(67, 97, 238, 0.1);
-            padding-bottom: 0.5rem;
-        }
-        
-        .summary-item {
-            display: flex;
-            margin-bottom: 0.75rem;
-        }
-        
-        .summary-label {
-            width: 40%;
-            font-weight: 600;
-            color: var(--gray-dark);
-        }
-        
-        .summary-value {
-            width: 60%;
-            color: var(--gray);
-        }
-        
-        /* Thank You Step */
-        .thank-you-container {
+        .section-header {
             text-align: center;
-            padding: 2rem;
+            margin-bottom: 60px;
         }
         
-        .thank-you-icon {
-            font-size: 4rem;
-            color: var(--success);
-            margin-bottom: 1.5rem;
-        }
-        
-        .thank-you-container h2 {
-            font-size: 2rem;
-            color: var(--dark);
-            margin-bottom: 1rem;
-        }
-        
-        .thank-you-container p {
-            font-size: 1.125rem;
-            color: var(--gray);
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .thank-you-details {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .thank-you-detail {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--off-white);
-            border-radius: 8px;
-            box-shadow: var(--box-shadow);
-            text-align: left;
-        }
-        
-        .thank-you-detail i {
-            font-size: 1.5rem;
-            color: var(--primary);
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(67, 97, 238, 0.1);
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-        
-        /* Features Section */
-        .features {
-            background-color: var(--off-white);
+        .section-header h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
             position: relative;
-            overflow: hidden;
+            display: inline-block;
+            color: var(--text-dark);
         }
         
-        .features-grid {
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .section-header p {
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        .process-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
         }
         
-        .feature-card {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 2.5rem 2rem;
+        .process-item {
             text-align: center;
-            transition: var(--transition);
+            padding: 30px 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
         }
         
-        .feature-card:hover {
+        .process-item:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
         }
         
-        .feature-icon {
+        .process-icon {
             width: 80px;
             height: 80px;
-            margin: 0 auto 1.5rem;
+            background: #f8f9fa;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(67, 97, 238, 0.1);
-            border-radius: 50%;
-        }
-        
-        .feature-icon i {
-            font-size: 2rem;
-            color: var(--primary);
-        }
-        
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--dark);
-            font-weight: 700;
-        }
-        
-        .feature-card p {
-            color: var(--gray);
-            margin-bottom: 0;
-        }
-        
-        /* Recent Articles */
-        .recent-articles {
-            background-color: white;
+            margin: 0 auto 20px;
             position: relative;
         }
         
-        .blog-posts-grid {
+        .process-icon i {
+            font-size: 30px;
+            color: var(--primary);
+        }
+        
+        .process-icon::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 30px;
+            height: 30px;
+            background: var(--primary);
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .process-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+        
+        .process-description {
+            color: var(--text-muted);
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            padding: 80px 0;
+            background-color: var(--bg-light);
+        }
+        
+        .benefits-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .benefit-item {
+            padding: 25px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: transform 0.3s;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+        
+        .benefit-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+        }
+        
+        .benefit-icon i {
+            font-size: 24px;
+            color: white;
+        }
+        
+        .benefit-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+        
+        .benefit-description {
+            color: var(--text-muted);
+            flex-grow: 1;
+        }
+
+        /* Latest Blog Posts Section */
+        .blog-section {
+            padding: 80px 0;
+            background-color: var(--bg-main);
+        }
+        
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
         }
         
         .blog-card {
             background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
+            border-radius: 10px;
             overflow: hidden;
-            transition: var(--transition);
-            height: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
             display: flex;
             flex-direction: column;
+            height: 100%;
         }
         
         .blog-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-7px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
         
-        .blog-card-image {
+        .blog-image {
+            width: 100%;
             height: 200px;
             overflow: hidden;
-            position: relative;
         }
         
-        .blog-card-image img {
+        .blog-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: var(--transition);
+            transition: transform 0.5s;
         }
         
-        .blog-card:hover .blog-card-image img {
+        .blog-card:hover .blog-image img {
             transform: scale(1.05);
         }
         
-        .blog-card-content {
-            padding: 1.5rem;
+        .blog-content {
+            padding: 20px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
         }
         
         .blog-date {
-            color: var(--gray);
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .blog-category {
-            margin-bottom: 0.75rem;
-        }
-        
-        .category-badge {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
         }
         
         .blog-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            line-height: 1.3;
-            color: var(--dark);
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+            font-weight: 600;
         }
         
         .blog-excerpt {
-            color: var(--gray);
-            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
             flex-grow: 1;
         }
         
-        .blog-link {
+        .blog-read-more {
+            color: var(--primary);
+            font-weight: 500;
+            text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            color: var(--primary);
-            font-weight: 600;
-            text-decoration: none;
-            transition: var(--transition);
+            transition: all 0.3s;
             margin-top: auto;
         }
         
-        .blog-link:hover {
+        .blog-read-more i {
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .blog-read-more:hover {
             color: var(--primary-dark);
         }
         
-        .view-all-posts {
+        .blog-read-more:hover i {
+            transform: translateX(3px);
+        }
+        
+        .blog-cta {
             text-align: center;
-            margin-top: 3rem;
+            margin-top: 40px;
+        }
+
+        /* Image Showcase Section */
+        .showcase-section {
+            padding: 80px 0;
+            background-color: var(--bg-light);
         }
         
-        .loading-spinner {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 3rem 0;
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 50px;
         }
         
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(67, 97, 238, 0.2);
-            border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 1s ease-in-out infinite;
+        .showcase-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 300px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .showcase-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
         }
         
+        .showcase-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .showcase-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+        }
+        
+        .showcase-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .showcase-text {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
         /* Testimonials Section */
-        .testimonials {
-            background-color: var(--off-white);
-            position: relative;
+        .testimonials-section {
+            padding: 80px 0;
+            background-color: var(--bg-main);
+            background-image: linear-gradient(135deg, var(--bg-main) 0%, var(--bg-light) 100%);
         }
         
-        .testimonials-slider {
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
         
-        .testimonial-slide {
-            padding: 2rem;
-        }
-        
-        .testimonial-content {
+        .testimonial-item {
+            padding: 30px;
+            border-radius: 8px;
             background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 2.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
             position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: transform 0.3s;
         }
         
-        .testimonial-content::before {
-            content: """;
+        .testimonial-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .testimonial-item::before {
+            content: '"';
             position: absolute;
             top: 20px;
             left: 20px;
-            font-size: 5rem;
+            font-size: 60px;
             font-family: Georgia, serif;
             color: var(--primary);
             opacity: 0.2;
@@ -872,50 +781,52 @@
         }
         
         .testimonial-text {
-            font-size: 1.125rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            z-index: 1;
-            color: var(--gray-dark);
+            margin-bottom: 20px;
+            padding-top: 20px;
+            font-style: italic;
+            color: var(--text-dark);
+            flex-grow: 1;
         }
         
-        .testimonial-author {
+        .testimonial-info {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 15px;
         }
         
-        .author-image {
+        .testimonial-avatar {
             width: 60px;
             height: 60px;
             border-radius: 50%;
             overflow: hidden;
-            background: var(--off-white);
-            position: relative;
         }
         
-        .author-image img {
+        .testimonial-avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
         
-        .author-info h4 {
-            font-size: 1.125rem;
-            margin-bottom: 0.25rem;
-            color: var(--dark);
-            font-weight: 700;
+        .testimonial-author h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--text-dark);
         }
         
-        .author-info p {
-            font-size: 0.875rem;
-            color: var(--gray);
+        .testimonial-author p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
         }
         
+        .testimonial-rating {
+            color: #f39c12;
+            margin-top: 5px;
+        }
+
         /* FAQ Section */
-        .faq {
-            background-color: white;
-            position: relative;
+        .faq-section {
+            padding: 80px 0;
+            background-color: var(--bg-light);
         }
         
         .faq-container {
@@ -924,204 +835,184 @@
         }
         
         .accordion-item {
-            margin-bottom: 1.5rem;
-            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: var(--box-shadow);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            background: white;
+            transition: box-shadow 0.3s;
+        }
+        
+        .accordion-item:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         .accordion-header {
+            padding: 15px 20px;
             background: white;
-            padding: 1.25rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            transition: var(--transition);
+            transition: background-color 0.3s;
+        }
+        
+        .accordion-header:hover {
+            background: #f8f9fa;
         }
         
         .accordion-header h3 {
-            font-size: 1.125rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            color: var(--dark);
+            color: var(--text-dark);
         }
         
         .accordion-icon {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            color: var(--primary);
             transition: transform 0.3s;
-            position: relative;
-            flex-shrink: 0;
         }
         
-        .accordion-icon::before,
-        .accordion-icon::after {
-            content: '';
-            position: absolute;
-            background: var(--primary);
-            transition: var(--transition);
-        }
-        
-        .accordion-icon::before {
-            width: 14px;
-            height: 2px;
-        }
-        
-        .accordion-icon::after {
-            width: 2px;
-            height: 14px;
-        }
-        
-        .accordion-item.active .accordion-icon::after {
-            transform: rotate(90deg);
-            opacity: 0;
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
         }
         
         .accordion-content {
             height: 0;
             overflow: hidden;
             transition: height 0.3s ease-out;
-            background: var(--off-white);
+            background: white;
         }
         
         .accordion-content-inner {
-            padding: 1.5rem;
-            color: var(--gray);
+            padding: 0 20px 20px;
+            color: var(--text-muted);
         }
-        
+
         /* CTA Section */
-        .cta {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        .cta-section {
+            padding: 80px 0;
+            background: linear-gradient(to right, var(--primary-dark), var(--primary));
             color: white;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
         
-        .cta::before {
+        .cta-section::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('/images/pattern.webp');
-            background-size: cover;
+            background: url('/api/placeholder/1600/600') center/cover no-repeat;
             opacity: 0.1;
-            z-index: 0;
         }
         
         .cta-content {
-            position: relative;
-            z-index: 1;
             max-width: 800px;
             margin: 0 auto;
+            position: relative;
         }
         
-        .cta h2 {
+        .cta-section h2 {
             font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
             color: white;
         }
         
-        .cta p {
-            font-size: 1.25rem;
-            margin-bottom: 2.5rem;
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
             opacity: 0.9;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
         }
         
         .cta-buttons {
             display: flex;
-            gap: 1.5rem;
+            gap: 20px;
             justify-content: center;
-            flex-wrap: wrap;
         }
-        
-        .cta .btn-primary {
+
+        .cta-btn-white {
             background: white;
             color: var(--primary);
-        }
-        
-        .cta .btn-primary:hover {
-            background: rgba(255, 255, 255, 0.9);
-            transform: translateY(-3px);
-        }
-        
-        .cta .btn-outline {
-            background: transparent;
             border: 2px solid white;
+        }
+        
+        .cta-btn-white:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .cta-btn-outline {
+            background: transparent;
             color: white;
+            border: 2px solid white;
         }
         
-        .cta .btn-outline:hover {
+        .cta-btn-outline:hover {
             background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-3px);
         }
-        
-        .trust-badges {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 3rem;
-        }
-        
-        .trust-badge {
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 1.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 99;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
         }
         
-        .trust-badge i {
-            font-size: 1.25rem;
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
         }
         
+        .back-to-top:hover {
+            background: var(--primary-dark);
+        }
+
         /* Footer */
         footer {
-            background: var(--dark);
+            background: var(--bg-dark);
             color: white;
-            padding: 5rem 0 2rem;
-            position: relative;
+            padding: 60px 0 30px;
             margin-top: auto;
         }
         
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
-            margin-bottom: 3rem;
+            gap: 40px;
+            margin-bottom: 40px;
         }
         
         .footer-col h4 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
             color: white;
             position: relative;
-            padding-bottom: 0.75rem;
         }
         
         .footer-col h4::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: -8px;
             left: 0;
-            width: 40px;
-            height: 3px;
-            background: var(--primary);
-            border-radius: 2px;
+            width: 30px;
+            height: 2px;
+            background: var(--primary-light);
         }
         
         .footer-links {
@@ -1129,198 +1020,78 @@
         }
         
         .footer-links li {
-            margin-bottom: 0.75rem;
+            margin-bottom: 12px;
         }
         
         .footer-links a {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
-            transition: var(--transition);
-            display: inline-block;
-            position: relative;
-            padding-left: 1.25rem;
-        }
-        
-        .footer-links a::before {
-            content: '›';
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-            font-size: 1.25rem;
-            line-height: 1;
+            transition: color 0.3s;
+            display: inline-flex;
+            align-items: center;
         }
         
         .footer-links a:hover {
             color: white;
-            transform: translateX(3px);
+        }
+        
+        .footer-links a i {
+            margin-right: 8px;
+            font-size: 0.8rem;
         }
         
         .footer-contact li {
             display: flex;
             align-items: flex-start;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            color: rgba(255, 255, 255, 0.8);
+            gap: 15px;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.7);
         }
         
         .footer-contact i {
-            color: var(--primary);
-            font-size: 1.25rem;
-            margin-top: 0.25rem;
+            color: var(--primary-light);
+            font-size: 18px;
+            width: 20px;
         }
         
         .footer-bottom {
-            padding-top: 2rem;
+            padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 1.5rem;
         }
         
         .copyright {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
         }
         
         .social-links {
             display: flex;
-            gap: 1rem;
+            gap: 15px;
         }
         
         .social-link {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: var(--transition);
-            color: white;
-            font-size: 1.125rem;
+            transition: background-color 0.3s;
         }
         
         .social-link:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.2);
         }
         
-        /* Mobile Menu */
-        .mobile-nav {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 280px;
-            height: 100vh;
-            background: white;
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            transition: right 0.3s ease;
-            padding: 5rem 1.5rem 2rem;
-            overflow-y: auto;
-        }
-        
-        .mobile-nav.active {
-            right: 0;
-        }
-        
-        .mobile-nav-links {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        
-        .mobile-nav-links a {
-            color: var(--gray-dark);
-            text-decoration: none;
-            font-weight: 600;
-            padding: 1rem;
-            border-radius: 8px;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .mobile-nav-links a i {
-            font-size: 1.25rem;
-            color: var(--primary);
-        }
-        
-        .mobile-nav-links a:hover {
-            background: rgba(67, 97, 238, 0.1);
-            color: var(--primary);
-        }
-        
-        .mobile-nav-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        
-        .mobile-nav-backdrop.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        /* File upload styling */
-        .file-upload-container {
-            position: relative;
-        }
-        
-        .file-upload-preview {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 1rem;
-        }
-        
-        .preview-image-container {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid rgba(67, 97, 238, 0.2);
-        }
-        
-        .preview-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .remove-image {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 20px;
-            height: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .social-link i {
             color: white;
-            cursor: pointer;
-            font-size: 12px;
+            font-size: 18px;
         }
-        
-        .helper-message {
-            color: var(--gray);
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-        }
-        
+
         /* Cookie Banner */
         .cookie-banner {
             display: none;
@@ -1328,12 +1099,11 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: white;
-            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+            background: var(--bg-dark);
+            color: white;
             z-index: 9999;
-            padding: 1.5rem;
-            font-size: 0.875rem;
-            border-top: 3px solid var(--primary);
+            padding: 20px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
         }
         
         .cookie-banner.active {
@@ -1341,85 +1111,42 @@
         }
         
         .cookie-content {
-            max-width: 1280px;
+            max-width: 1200px;
             margin: 0 auto;
         }
         
         .cookie-header {
-            margin-bottom: 1rem;
+            margin-bottom: 20px;
         }
         
         .cookie-header h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-        
-        .cookie-body {
-            max-height: 200px;
-            overflow-y: auto;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 8px;
-            padding: 1rem;
-        }
-        
-        .cookie-option {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        
-        .cookie-option:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-        
-        .cookie-option input {
-            margin-top: 0.25rem;
-            margin-right: 0.75rem;
-        }
-        
-        .cookie-option label {
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-        }
-        
-        .cookie-option label span {
-            font-size: 0.85rem;
-            color: var(--gray);
-            margin-top: 0.25rem;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
         }
         
         .cookie-footer {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
         }
         
         .cookie-btn {
-            padding: 0.75rem 1.25rem;
-            border-radius: 8px;
+            padding: 10px 20px;
+            border-radius: 6px;
             border: none;
             font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s;
         }
         
         .cookie-btn-outline {
             background: transparent;
-            border: 1px solid var(--gray);
-            color: var(--gray);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: white;
         }
         
         .cookie-btn-outline:hover {
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.1);
         }
         
         .cookie-btn-primary {
@@ -1432,58 +1159,112 @@
         }
         
         .cookie-btn-secondary {
-            background: var(--secondary);
-            color: white;
+            background: white;
+            color: var(--text-dark);
         }
         
         .cookie-btn-secondary:hover {
-            background: var(--secondary-dark);
+            background: #f8f9fa;
         }
-        
-        .cookie-links {
-            text-align: center;
+
+        /* Mobile Navigation */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1001;
         }
-        
-        .cookie-links a {
-            color: var(--primary);
+
+        .mobile-menu-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            border-radius: 3px;
+            background: var(--primary);
+            transition: all 0.3s;
+        }
+
+        .mobile-menu-toggle.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+
+        .mobile-menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-toggle.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -280px;
+            width: 280px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            padding: 80px 20px 20px;
+            overflow-y: auto;
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .mobile-nav-links a {
+            color: var(--text-dark);
             text-decoration: none;
+            font-weight: 500;
+            padding: 12px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
         }
-        
-        .cookie-links a:hover {
-            text-decoration: underline;
+
+        .mobile-nav-links a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+            color: var(--primary);
         }
-        
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .hero h1 {
-                font-size: 2.75rem;
-            }
+
+        .mobile-nav-links a:hover {
+            background: #f8f9fa;
+            color: var(--primary);
         }
-        
+
+        .mobile-nav-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-nav-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Media Queries */
         @media (max-width: 992px) {
-            .section {
-                padding: 4rem 0;
-            }
-            
-            .hero-container {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .hero-content {
-                text-align: center;
-                margin: 0 auto;
-            }
-            
-            .hero-badges {
-                justify-content: center;
-            }
-            
-            .hero-image {
-                margin: 0 auto;
-                max-width: 500px;
-            }
-            
             .nav-links {
                 display: none;
             }
@@ -1496,137 +1277,58 @@
                 grid-template-columns: 1fr;
             }
             
-            .feature-card {
-                padding: 2rem 1.5rem;
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .showcase-grid {
+                grid-template-columns: 1fr;
             }
             
             .cta-buttons {
                 flex-direction: column;
-                max-width: 400px;
-                margin-left: auto;
-                margin-right: auto;
+                align-items: center;
+            }
+            
+            .hero-container {
+                grid-template-columns: 1fr;
             }
         }
         
         @media (max-width: 768px) {
-            .section-title h2 {
-                font-size: 2rem;
+            .benefits-grid {
+                grid-template-columns: 1fr;
             }
             
-            .hero h1 {
-                font-size: 2.25rem;
-            }
-            
-            .hero p {
-                font-size: 1.125rem;
-            }
-            
-            .hero-badges {
-                flex-direction: column;
-                align-items: center;
+            .process-grid {
+                gap: 50px;
             }
             
             .footer-bottom {
                 flex-direction: column;
-                text-align: center;
+                gap: 20px;
             }
             
-            .social-links {
-                margin-top: 1rem;
-            }
-            
-            .blog-posts-grid {
-                grid-template-columns: 1fr;
+            .hero-badges {
+                justify-content: center;
             }
             
             .cookie-footer {
                 flex-direction: column;
             }
-            
-            .cookie-btn {
-                width: 100%;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .section {
-                padding: 3rem 0;
-            }
-            
-            .hero {
-                padding-top: 100px;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .calculator-actions {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .calculator-actions .btn {
-                width: 100%;
-            }
-            
-            .trust-badges {
-                flex-direction: column;
-                align-items: center;
-            }
         }
     </style>
     
-    <!-- Open Graph meta tags (for Facebook, LinkedIn, etc.) -->
+    <!-- SEO Meta Tags -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://mijnautoverkopen.be/" />
     <meta property="og:title" content="Mijnautoverkopen.be - Verkoop uw auto voor de beste prijs" />
     <meta property="og:description" content="Verkoop uw auto eenvoudig binnen 24 uur. Ontvang direct een eerlijk bod zonder verborgen kosten of onderhandelingen." />
     <meta property="og:image" content="https://mijnautoverkopen.be/images/social-share.jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="nl_NL" />
     <meta property="og:site_name" content="Mijnautoverkopen.be" />
-    
-    <!-- Twitter Card meta tags (still using twitter: prefix despite X rebrand) -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://mijnautoverkopen.be/" />
-    <meta name="twitter:title" content="Mijnautoverkopen.be - Verkoop uw auto voor de beste prijs" />
-    <meta name="twitter:description" content="Verkoop uw auto eenvoudig binnen 24 uur. Ontvang direct een eerlijk bod zonder verborgen kosten of onderhandelingen." />
-    <meta name="twitter:image" content="https://mijnautoverkopen.be/images/social-share.jpg" />
-    
+
     <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Mijnautoverkopen.be",
-      "url": "https://mijnautoverkopen.be",
-      "logo": "https://mijnautoverkopen.be/logo.png",
-      "description": "Verkoop uw auto eenvoudig binnen 24 uur. Ontvang direct een eerlijk bod zonder verborgen kosten.",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "ratingCount": "10000",
-        "bestRating": "5"
-      }
-    }
-    </script>
-    
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Mijnautoverkopen.be",
-      "url": "https://mijnautoverkopen.be",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://mijnautoverkopen.be/search?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
-    </script>
-    
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -1635,13 +1337,15 @@
       "image": "https://mijnautoverkopen.be/logo.png",
       "telephone": "0476259384",
       "email": "info@mijnautoverkopen.be",
+      "url": "https://mijnautoverkopen.be",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Industrieweg 10",
-        "addressLocality": "Amsterdam",
-        "postalCode": "1234 AB",
-        "addressCountry": "NL"
+        "addressLocality": "Sint-Niklaas",
+        "postalCode": "9100",
+        "addressCountry": "BE"
       },
+      "priceRange": "€€",
       "openingHoursSpecification": [
         {
           "@type": "OpeningHoursSpecification",
@@ -1655,13 +1359,10 @@
           "opens": "10:00",
           "closes": "16:00"
         }
-      ],
-      "url": "https://mijnautoverkopen.be",
-      "priceRange": "€€",
-      "areaServed": ["Amsterdam", "Rotterdam", "Utrecht", "Den Haag", "Eindhoven"]
+      ]
     }
     </script>
-    
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -1710,40 +1411,32 @@
       ]
     }
     </script>
-    
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://mijnautoverkopen.be/"
-        }
-      ]
-    }
-    </script>
 </head>
 <body>
+    <!-- Back to top button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
     <!-- Mobile Navigation -->
     <div class="mobile-nav-backdrop" id="mobile-backdrop"></div>
     <div class="mobile-nav" id="mobile-nav">
         <div class="mobile-nav-links">
-            <a href="#recent-articles"><i class="fas fa-newspaper"></i> Recent Artikelen</a>
-            <a href="#voordelen"><i class="fas fa-check-circle"></i> Voordelen</a>
-            <a href="#testimonials"><i class="fas fa-star"></i> Ervaringen</a>
-            <a href="#veelgestelde-vragen"><i class="fas fa-question-circle"></i> FAQ</a>
-            <a href="/blog"><i class="fas fa-rss"></i> Blog</a>
-            <a href="/#contact"><i class="fas fa-envelope"></i> Contact</a>
+            <a href="#process-section"><i class="fas fa-info-circle"></i> Hoe het werkt</a>
+            <a href="#benefits-section"><i class="fas fa-check-circle"></i> Voordelen</a>
+            <a href="#blog-section"><i class="fas fa-newspaper"></i> Blog</a>
+            <a href="#showcase-section"><i class="fas fa-car"></i> Auto verkopen</a>
+            <a href="#testimonials-section"><i class="fas fa-star"></i> Ervaringen</a>
+            <a href="#faq-section"><i class="fas fa-question-circle"></i> Veelgestelde vragen</a>
+            <a href="tel:0476259384"><i class="fas fa-phone"></i> Bel ons</a>
+            <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
         </div>
     </div>
 
     <!-- Header -->
-    <header>
+    <header id="header">
         <div class="container">
-            <div class="header-container">
+            <nav>
                 <a href="/" class="logo">Mijnautoverkopen.be</a>
                 <div class="mobile-menu-toggle" id="mobile-menu-toggle">
                     <span></span>
@@ -1751,473 +1444,374 @@
                     <span></span>
                 </div>
                 <div class="nav-links">
-                    <a href="#recent-articles">Recent Artikelen</a>
-                    <a href="#voordelen">Voordelen</a>
-                    <a href="#testimonials">Ervaringen</a>
-                    <a href="#veelgestelde-vragen">FAQ</a>
+                    <a href="#process-section">Hoe het werkt</a>
+                    <a href="#benefits-section">Voordelen</a>
+                    <a href="#blog-section">Blog</a>
+                    <a href="#showcase-section">Auto verkopen</a>
+                    <a href="#testimonials-section">Ervaringen</a>
+                    <a href="#faq-section">FAQ</a>
+                    <a href="tel:0476259384"><i class="fas fa-phone"></i> Bel ons</a>
                 </div>
-            </div>
+            </nav>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-bg"></div>
-        <div class="container">
-            <div class="hero-container">
-                <div class="hero-content">
-                    <h1>Verkoop uw auto <span class="highlight">eenvoudig</span> en voor de beste prijs</h1>
-                    <p>Ontvang binnen 24 uur een eerlijk bod voor uw auto en krijg direct cash. Geen verborgen kosten of onderhandelingen.</p>
-                    
-                    <div class="hero-badges">
-                        <div class="badge">
-                            <i class="fas fa-star"></i>
-                            4.9/5 Review score
-                        </div>
-                        <div class="badge">
-                            <i class="fas fa-check-circle"></i>
-                            Altijd tevreden klanten
-                        </div>
-                        <div class="badge">
-                            <i class="fas fa-clock"></i>
-                            Binnen 24 uur afgehandeld
-                        </div>
-                    </div>
-                </div>
+    <!-- Hero Section with integrated form -->
+    <section class="hero" id="hero-section">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <h1>Verkoop uw auto <span class="highlight">snel en voor de beste prijs</span></h1>
+                <p>Ontvang binnen 24 uur een eerlijk bod voor uw auto zonder verborgen kosten of ongemak. Wij regelen alle papierwerk.</p>
                 
-                <div class="hero-image">
-                    <img src="/api/placeholder/600/400" alt="Auto verkopen voor de beste prijs">
+                <div class="hero-badges">
+                    <div class="badge">
+                        <i class="fas fa-star"></i>
+                        4.9/5 op basis van 10.000+ beoordelingen
+                    </div>
+                    <div class="badge">
+                        <i class="fas fa-check-circle"></i>
+                        Betaling binnen 24 uur
+                    </div>
+                    <div class="badge">
+                        <i class="fas fa-file-signature"></i>
+                        Gratis administratie
+                    </div>
                 </div>
             </div>
             
-            <!-- Car Value Calculator Form -->
-            <form id="carValueForm" novalidate action="/submit-car" method="POST">
-                <div class="calculator-card">
-                    <div class="calculator-header">
-                        <h2>Bereken direct de waarde van uw auto</h2>
-                        <p>Vul de gegevens in en ontvang binnen 24 uur een eerlijk bod</p>
-                    </div>
-                    <div class="calculator-body">
-                        <div class="calculator-progress">
-                            <div class="progress-connection" id="progress-connection"></div>
-                            <div class="progress-step active" id="progress-step-1">1</div>
-                            <div class="progress-step" id="progress-step-2">2</div>
-                            <div class="progress-step" id="progress-step-3">3</div>
-                            <div class="progress-step" id="progress-step-4">4</div>
-                            <div class="progress-step" id="progress-step-5">5</div>
-                        </div>
-                                
-                        <!-- STEP 1: Basic car information -->
-                        <div class="calculator-step active" id="step-1">
-                            <div class="step-indicator">Stap 1 van 5: Basisgegevens auto</div>
-                            <div class="calculator-fields">
-                                <div class="form-group">
-                                    <label for="kenteken">Kenteken</label>
-                                    <input type="text" id="kenteken" name="kenteken" class="form-control" 
-                                           placeholder="Bijv. 1-ABC-123 of ABC-123" 
-                                           pattern="^(\d-[A-Z]{3}-\d{3}|[A-Z]{3}-\d{3})$" 
-                                           required>
-                                    <div id="kenteken-error" class="error-message">Voer een geldig Belgisch kenteken in (bijv. 1-ABC-123 of ABC-123)</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="merk">Merk</label>
-                                    <select id="merk" name="merk" class="form-control" required>
-                                        <option value="">Selecteer merk</option>
-                                        <option value="audi">Audi</option>
-                                        <option value="bmw">BMW</option>
-                                        <option value="ford">Ford</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="toyota">Toyota</option>
-                                        <option value="volkswagen">Volkswagen</option>
-                                        <option value="volvo">Volvo</option>
-                                        <option value="anders">Anders</option>
-                                    </select>
-                                    <div id="merk-error" class="error-message">Selecteer een merk</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="model">Model</label>
-                                    <input type="text" id="model" name="model" class="form-control" 
-                                           placeholder="Bijv. Golf, A4, 3-serie" 
-                                           required>
-                                    <div id="model-error" class="error-message">Voer een model in</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="bouwjaar">Bouwjaar</label>
-                                    <input type="number" id="bouwjaar" name="bouwjaar" class="form-control" 
-                                           min="1990" max="2025" 
-                                           placeholder="Bijv. 2018" 
-                                           required>
-                                    <div id="bouwjaar-error" class="error-message">Voer een geldig bouwjaar in (1990-2025)</div>
-                                </div>
-                            </div>
-                            <div class="calculator-actions">
-                                <div></div>
-                                <button type="button" class="btn btn-primary next-step" data-step="1"><span>Volgende stap</span></button>
-                            </div>
-                        </div>
-                        
-                        <!-- STEP 2: Technical details -->
-                        <div class="calculator-step" id="step-2">
-                            <div class="step-indicator">Stap 2 van 5: Technische details</div>
-                            <div class="calculator-fields">
-                                <div class="form-group">
-                                    <label for="brandstof">Brandstof</label>
-                                    <select id="brandstof" name="brandstof" class="form-control" required>
-                                        <option value="">Selecteer brandstof</option>
-                                        <option value="benzine">Benzine</option>
-                                        <option value="diesel">Diesel</option>
-                                        <option value="lpg">LPG</option>
-                                        <option value="hybride">Hybride</option>
-                                        <option value="elektrisch">Elektrisch</option>
-                                    </select>
-                                    <div id="brandstof-error" class="error-message">Selecteer een brandstoftype</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="kilometerstand">Kilometerstand</label>
-                                    <input type="number" id="kilometerstand" name="kilometerstand" class="form-control" 
-                                           placeholder="Bijv. 120000" 
-                                           min="0" max="999999" 
-                                           required>
-                                    <div id="kilometerstand-error" class="error-message">Voer een geldige kilometerstand in</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="transmissie">Transmissie</label>
-                                    <select id="transmissie" name="transmissie" class="form-control" required>
-                                        <option value="">Selecteer transmissie</option>
-                                        <option value="handgeschakeld">Handgeschakeld</option>
-                                        <option value="automaat">Automaat</option>
-                                    </select>
-                                    <div id="transmissie-error" class="error-message">Selecteer een transmissietype</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="schade">Heeft de auto schade?</label>
-                                    <select id="schade" name="schade" class="form-control">
-                                        <option value="geen">Geen schade</option>
-                                        <option value="licht">Lichte schade</option>
-                                        <option value="middel">Gemiddelde schade</option>
-                                        <option value="zwaar">Zware schade</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="calculator-actions">
-                                <button type="button" class="btn btn-outline prev-step" data-step="2">Terug</button>
-                                <button type="button" class="btn btn-primary next-step" data-step="2"><span>Volgende stap</span></button>
-                            </div>
-                        </div>
-                        
-                        <!-- STEP 3: Additional info -->
-                        <div class="calculator-step" id="step-3">
-                            <div class="step-indicator">Stap 3 van 5: Extra's</div>
-                            <div class="calculator-fields">
-                                <div class="form-group">
-                                    <label for="apk">APK geldig tot</label>
-                                    <input type="month" id="apk" name="apk" class="form-control">
-                                    <div id="apk-error" class="error-message">Voer een geldige APK datum in</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="opties">Bijzondere opties (meerdere selecties mogelijk)</label>
-                                    <select id="opties" name="opties" class="form-control" multiple>
-                                        <option value="leer">Lederen bekleding</option>
-                                        <option value="navi">Navigatiesysteem</option>
-                                        <option value="panorama">Panoramadak</option>
-                                        <option value="trekhaak">Trekhaak</option>
-                                        <option value="xenon">Xenon verlichting</option>
-                                    </select>
-                                    <div id="opties-message" class="error-message">Tip: Houd Ctrl toets ingedrukt om meerdere opties te selecteren.</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="carImages">Foto's van uw auto (max. 5)</label>
-                                    <div class="file-upload-container">
-                                        <input type="file" id="carImages" name="carImages" class="form-control" accept="image/*" multiple>
-                                        <div class="file-upload-preview" id="image-preview-container"></div>
-                                    </div>
-                                    <div id="carImages-message" class="helper-message">Upload max. 5 afbeeldingen van uw auto voor een nauwkeurigere taxatie.</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="extra-info">Aanvullende informatie</label>
-                                    <textarea id="extra-info" name="extra-info" class="form-control" rows="3" 
-                                              placeholder="Bijv. onderhoudshistorie, bijzonderheden"></textarea>
-                                </div>
-                            </div>
-                            <div class="calculator-actions">
-                                <button type="button" class="btn btn-outline prev-step" data-step="3">Terug</button>
-                                <button type="button" class="btn btn-primary next-step" data-step="3"><span>Volgende stap</span></button>
-                            </div>
-                        </div>
-                        
-                        <!-- STEP 4: Contact info -->
-                        <div class="calculator-step" id="step-4">
-                            <div class="step-indicator">Stap 4 van 5: Uw gegevens</div>
-                            <div class="calculator-fields">
-                                <div class="form-group">
-                                    <label for="naam">Naam</label>
-                                    <input type="text" id="naam" name="naam" class="form-control" 
-                                           placeholder="Uw volledige naam" 
-                                           required>
-                                    <div id="naam-error" class="error-message">Voer uw naam in</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">E-mail</label>
-                                    <input type="email" id="email" name="email" class="form-control" 
-                                           placeholder="uw@email.nl" 
-                                           required>
-                                    <div id="email-error" class="error-message">Voer een geldig e-mailadres in</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="telefoon">Telefoonnummer</label>
-                                    <input type="tel" id="telefoon" name="telefoon" class="form-control" 
-                                           placeholder="Bijv. 0470 12 34 56" 
-                                           pattern="^((\+|00)32|0)[4-9][0-9\s]{7,10}$" 
-                                           required>
-                                    <div id="telefoon-error" class="error-message">Voer een geldig telefoonnummer in</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="postcode">Postcode</label>
-                                    <input type="text" id="postcode" name="postcode" class="form-control" 
-                                           placeholder="Bijv. 1000" 
-                                           pattern="^[1-9]\d{3}$" 
-                                           required>
-                                    <div id="postcode-error" class="error-message">Voer een geldige Belgische postcode in (4 cijfers)</div>
-                                </div>
-                            </div>
-                            <div class="calculator-actions">
-                                <button type="button" class="btn btn-outline prev-step" data-step="4">Terug</button>
-                                <button type="button" class="btn btn-primary next-step" data-step="4"><span>Bekijk samenvatting</span></button>
-                            </div>
-                        </div>
-
-                        <!-- STEP 5: Summary -->
-                        <div class="calculator-step" id="step-5">
-                            <div class="step-indicator">Stap 5 van 5: Controleer uw aanvraag</div>
-                            
-                            <div class="summary-section">
-                                <h3>Auto gegevens</h3>
-                                <div class="summary-item">
-                                    <div class="summary-label">Kenteken:</div>
-                                    <div class="summary-value" id="summary-kenteken"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Merk:</div>
-                                    <div class="summary-value" id="summary-merk"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Model:</div>
-                                    <div class="summary-value" id="summary-model"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Bouwjaar:</div>
-                                    <div class="summary-value" id="summary-bouwjaar"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="summary-section">
-                                <h3>Technische details</h3>
-                                <div class="summary-item">
-                                    <div class="summary-label">Brandstof:</div>
-                                    <div class="summary-value" id="summary-brandstof"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Kilometerstand:</div>
-                                    <div class="summary-value" id="summary-kilometerstand"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Transmissie:</div>
-                                    <div class="summary-value" id="summary-transmissie"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Schade:</div>
-                                    <div class="summary-value" id="summary-schade"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="summary-section">
-                                <h3>Extra's</h3>
-                                <div class="summary-item">
-                                    <div class="summary-label">APK geldig tot:</div>
-                                    <div class="summary-value" id="summary-apk"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Bijzondere opties:</div>
-                                    <div class="summary-value" id="summary-opties"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Aanvullende info:</div>
-                                    <div class="summary-value" id="summary-extra-info"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Afbeeldingen:</div>
-                                    <div class="summary-value" id="summary-images"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="summary-section">
-                                <h3>Contactgegevens</h3>
-                                <div class="summary-item">
-                                    <div class="summary-label">Naam:</div>
-                                    <div class="summary-value" id="summary-naam"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">E-mail:</div>
-                                    <div class="summary-value" id="summary-email"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Telefoonnummer:</div>
-                                    <div class="summary-value" id="summary-telefoon"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Postcode:</div>
-                                    <div class="summary-value" id="summary-postcode"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="calculator-actions">
-                                <button type="button" class="btn btn-outline prev-step" data-step="5">Terug</button>
-                                <button type="submit" class="btn btn-secondary btn-lg"><span>Verzenden en ontvang bod</span></button>
-                            </div>
-                        </div>
-
-                        <!-- STEP 6: Thank you message -->
-                        <div class="calculator-step" id="step-6">
-                            <div class="thank-you-container">
-                                <div class="thank-you-icon">
-                                    <i class="fas fa-check-circle"></i>
-                                </div>
-                                <h2>Bedankt voor uw aanvraag!</h2>
-                                <p>We hebben uw aanvraag succesvol ontvangen en zullen deze zo snel mogelijk verwerken.</p>
-                                <div class="thank-you-details">
-                                    <div class="thank-you-detail">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Binnen 24 uur nemen we contact met u op</span>
-                                    </div>
-                                    <div class="thank-you-detail">
-                                        <i class="fas fa-phone"></i>
-                                        <span>We bellen u op het opgegeven telefoonnummer</span>
-                                    </div>
-                                    <div class="thank-you-detail">
-                                        <i class="fas fa-envelope"></i>
-                                        <span>Een bevestiging is verzonden naar uw e-mailadres</span>
-                                    </div>
-                                </div>
-                                <div class="thank-you-actions">
-                                    <button type="button" class="btn btn-primary" id="new-request-btn">
-                                        <i class="fas fa-car"></i>
-                                        <span>Nieuwe aanvraag starten</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Form integrated directly in the hero section -->
+            <div class="calculator-card card" id="calculator-section">
+                <div class="calculator-header">
+                    <h2>Bereken direct de waarde van uw auto</h2>
+                    <p>Vul de gegevens in en ontvang binnen 24 uur een eerlijk bod</p>
                 </div>
-            </form>
+                
+                <div class="calculator-body">
+                    <div class="calculator-progress">
+                        <div class="progress-connection" id="progress-connection"></div>
+                        <div class="progress-step active" id="progress-step-1">1</div>
+                        <div class="progress-step" id="progress-step-2">2</div>
+                        <div class="progress-step" id="progress-step-3">3</div>
+                        <div class="progress-step" id="progress-step-4">4</div>
+                        <div class="progress-step" id="progress-step-5">5</div>
+                    </div>
+                    
+                    <!-- Only showing Step 1 for the demo -->
+                    <div class="calculator-step active" id="step-1">
+                        <div class="step-indicator">Stap 1 van 5: Basisgegevens auto</div>
+                        <div class="calculator-fields">
+                            <div class="form-group">
+                                <label for="kenteken">Kenteken</label>
+                                <input type="text" id="kenteken" name="kenteken" class="form-control" 
+                                    placeholder="Bijv. 1-ABC-123 of ABC-123" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="merk">Merk</label>
+                                <select id="merk" name="merk" class="form-control" required>
+                                    <option value="">Selecteer merk</option>
+                                    <option value="audi">Audi</option>
+                                    <option value="bmw">BMW</option>
+                                    <option value="ford">Ford</option>
+                                    <option value="mercedes">Mercedes</option>
+                                    <option value="toyota">Toyota</option>
+                                    <option value="volkswagen">Volkswagen</option>
+                                    <option value="volvo">Volvo</option>
+                                    <option value="anders">Anders</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="model">Model</label>
+                                <input type="text" id="model" name="model" class="form-control" 
+                                    placeholder="Bijv. Golf, A4, 3-serie" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bouwjaar">Bouwjaar</label>
+                                <input type="number" id="bouwjaar" name="bouwjaar" class="form-control" 
+                                    min="1990" max="2025" placeholder="Bijv. 2018" required>
+                            </div>
+                        </div>
+                        <div class="calculator-actions">
+                            <div></div>
+                            <button type="button" class="btn btn-primary next-step" data-step="1">Volgende stap</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional steps would be here -->
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section id="voordelen" class="section features">
+    <!-- Process Section -->
+    <section id="process-section" class="process-section">
         <div class="container">
-            <div class="section-title">
-                <h2>Waarom Mijnautoverkopen kiezen?</h2>
-                <p>Als grootste auto-inkoper van Nederland bieden wij een unieke service met talloze voordelen</p>
+            <div class="section-header">
+                <h2>Hoe het werkt</h2>
+                <p>In 4 eenvoudige stappen is uw auto verkocht en het geld op uw rekening</p>
             </div>
             
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <h3>Snelle uitbetaling</h3>
-                    <p>Wij betalen direct na inspectie het volledige bedrag uit. Geen wachttijden, geen gedoe.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>100% betrouwbaar</h3>
-                    <p>Meer dan 10.000 tevreden klanten gingen u voor. Bekijk onze 5-sterren beoordelingen.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-euro-sign"></i>
-                    </div>
-                    <h3>Beste prijs garantie</h3>
-                    <p>Wij garanderen de beste prijs voor uw auto. Krijgt u elders meer? Dan betalen wij het verschil.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <h3>Gratis taxatie</h3>
-                    <p>Onze taxatie is altijd gratis en vrijblijvend, ongeacht of u besluit te verkopen.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
+            <div class="process-grid">
+                <div class="process-item">
+                    <div class="process-icon" data-step="1">
                         <i class="fas fa-file-alt"></i>
                     </div>
-                    <h3>Gratis papierwerk</h3>
-                    <p>Wij regelen alle administratieve zaken kosteloos voor u, inclusief overschrijving.</p>
+                    <h3 class="process-title">Vul het formulier in</h3>
+                    <p class="process-description">Vul enkele basisgegevens van uw auto in. Dit kost slechts 2 minuten.</p>
                 </div>
                 
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-car"></i>
+                <div class="process-item">
+                    <div class="process-icon" data-step="2">
+                        <i class="fas fa-euro-sign"></i>
                     </div>
-                    <h3>Alle auto's welkom</h3>
-                    <p>Of uw auto jong of oud is, schade heeft of veel kilometers - wij kopen alle auto's in.</p>
+                    <h3 class="process-title">Ontvang een bod</h3>
+                    <p class="process-description">Binnen 24 uur ontvangt u een vrijblijvend en eerlijk bod.</p>
+                </div>
+                
+                <div class="process-item">
+                    <div class="process-icon" data-step="3">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3 class="process-title">Plan een afspraak</h3>
+                    <p class="process-description">We plannen een afspraak voor een korte inspectie bij u thuis of op onze locatie.</p>
+                </div>
+                
+                <div class="process-item">
+                    <div class="process-icon" data-step="4">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3 class="process-title">Directe betaling</h3>
+                    <p class="process-description">Na akkoord maken we het volledige bedrag direct over en regelen al het papierwerk.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Recent Articles Section -->
-    <section id="recent-articles" class="section recent-articles">
+    <!-- Benefits Section -->
+    <section id="benefits-section" class="benefits-section">
         <div class="container">
-            <div class="section-title">
-                <h2>Recent Artikelen</h2>
-                <p>Ontdek de nieuwste tips en adviezen over het verkopen van uw auto</p>
+            <div class="section-header">
+                <h2>De voordelen van Mijnautoverkopen.be</h2>
+                <p>Waarom duizenden klanten voor ons kiezen</p>
             </div>
             
-            <div id="blog-loading" class="loading-spinner">
-                <div class="spinner"></div>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3 class="benefit-title">Snelle afhandeling</h3>
+                    <p class="benefit-description">Van aanvraag tot uitbetaling binnen 24-48 uur. Geen wachttijden, geen gedoe.</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="benefit-title">Betrouwbare service</h3>
+                    <p class="benefit-description">Meer dan 10.000 tevreden klanten en een 4.9/5 rating op onafhankelijke platformen.</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <h3 class="benefit-title">Beste prijs garantie</h3>
+                    <p class="benefit-description">Krijgt u elders een hoger bod? Wij betalen het verschil. Gegarandeerd de beste prijs.</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-search-dollar"></i>
+                    </div>
+                    <h3 class="benefit-title">Gratis taxatie</h3>
+                    <p class="benefit-description">Onze taxatie is altijd gratis en vrijblijvend, zelfs als u besluit niet te verkopen.</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-file-signature"></i>
+                    </div>
+                    <h3 class="benefit-title">Wij regelen alles</h3>
+                    <p class="benefit-description">Alle administratieve zaken worden door ons kosteloos geregeld, inclusief overschrijving.</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3 class="benefit-title">Alle auto's welkom</h3>
+                    <p class="benefit-description">Wij kopen elk type auto, ongeacht leeftijd, kilometerstand of staat, zelfs met schade.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section (Added back) -->
+    <section id="blog-section" class="blog-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Laatste blogartikelen</h2>
+                <p>Lees onze nieuwste tips en adviezen over auto's verkopen</p>
             </div>
             
-            <div class="blog-posts-grid" id="latest-blog-posts">
-                <!-- Blog posts will be loaded dynamically here -->
+            <div class="blog-grid">
+                <div class="blog-card">
+                    <div class="blog-image">
+                        <img src="/api/placeholder/600/400" alt="De beste tijd om uw auto te verkopen" loading="lazy">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-date">12 maart 2023</div>
+                        <h3 class="blog-title">De beste tijd om uw auto te verkopen</h3>
+                        <p class="blog-excerpt">Ontdek wanneer het financieel gezien het meest voordelig is om uw auto te verkopen, en welke factoren de waarde van uw auto beïnvloeden.</p>
+                        <a href="/blog/de-beste-tijd-om-uw-auto-te-verkopen" class="blog-read-more">Lees meer <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="blog-card">
+                    <div class="blog-image">
+                        <img src="/api/placeholder/600/400" alt="Hoe bereidt u uw auto voor op verkoop?" loading="lazy">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-date">15 april 2023</div>
+                        <h3 class="blog-title">Hoe bereidt u uw auto voor op verkoop?</h3>
+                        <p class="blog-excerpt">Leer hoe u uw auto optimaal kunt voorbereiden voor verkoop om de hoogste prijs te krijgen en een snelle verkoop te realiseren.</p>
+                        <a href="/blog/hoe-bereidt-u-uw-auto-voor-op-verkoop" class="blog-read-more">Lees meer <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="blog-card">
+                    <div class="blog-image">
+                        <img src="/api/placeholder/600/400" alt="Particulier verkopen of inruilen: wat is voordelig?" loading="lazy">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-date">20 mei 2023</div>
+                        <h3 class="blog-title">Particulier verkopen of inruilen: wat is voordelig?</h3>
+                        <p class="blog-excerpt">Vergelijk de verschillende manieren om uw auto te verkopen en ontdek welke optie het beste bij uw situatie past.</p>
+                        <a href="/blog/particulier-verkopen-of-inruilen-wat-is-voordelig" class="blog-read-more">Lees meer <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
             </div>
             
-            <div class="view-all-posts">
-                <a href="/blog" class="btn btn-outline">
-                    <span>Bekijk alle artikelen</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
+            <div class="blog-cta">
+                <a href="/blog" class="btn btn-primary">Bekijk alle blogs</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Showcase Section -->
+    <section id="showcase-section" class="showcase-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Auto verkopen in België</h2>
+                <p>De meest betrouwbare manier om uw auto te verkopen</p>
+            </div>
+            
+            <div class="showcase-grid">
+                <div class="showcase-item">
+                    <img src="/api/placeholder/600/300" alt="Auto verkopen zonder gedoe" loading="lazy">
+                    <div class="showcase-content">
+                        <h3 class="showcase-title">Verkoop zonder zorgen</h3>
+                        <p class="showcase-text">Geen gedoe met privéverkoop, geen tijdrovende afspraken of onderhandelingen.</p>
+                    </div>
+                </div>
+                
+                <div class="showcase-item">
+                    <img src="/api/placeholder/600/300" alt="Auto verkopen voor de beste prijs" loading="lazy">
+                    <div class="showcase-content">
+                        <h3 class="showcase-title">Beste prijs garantie</h3>
+                        <p class="showcase-text">Wij bepalen de reële marktwaarde van uw auto en garanderen een eerlijke prijs.</p>
+                    </div>
+                </div>
+                
+                <div class="showcase-item">
+                    <img src="/api/placeholder/600/300" alt="Gratis taxatie van uw auto" loading="lazy">
+                    <div class="showcase-content">
+                        <h3 class="showcase-title">Gratis taxatie</h3>
+                        <p class="showcase-text">Laat uw auto vrijblijvend taxeren door onze ervaren professionals.</p>
+                    </div>
+                </div>
+                
+                <div class="showcase-item">
+                    <img src="/api/placeholder/600/300" alt="Direct geld voor uw auto" loading="lazy">
+                    <div class="showcase-content">
+                        <h3 class="showcase-title">Direct uitbetaald</h3>
+                        <p class="showcase-text">Na akkoord wordt het bedrag meteen overgemaakt naar uw rekening.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Testimonials Section -->
-    <section id="testimonials" class="section testimonials">
+    <section id="testimonials-section" class="testimonials-section">
         <div class="container">
-            <div class="section-title">
+            <div class="section-header">
                 <h2>Wat onze klanten zeggen</h2>
                 <p>Duizenden tevreden klanten gingen u voor</p>
             </div>
             
-            <div class="testimonials-slider">
-                <div class="testimonial-slide">
-                    <div class="testimonial-content">
-                        <div class="testimonial-text">
-                            "Ik was onder de indruk van het gemak waarmee ik mijn auto kon verkopen. Het bod was eerlijk, de afhandeling professioneel en het geld stond dezelfde dag nog op mijn rekening. Absoluut een aanrader!"
+            <div class="testimonials-grid">
+                <div class="testimonial-item">
+                    <div class="testimonial-text">
+                        "Ik was onder de indruk van het gemak waarmee ik mijn auto kon verkopen. Het bod was eerlijk, de afhandeling professioneel en het geld stond dezelfde dag nog op mijn rekening. Absoluut een aanrader!"
+                    </div>
+                    <div class="testimonial-info">
+                        <div class="testimonial-avatar">
+                            <img src="/api/placeholder/60/60" alt="Jeroen de Vries" loading="lazy">
                         </div>
                         <div class="testimonial-author">
-                            <div class="author-image">
-                                <img src="/api/placeholder/60/60" alt="Klant foto">
+                            <h4>Jeroen de Vries</h4>
+                            <p>Antwerpen</p>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
                             </div>
-                            <div class="author-info">
-                                <h4>Jeroen de Vries</h4>
-                                <p>Antwerpen</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-item">
+                    <div class="testimonial-text">
+                        "Na meerdere mislukte pogingen om mijn auto via verschillende verkoopsites te verkopen, kwam ik bij Mijnautoverkopen.be terecht. Binnen 48 uur was alles afgehandeld en kreeg ik een faire prijs. Super tevreden!"
+                    </div>
+                    <div class="testimonial-info">
+                        <div class="testimonial-avatar">
+                            <img src="/api/placeholder/60/60" alt="Sophie Jacobs" loading="lazy">
+                        </div>
+                        <div class="testimonial-author">
+                            <h4>Sophie Jacobs</h4>
+                            <p>Gent</p>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-item">
+                    <div class="testimonial-text">
+                        "Mijnautoverkopen was de perfecte oplossing voor mijn auto met lichte schade. De andere opkopers boden veel minder, maar hier kreeg ik een eerlijke prijs én hoefde ik me nergens zorgen over te maken."
+                    </div>
+                    <div class="testimonial-info">
+                        <div class="testimonial-avatar">
+                            <img src="/api/placeholder/60/60" alt="Marc Peeters" loading="lazy">
+                        </div>
+                        <div class="testimonial-author">
+                            <h4>Marc Peeters</h4>
+                            <p>Brussel</p>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
                             </div>
                         </div>
                     </div>
@@ -2227,9 +1821,9 @@
     </section>
 
     <!-- FAQ Section -->
-    <section id="veelgestelde-vragen" class="section faq">
+    <section id="faq-section" class="faq-section">
         <div class="container">
-            <div class="section-title">
+            <div class="section-header">
                 <h2>Veelgestelde vragen</h2>
                 <p>Antwoorden op de meest gestelde vragen</p>
             </div>
@@ -2238,7 +1832,9 @@
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <h3>Hoe lang duurt het hele verkoopproces?</h3>
-                        <div class="accordion-icon"></div>
+                        <div class="accordion-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
                     </div>
                     <div class="accordion-content">
                         <div class="accordion-content-inner">
@@ -2250,7 +1846,9 @@
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <h3>Zijn er kosten verbonden aan jullie dienst?</h3>
-                        <div class="accordion-icon"></div>
+                        <div class="accordion-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
                     </div>
                     <div class="accordion-content">
                         <div class="accordion-content-inner">
@@ -2262,7 +1860,9 @@
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <h3>Wat gebeurt er als mijn auto schade heeft?</h3>
-                        <div class="accordion-icon"></div>
+                        <div class="accordion-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
                     </div>
                     <div class="accordion-content">
                         <div class="accordion-content-inner">
@@ -2274,7 +1874,9 @@
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <h3>Kan ik mijn auto met openstaande financiering verkopen?</h3>
-                        <div class="accordion-icon"></div>
+                        <div class="accordion-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
                     </div>
                     <div class="accordion-content">
                         <div class="accordion-content-inner">
@@ -2286,7 +1888,9 @@
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <h3>Hoe bepalen jullie de waarde van mijn auto?</h3>
-                        <div class="accordion-icon"></div>
+                        <div class="accordion-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
                     </div>
                     <div class="accordion-content">
                         <div class="accordion-content-inner">
@@ -2299,50 +1903,31 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="section cta">
+    <section class="cta-section">
         <div class="container">
             <div class="cta-content">
                 <h2>Klaar om uw auto te verkopen?</h2>
                 <p>Ontvang binnen 24 uur een eerlijk bod en ervaar hoe eenvoudig het verkopen van uw auto kan zijn.</p>
                 <div class="cta-buttons">
-                    <a href="#" class="btn btn-primary btn-lg">Direct een bod aanvragen</a>
-                    <a href="tel:0800-1234567" class="btn btn-outline btn-lg">Bel ons: 0800-1234567</a>
-                </div>
-                
-                <div class="trust-badges">
-                    <div class="trust-badge">
-                        <i class="fas fa-shield-alt"></i>
-                        100% veilig
-                    </div>
-                    <div class="trust-badge">
-                        <i class="fas fa-money-bill-wave"></i>
-                        Direct geld op rekening
-                    </div>
-                    <div class="trust-badge">
-                        <i class="fas fa-check-circle"></i>
-                        Kosteloos en vrijblijvend
-                    </div>
-                    <div class="trust-badge">
-                        <i class="fas fa-medal"></i>
-                        Hoogste bod garantie
-                    </div>
+                    <a href="#calculator-section" class="btn cta-btn-white">Direct waarde berekenen</a>
+                    <a href="tel:0476259384" class="btn cta-btn-outline">Bel ons: 0476 25 93 84</a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer id="contact">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <h4>Mijnautoverkopen</h4>
+                    <h4>Mijnautoverkopen.be</h4>
                     <ul class="footer-links">
-                        <li><a href="#recent-articles">Recent Artikelen</a></li>
-                        <li><a href="#voordelen">Voordelen</a></li>
-                        <li><a href="#testimonials">Klantervaringen</a></li>
-                        <li><a href="#veelgestelde-vragen">Veelgestelde vragen</a></li>
-                        <li><a href="#">Over ons</a></li>
+                        <li><a href="#process-section"><i class="fas fa-angle-right"></i> Hoe het werkt</a></li>
+                        <li><a href="#benefits-section"><i class="fas fa-angle-right"></i> Voordelen</a></li>
+                        <li><a href="#testimonials-section"><i class="fas fa-angle-right"></i> Klantervaringen</a></li>
+                        <li><a href="#faq-section"><i class="fas fa-angle-right"></i> Veelgestelde vragen</a></li>
+                        <li><a href="/blog"><i class="fas fa-angle-right"></i> Blog</a></li>
                     </ul>
                 </div>
                 
@@ -2355,11 +1940,15 @@
                         </li>
                         <li>
                             <i class="fas fa-phone-alt"></i>
-                            <span>0800-1234567 (gratis)</span>
+                            <span>0476 25 93 84</span>
                         </li>
                         <li>
                             <i class="fas fa-envelope"></i>
                             <span>info@mijnautoverkopen.be</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>Ma-Vr: 9:00-18:00, Za: 10:00-16:00</span>
                         </li>
                     </ul>
                 </div>
@@ -2367,772 +1956,200 @@
                 <div class="footer-col">
                     <h4>Juridisch</h4>
                     <ul class="footer-links">
-                        <li><a href="/algemene-voorwaarden.html">Algemene voorwaarden</a></li>
-                        <li><a href="/privacybeleid.html">Privacybeleid</a></li>
-                        <li><a href="/cookiebeleid.html">Cookiebeleid</a></li>
-                        <li><a href="/disclaimer.html">Disclaimer</a></li>
+                        <li><a href="/algemene-voorwaarden.html"><i class="fas fa-angle-right"></i> Algemene voorwaarden</a></li>
+                        <li><a href="/privacybeleid.html"><i class="fas fa-angle-right"></i> Privacybeleid</a></li>
+                        <li><a href="/cookiebeleid.html"><i class="fas fa-angle-right"></i> Cookiebeleid</a></li>
+                        <li><a href="/disclaimer.html"><i class="fas fa-angle-right"></i> Disclaimer</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-col">
                     <h4>Locaties</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Sint-Niklaas</a></li>
-                        <li><a href="#">Antwerpen</a></li>
-                        <li><a href="#">Gent</a></li>
-                        <li><a href="#">Brugge</a></li>
-                        <li><a href="#">Hasselt</a></li>
-                        <li><a href="#">Alle locaties</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> Sint-Niklaas</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> Antwerpen</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> Gent</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> Brugge</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> Brussel</a></li>
                     </ul>
                 </div>
             </div>
             
             <div class="footer-bottom">
                 <div class="copyright">
-                    © 2025 Mijnautoverkopen. Alle rechten voorbehouden.
+                    © 2025 Mijnautoverkopen.be. Alle rechten voorbehouden.
                 </div>
                 <div class="social-links">
-                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Cookie Consent Banner -->
+    <!-- Cookie Banner -->
     <div id="cookie-consent-banner" class="cookie-banner">
         <div class="cookie-content">
             <div class="cookie-header">
                 <h3>Cookie-instellingen</h3>
                 <p>Wij gebruiken cookies om uw ervaring op onze website te verbeteren en voor analytics en marketing.</p>
             </div>
-            <div class="cookie-body">
-                <div class="cookie-option">
-                    <input type="checkbox" id="cookie-necessary" checked disabled>
-                    <label for="cookie-necessary">
-                        <strong>Noodzakelijke cookies</strong>
-                        <span>Deze cookies zijn essentieel voor het functioneren van onze website. Ze kunnen niet worden uitgeschakeld.</span>
-                    </label>
-                </div>
-                <div class="cookie-option">
-                    <input type="checkbox" id="cookie-functional" checked>
-                    <label for="cookie-functional">
-                        <strong>Functionele cookies</strong>
-                        <span>Deze cookies helpen ons uw voorkeuren te onthouden, zoals taalvoorkeuren en eerder bekeken pagina's.</span>
-                    </label>
-                </div>
-                <div class="cookie-option">
-                    <input type="checkbox" id="cookie-analytics" checked>
-                    <label for="cookie-analytics">
-                        <strong>Analytische cookies</strong>
-                        <span>Deze cookies helpen ons te begrijpen hoe bezoekers onze website gebruiken.</span>
-                    </label>
-                </div>
-                <div class="cookie-option">
-                    <input type="checkbox" id="cookie-marketing" checked>
-                    <label for="cookie-marketing">
-                        <strong>Marketing cookies</strong>
-                        <span>Deze cookies worden gebruikt om advertenties relevanter te maken voor u.</span>
-                    </label>
-                </div>
-            </div>
             <div class="cookie-footer">
                 <button id="cookie-reject-all" class="cookie-btn cookie-btn-outline">Alle cookies weigeren</button>
-                <button id="cookie-accept-selected" class="cookie-btn cookie-btn-primary">Geselecteerde cookies accepteren</button>
+                <button id="cookie-accept-selected" class="cookie-btn cookie-btn-primary">Cookies accepteren</button>
                 <button id="cookie-accept-all" class="cookie-btn cookie-btn-secondary">Alle cookies accepteren</button>
-            </div>
-            <div class="cookie-links">
-                <a href="/cookiebeleid.html" target="_blank">Meer informatie over ons cookiebeleid</a>
             </div>
         </div>
     </div>
 
     <script>
-        // Calculate and update progress connection width
-        function updateProgressConnection(step) {
-            const totalSteps = 6; // Total number of steps
-            const progressPercentage = (step / (totalSteps - 1)) * 100;
-            const progressConnection = document.getElementById('progress-connection');
-        
-            // Add maximum limit to prevent overflow
-            const clamped = Math.min(progressPercentage, 100);
-            
-            // Animate the progress connection
-            progressConnection.style.width = `${progressPercentage}%`;
-        }
-
-        // Enhanced step transition function
-        function goToStep(nextStepIndex) {
-            // Get current and next step elements
-            const currentStepEl = steps[currentStep];
-            const nextStepEl = steps[nextStepIndex];
-            
-            // Begin exit transition for current step
-            currentStepEl.style.opacity = '0';
-            currentStepEl.style.transform = nextStepIndex > currentStep ? 
-                'translateX(-20px)' : 'translateX(20px)';
-            
-            // After a short delay, switch the active classes
-            setTimeout(() => {
-                // Hide current step
-                currentStepEl.classList.remove('active');
-                
-                // If moving forward, mark current step as completed
-                if (nextStepIndex > currentStep) {
-                    progressSteps[currentStep].classList.add('completed');
-                } else {
-                    // If moving backward, remove completed state
-                    progressSteps[currentStep].classList.remove('completed');
-                }
-                
-                // Update progress steps
-                progressSteps[currentStep].classList.remove('active');
-                progressSteps[nextStepIndex].classList.add('active');
-                
-                // Update current step tracker
-                currentStep = nextStepIndex;
-                
-                // Update progress connection
-                updateProgressConnection(currentStep);
-                
-                // Show next step
-                nextStepEl.classList.add('active');
-                
-                // Reset the transform for the next step to prepare for animation
-                nextStepEl.style.opacity = '0';
-                nextStepEl.style.transform = 'translateX(20px)';
-                
-                // Force a reflow before starting the entrance animation
-                void nextStepEl.offsetWidth;
-                
-                // Begin entrance animation
-                nextStepEl.style.opacity = '1';
-                nextStepEl.style.transform = 'translateX(0)';
-            }, 300); // Matches the exit animation duration
-        }
-        
-        // Form validation functions
-        function showError(inputId, show = true) {
-            const errorElement = document.getElementById(`${inputId}-error`);
-            if (errorElement) {
-                errorElement.classList.toggle('visible', show);
-            }
-        }
-        
-        function validateInput(inputId, validationFunction) {
-            const input = document.getElementById(inputId);
-            const isValid = validationFunction(input);
-            
-            if (isValid) {
-                input.classList.add('valid');
-                input.classList.remove('invalid');
-                showError(inputId, false);
-            } else {
-                input.classList.add('invalid');
-                input.classList.remove('valid');
-                showError(inputId, true);
-            }
-            
-            return isValid;
-        }
-        
-        // Validation rules
-        const validationRules = {
-            kenteken: input => {
-                const value = input.value.trim().toUpperCase();
-                // Belgian license plate formats:
-                // Modern format (2010+): 1-ABC-123
-                // Older format: ABC-123
-                // We'll accept both with some flexibility in the separators
-                return /^(\d-[A-Z]{3}-\d{3}|[A-Z]{3}-\d{3})$/.test(value) || 
-                      /^(\d[A-Z]{3}\d{3}|[A-Z]{3}\d{3})$/.test(value); // Also accept without separators
-            },
-            merk: input => input.value.trim() !== "",
-            model: input => input.value.trim().length >= 2,
-            bouwjaar: input => {
-                const year = parseInt(input.value);
-                const currentYear = new Date().getFullYear();
-                return !isNaN(year) && year >= 1990 && year <= currentYear;
-            },
-            brandstof: input => input.value.trim() !== "",
-            kilometerstand: input => {
-                const km = parseInt(input.value);
-                return !isNaN(km) && km >= 0 && km <= 999999;
-            },
-            transmissie: input => input.value.trim() !== "",
-            apk: input => {
-                // APK is optional, so empty is valid
-                if (!input.value.trim()) return true;
-                
-                // If provided, validate it as a month/year format
-                const date = new Date(input.value);
-                return !isNaN(date.getTime());
-            },
-            naam: input => input.value.trim().length >= 2,
-            email: input => {
-                const value = input.value.trim();
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-            },
-            telefoon: input => {
-                const value = input.value.trim();
-                // Belgian mobile number format for Flanders and Brussels
-                return /^((\+|00)32|0)[4-9][0-9]{7,10}$/.test(
-                    value.replace(/[\s\-\.]/g, '') // Remove spaces, dashes, periods
-                );
-            },
-            postcode: input => {
-                const value = input.value.trim();
-                // Belgian postal code: 4 digits between 1000-9999
-                return /^[1-9]\d{3}$/.test(value);
-            },
-        };
-        
-        // Multi-step form navigation
-        const steps = document.querySelectorAll('.calculator-step');
-        const progressSteps = document.querySelectorAll('.progress-step');
-        const nextButtons = document.querySelectorAll('.next-step');
-        const prevButtons = document.querySelectorAll('.prev-step');
-        
-        let currentStep = 0;
-        
-        // Step validation
-        function validateStep(stepNumber) {
-            const step = steps[stepNumber];
-            const requiredFields = step.querySelectorAll('[required]');
-            let isValid = true;
-            
-            requiredFields.forEach(field => {
-                const validationFunction = validationRules[field.id];
-                if (validationFunction) {
-                    const inputValid = validateInput(field.id, validationFunction);
-                    isValid = isValid && inputValid;
-                } else {
-                    // Basic validation if no specific rule exists
-                    if (!field.value.trim()) {
-                        field.classList.add('invalid');
-                        field.classList.remove('valid');
-                        showError(field.id, true);
-                        isValid = false;
-                    } else {
-                        field.classList.add('valid');
-                        field.classList.remove('invalid');
-                        showError(field.id, false);
-                    }
-                }
-            });
-            
-            return isValid;
-        }
-        
-        // Handle next button clicks
-        nextButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const stepNumber = parseInt(button.getAttribute('data-step'));
-                
-                // Validate current step before proceeding
-                if (!validateStep(stepNumber - 1)) {
-                    // Show validation shake animation on invalid fields
-                    const invalidFields = steps[currentStep].querySelectorAll('.invalid');
-                    invalidFields.forEach(field => {
-                        field.classList.add('shake');
-                        setTimeout(() => field.classList.remove('shake'), 600);
-                    });
-                    return; // Stay on current step if validation fails
-                }
-                
-                // If going to the summary step, populate the summary first
-                if (stepNumber === 4) { // Step 4 button leads to step 5 (summary)
-                    populateSummary();
-                }
-                
-                // Animate to next step
-                goToStep(currentStep + 1);
-            });
-        });
-
-        // Handle previous button clicks
-        prevButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Animate to previous step
-                goToStep(currentStep - 1);
-            });
-        });
-        
-        // Real-time validation on input changes
-        const formFields = document.querySelectorAll('.form-control');
-        formFields.forEach(field => {
-            field.addEventListener('blur', () => {
-                const validationFunction = validationRules[field.id];
-                if (validationFunction) {
-                    validateInput(field.id, validationFunction);
-                }
-            });
-            
-            // For select elements, validate on change
-            if (field.tagName === 'SELECT') {
-                field.addEventListener('change', () => {
-                    const validationFunction = validationRules[field.id];
-                    if (validationFunction) {
-                        validateInput(field.id, validationFunction);
-                    }
-                });
-            }
-        });
-        
-        // Populate the summary step
-        function populateSummary() {
-            // Car details
-            document.getElementById('summary-kenteken').textContent = document.getElementById('kenteken').value || '-';
-            
-            const merkSelect = document.getElementById('merk');
-            document.getElementById('summary-merk').textContent = 
-                merkSelect.options[merkSelect.selectedIndex]?.text || '-';
-                
-            document.getElementById('summary-model').textContent = document.getElementById('model').value || '-';
-            document.getElementById('summary-bouwjaar').textContent = document.getElementById('bouwjaar').value || '-';
-            
-            // Technical details
-            const brandstofSelect = document.getElementById('brandstof');
-            document.getElementById('summary-brandstof').textContent = 
-                brandstofSelect.options[brandstofSelect.selectedIndex]?.text || '-';
-                
-            const kmStand = document.getElementById('kilometerstand').value;
-            document.getElementById('summary-kilometerstand').textContent = 
-                kmStand ? `${parseInt(kmStand).toLocaleString('nl-NL')} km` : '-';
-                
-            const transmissieSelect = document.getElementById('transmissie');
-            document.getElementById('summary-transmissie').textContent = 
-                transmissieSelect.options[transmissieSelect.selectedIndex]?.text || '-';
-                
-            const schadeSelect = document.getElementById('schade');
-            document.getElementById('summary-schade').textContent = 
-                schadeSelect.options[schadeSelect.selectedIndex]?.text || '-';
-            
-            // Extra details
-            const apkDate = document.getElementById('apk').value;
-            if (apkDate) {
-                // Convert yyyy-mm to a more readable format
-                const [year, month] = apkDate.split('-');
-                document.getElementById('summary-apk').textContent = `${month}/${year}`;
-            } else {
-                document.getElementById('summary-apk').textContent = '-';
-            }
-            
-            // Get image count
-            const imageInput = document.getElementById('carImages');
-            const imageCount = imageInput.files.length;
-            document.getElementById('summary-images').textContent = 
-                imageCount > 0 ? `${imageCount} afbeelding(en) toegevoegd` : 'Geen afbeeldingen toegevoegd';
-
-            // Get selected options from multiple select
-            const optiesSelect = document.getElementById('opties');
-            const selectedOptions = Array.from(optiesSelect.selectedOptions).map(option => option.text);
-            
-            if (selectedOptions.length > 0) {
-                document.getElementById('summary-opties').textContent = selectedOptions.join(', ');
-            } else {
-                document.getElementById('summary-opties').textContent = 'Geen opties geselecteerd';
-            }
-            
-            document.getElementById('summary-extra-info').textContent = 
-                document.getElementById('extra-info').value || 'Geen extra informatie';
-            
-            // Contact details
-            document.getElementById('summary-naam').textContent = document.getElementById('naam').value || '-';
-            document.getElementById('summary-email').textContent = document.getElementById('email').value || '-';
-            document.getElementById('summary-telefoon').textContent = document.getElementById('telefoon').value || '-';
-            document.getElementById('summary-postcode').textContent = document.getElementById('postcode').value || '-';
-        }
-        
-        // Form submission handling
-        const carValueForm = document.getElementById('carValueForm');
-        carValueForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Validate all form fields one final time
-            let isValid = true;
-            for (let i = 0; i < 4; i++) { // Check first four steps (excluding summary)
-                isValid = validateStep(i) && isValid;
-            }
-            
-            if (!isValid) {
-                alert('Er zijn nog ongeldige velden in het formulier. Controleer de gegevens en probeer het opnieuw.');
-                return;
-            }
-            
-            // Show loading state on the button
-            const submitButton = document.querySelector('button[type="submit"]');
-            const originalButtonText = submitButton.innerHTML;
-            submitButton.innerHTML = '<span>Bezig met verzenden...</span>';
-            submitButton.disabled = true;
-            
-            // Create FormData object to handle the form data including files
-            const formData = new FormData(carValueForm);
-            
-            // Convert the opties multi-select to a JSON string
-            const optiesSelect = document.getElementById('opties');
-            const selectedOptions = Array.from(optiesSelect.selectedOptions).map(option => option.value);
-            
-            // Replace the opties with the JSON string
-            formData.delete('opties'); // Remove the original opties values
-            formData.append('opties', JSON.stringify(selectedOptions));
-            
-            // Send the data to the server
-            fetch('/submit-car', {
-                method: 'POST',
-                body: formData // FormData will automatically set correct Content-Type with boundary
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Hide all steps
-                steps.forEach(step => {
-                    step.classList.remove('active');
-                });
-                
-                // Show the thank you step
-                const thankYouStep = document.getElementById('step-6');
-                thankYouStep.classList.add('active');
-                
-                // Add customer email to thank you message for personalization
-                const emailValue = document.getElementById('email').value;
-                const thankYouEmail = document.querySelector('.thank-you-detail:nth-child(3) span');
-                if (thankYouEmail && emailValue) {
-                    thankYouEmail.textContent = `Een bevestiging is verzonden naar ${emailValue}`;
-                }
-                
-                // Update progress steps
-                progressSteps.forEach((step, index) => {
-                    if (index < 5) { // First 5 steps
-                        step.classList.add('completed');
-                        step.classList.remove('active');
-                    } else if (index === 5) { // The thank you step
-                        step.classList.add('active');
-                    }
-                });
-                
-                // Update progress connection to 100%
-                updateProgressConnection(5);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Er is een fout opgetreden bij het verzenden van uw aanvraag. Probeer het later opnieuw of neem contact met ons op.');
-                
-                // Reset button state
-                submitButton.innerHTML = originalButtonText;
-                submitButton.disabled = false;
-            });
-        });
-
-        // Function to load the latest blog posts
-        async function loadLatestBlogPosts() {
-            const blogLoading = document.getElementById('blog-loading');
-            const latestBlogPosts = document.getElementById('latest-blog-posts');
-            
-            if (!blogLoading || !latestBlogPosts) {
-                return;
-            }
-            
-            try {
-                blogLoading.style.display = 'flex';
-                latestBlogPosts.style.display = 'none';
-                
-                // Fetch blogs from the API
-                const response = await fetch('/api/blogs');
-                let blogs = await response.json();
-                
-                // Filter only published blogs
-                blogs = blogs.filter(blog => blog.status === 'published');
-                
-                // Sort by date (newest first) and take only the first 3
-                blogs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                const recentBlogs = blogs.slice(0, 3);
-                
-                if (recentBlogs.length === 0) {
-                    latestBlogPosts.innerHTML = '<p class="text-center">Geen blog posts gevonden</p>';
-                    blogLoading.style.display = 'none';
-                    latestBlogPosts.style.display = 'block';
-                    return;
-                }
-                
-                // Generate HTML for each blog post
-                let html = '';
-                
-                recentBlogs.forEach(blog => {
-                    // Format date
-                    const createdDate = new Date(blog.createdAt);
-                    const formattedDate = createdDate.toLocaleDateString('nl-NL', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Enhanced smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
                     
-                    // Determine image source - use featured image if available, otherwise fallback to placeholder
-                    const imageSource = blog.featuredImage && blog.featuredImage.trim() !== '' 
-                        ? blog.featuredImage 
-                        : '/api/placeholder/400/200';
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
                     
-                    // Use image alt text if available
-                    const imageAlt = blog.imageAlt && blog.imageAlt.trim() !== '' 
-                        ? blog.imageAlt 
-                        : blog.title;
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        // Get header height to adjust scroll position
+                        const headerHeight = document.getElementById('header').offsetHeight;
                         
-                    html += `
-                        <div class="blog-card">
-                            <div class="blog-card-image">
-                                <img src="${imageSource}" alt="${imageAlt}">
-                            </div>
-                            <div class="blog-card-content">
-                                <div class="blog-date">${formattedDate}</div>
-                                ${blog.category ? `<div class="blog-category"><a href="/blog/category/${blog.category}" class="category-badge">${blog.category.replace('-', ' ')}</a></div>` : ''}
-                                <h3 class="blog-title">${blog.title}</h3>
-                                <div class="blog-excerpt">${blog.excerpt || ''}</div>
-                                <a href="/blog/${blog.slug}" class="blog-link">
-                                    Lees meer <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                latestBlogPosts.innerHTML = html;
-                
-            } catch (error) {
-                console.error('Error loading latest blog posts:', error);
-                latestBlogPosts.innerHTML = '<p class="text-center">Er is een fout opgetreden bij het laden van de blog posts</p>';
-            } finally {
-                blogLoading.style.display = 'none';
-                latestBlogPosts.style.display = 'grid';
-            }
-        }
-
-        // Accordion functionality for FAQ section
-        const accordionHeaders = document.querySelectorAll('.accordion-header');
-        
-        accordionHeaders.forEach(header => {
-            header.addEventListener('click', () => {
-                const accordionItem = header.parentElement;
-                const accordionContent = header.nextElementSibling;
-                const accordionContentInner = accordionContent.querySelector('.accordion-content-inner');
-                
-                // Close all other accordion items
-                document.querySelectorAll('.accordion-item').forEach(item => {
-                    if (item !== accordionItem) {
-                        item.classList.remove('active');
-                        item.querySelector('.accordion-content').style.height = '0';
-                    }
-                });
-                
-                // Toggle current accordion item
-                accordionItem.classList.toggle('active');
-                
-                if (accordionItem.classList.contains('active')) {
-                    accordionContent.style.height = accordionContentInner.offsetHeight + 'px';
-                } else {
-                    accordionContent.style.height = '0';
-                }
-            });
-        });
-        
-        // Display device-appropriate tip message for multi-select
-        const optiesMessage = document.getElementById('opties-message');
-        if (optiesMessage) {
-            // Check if the device is likely a mobile device
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            
-            if (isMobile) {
-                optiesMessage.textContent = "Tip: Tik op meerdere opties om ze te selecteren. Tik opnieuw om te deselecteren.";
-            } else {
-                optiesMessage.textContent = "Tip: Houd Ctrl toets ingedrukt om meerdere opties te selecteren.";
-            }
-            
-            optiesMessage.classList.add('visible');
-        }
-
-        // Function to reset the form completely
-        function resetForm() {
-            // Reset form
-            carValueForm.reset();
-            
-            // Clear image previews
-            document.getElementById('image-preview-container').innerHTML = '';
-            
-            // Get fresh references to all steps and progress steps
-            const allSteps = document.querySelectorAll('.calculator-step');
-            const allProgressSteps = document.querySelectorAll('.progress-step');
-            
-            // First, reset all animation styles
-            allSteps.forEach(step => {
-                step.style.opacity = '';
-                step.style.transform = '';
-            });
-            
-            // Then remove all active classes
-            allSteps.forEach(step => {
-                step.classList.remove('active');
-            });
-            
-            // Explicitly activate only the first step
-            document.getElementById('step-1').classList.add('active');
-            document.getElementById('step-1').style.opacity = '1';
-            
-            // Reset currentStep variable
-            currentStep = 0;
-            
-            // Reset ALL progress steps (including 6th)
-            allProgressSteps.forEach(step => {
-                step.classList.remove('active');
-                step.classList.remove('completed');
-            });
-            
-            // Make only the first progress step active
-            allProgressSteps[0].classList.add('active');
-            
-            // Reset progress connection
-            updateProgressConnection(0);
-            
-            // Remove all validation classes
-            document.querySelectorAll('.form-control').forEach(field => {
-                field.classList.remove('valid');
-                field.classList.remove('invalid');
-            });
-            
-            // Hide all error messages
-            document.querySelectorAll('.error-message').forEach(message => {
-                message.classList.remove('visible');
-            });
-        }
-       
-        // Mobile Navigation
-        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-        const mobileNav = document.getElementById('mobile-nav');
-        const mobileBackdrop = document.getElementById('mobile-backdrop');
-        const mobileLinks = document.querySelectorAll('#mobile-nav a');
-
-        // Function to toggle mobile menu
-        function toggleMobileMenu() {
-            mobileMenuToggle.classList.toggle('active');
-            mobileNav.classList.toggle('active');
-            mobileBackdrop.classList.toggle('active');
-            
-            // Prevent body scrolling when menu is open
-            document.body.style.overflow = mobileMenuToggle.classList.contains('active') ? 'hidden' : '';
-        }
-
-        // Add event listeners
-        mobileMenuToggle.addEventListener('click', toggleMobileMenu);
-        mobileBackdrop.addEventListener('click', toggleMobileMenu);
-
-        // Close menu when clicking a link
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', toggleMobileMenu);
-        });
-
-        // Image preview functionality
-        document.getElementById('carImages').addEventListener('change', function(e) {
-            const files = e.target.files;
-            const previewContainer = document.getElementById('image-preview-container');
-            previewContainer.innerHTML = ''; // Clear previous previews
-            
-            if (files.length > 5) {
-                alert('U kunt maximaal 5 afbeeldingen uploaden.');
-                e.target.value = ''; // Clear selection
-                return;
-            }
-            
-            // Create a file tracker array
-            window.selectedFiles = Array.from(files);
-            
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                
-                // Check file size
-                if (file.size > 5 * 1024 * 1024) {
-                    alert(`Bestand ${file.name} is te groot. Maximum is 5MB.`);
-                    continue;
-                }
-                
-                // Check file type
-                if (!file.type.startsWith('image/')) {
-                    alert(`Bestand ${file.name} is geen afbeelding.`);
-                    continue;
-                }
-                
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    const container = document.createElement('div');
-                    container.className = 'preview-image-container';
-                    container.dataset.index = i; // Store the index for removal
-                    
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.className = 'preview-image';
-                    
-                    const removeBtn = document.createElement('div');
-                    removeBtn.className = 'remove-image';
-                    removeBtn.innerHTML = '×';
-                    removeBtn.addEventListener('click', function() {
-                        // Remove from our tracker array
-                        window.selectedFiles = window.selectedFiles.filter((_, idx) => idx !== parseInt(container.dataset.index));
-                        container.remove();
-                        
-                        // Update the preview container with correct indices
-                        const previews = document.querySelectorAll('.preview-image-container');
-                        previews.forEach((preview, idx) => {
-                            preview.dataset.index = idx;
+                        window.scrollTo({
+                            top: targetElement.offsetTop - headerHeight - 20, // Additional 20px buffer
+                            behavior: 'smooth'
                         });
-                    });
-                    
-                    container.appendChild(img);
-                    container.appendChild(removeBtn);
-                    previewContainer.appendChild(container);
-                };
-                
-                reader.readAsDataURL(file);
-            }
-        });
+                        
+                        // Close mobile menu if open
+                        if (document.getElementById('mobile-nav').classList.contains('active')) {
+                            toggleMobileMenu();
+                        }
+                    }
+                });
+            });
+            
+            // Mobile Navigation
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mobileNav = document.getElementById('mobile-nav');
+            const mobileBackdrop = document.getElementById('mobile-backdrop');
+            const mobileLinks = document.querySelectorAll('#mobile-nav a');
 
-        // Cookie Consent Management
-        function initCookieConsent() {
-            // Check if user has already set cookie preferences
+            // Function to toggle mobile menu
+            function toggleMobileMenu() {
+                mobileMenuToggle.classList.toggle('active');
+                mobileNav.classList.toggle('active');
+                mobileBackdrop.classList.toggle('active');
+                
+                // Prevent body scrolling when menu is open
+                document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+            }
+
+            // Add event listeners
+            mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+            mobileBackdrop.addEventListener('click', toggleMobileMenu);
+
+            // Close menu when clicking a link
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', toggleMobileMenu);
+            });
+            
+            // Back to top button
+            const backToTopButton = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('active');
+                } else {
+                    backToTopButton.classList.remove('active');
+                }
+                
+                // Make header smaller on scroll
+                if (window.scrollY > 100) {
+                    document.getElementById('header').classList.add('scrolled');
+                } else {
+                    document.getElementById('header').classList.remove('scrolled');
+                }
+            });
+            
+            backToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Accordion functionality for FAQ section
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const accordionItem = header.parentElement;
+                    const accordionContent = header.nextElementSibling;
+                    const accordionContentInner = accordionContent.querySelector('.accordion-content-inner');
+                    
+                    // Toggle current accordion item
+                    accordionItem.classList.toggle('active');
+                    
+                    if (accordionItem.classList.contains('active')) {
+                        accordionContent.style.height = accordionContentInner.offsetHeight + 'px';
+                        header.querySelector('.accordion-icon i').classList.replace('fa-chevron-down', 'fa-chevron-up');
+                    } else {
+                        accordionContent.style.height = '0';
+                        header.querySelector('.accordion-icon i').classList.replace('fa-chevron-up', 'fa-chevron-down');
+                    }
+                });
+            });
+            
+            // Open first FAQ by default
+            if (accordionHeaders.length > 0) {
+                accordionHeaders[0].click();
+            }
+            
+            // Cookie Consent Management
             const cookieConsent = getCookie('cookie_consent');
             
             if (!cookieConsent) {
                 // Show cookie banner if no preferences are set
                 const banner = document.getElementById('cookie-consent-banner');
-                if (banner) {
-                    banner.classList.add('active');
-                    
-                    // Set up event listeners for buttons
-                    document.getElementById('cookie-reject-all')?.addEventListener('click', function() {
-                        setAllCookieOptions(false);
-                        saveCookiePreferences();
-                        hideBanner();
-                    });
-                    
-                    document.getElementById('cookie-accept-selected')?.addEventListener('click', function() {
-                        saveCookiePreferences();
-                        hideBanner();
-                    });
-                    
-                    document.getElementById('cookie-accept-all')?.addEventListener('click', function() {
-                        setAllCookieOptions(true);
-                        saveCookiePreferences();
-                        hideBanner();
-                    });
-                }
-            } else {
-                // Apply existing cookie preferences
-                applyStoredCookiePreferences();
+                banner.classList.add('active');
+                
+                // Set up event listeners for buttons
+                document.getElementById('cookie-reject-all').addEventListener('click', function() {
+                    setCookie('cookie_consent', 'rejected', 365);
+                    hideCookieBanner();
+                });
+                
+                document.getElementById('cookie-accept-selected').addEventListener('click', function() {
+                    setCookie('cookie_consent', 'accepted-selected', 365);
+                    hideCookieBanner();
+                });
+                
+                document.getElementById('cookie-accept-all').addEventListener('click', function() {
+                    setCookie('cookie_consent', 'accepted-all', 365);
+                    hideCookieBanner();
+                });
             }
-        }
+            
+            // Dummy form progress connection for demo
+            document.querySelector('.next-step').addEventListener('click', function() {
+                document.getElementById('progress-connection').style.width = '25%';
+                document.getElementById('progress-step-1').classList.add('completed');
+                document.getElementById('progress-step-1').classList.remove('active');
+                document.getElementById('progress-step-2').classList.add('active');
+            });
+        });
         
         // Helper function to get cookie by name
         function getCookie(name) {
@@ -3148,135 +2165,14 @@
             document.cookie = name + "=" + value + expires + "; path=/; SameSite=Strict";
         }
         
-        // Set all cookie options to the same value (true/false)
-        function setAllCookieOptions(value) {
-            const options = ['cookie-functional', 'cookie-analytics', 'cookie-marketing'];
-            options.forEach(id => {
-                const checkbox = document.getElementById(id);
-                if (checkbox) checkbox.checked = value;
-            });
-        }
-        
-        // Save user's cookie preferences
-        function saveCookiePreferences() {
-            const functional = document.getElementById('cookie-functional')?.checked || false;
-            const analytics = document.getElementById('cookie-analytics')?.checked || false;
-            const marketing = document.getElementById('cookie-marketing')?.checked || false;
-            
-            // Always include necessary cookies (required)
-            const preferences = {
-                necessary: true,
-                functional: functional,
-                analytics: analytics,
-                marketing: marketing
-            };
-            
-            // Save preferences for 1 year
-            setCookie('cookie_consent', JSON.stringify(preferences), 365);
-            
-            // Apply the selected preferences
-            applyUserCookiePreferences(preferences);
-        }
-        
-        // Apply user's saved cookie preferences
-        function applyStoredCookiePreferences() {
-            try {
-                const preferences = JSON.parse(getCookie('cookie_consent'));
-                applyUserCookiePreferences(preferences);
-            } catch (e) {
-                console.error('Error applying cookie preferences:', e);
-            }
-        }
-        
-        // Apply cookie preferences to the site
-        function applyUserCookiePreferences(preferences) {
-            // Here you would implement the logic to enable/disable specific cookies
-            // based on user preferences
-            
-            // For example:
-            if (!preferences.analytics) {
-                // Disable Google Analytics
-                window['ga-disable-UA-XXXXX-Y'] = true; // Replace with your GA ID
-                
-                // Remove existing analytics cookies
-                deleteCookie('_ga');
-                deleteCookie('_gid');
-                deleteCookie('_gat');
-            }
-            
-            if (!preferences.marketing) {
-                // Remove marketing cookies
-                deleteCookie('_fbp');
-                deleteCookie('ads/ga-audiences');
-            }
-            
-            if (!preferences.functional) {
-                // Remove functional cookies
-                deleteCookie('language');
-                deleteCookie('recently_viewed');
-            }
-        }
-        
-        // Helper function to delete a cookie
-        function deleteCookie(name) {
-            document.cookie = name + '=; Max-Age=-99999999; path=/';
-        }
-        
         // Hide the cookie banner
-        function hideBanner() {
+        function hideCookieBanner() {
             const banner = document.getElementById('cookie-consent-banner');
-            if (banner) {
-                banner.style.animation = 'slideDown 0.5s forwards';
-                
-                setTimeout(() => {
-                    banner.classList.remove('active');
-                }, 500);
-            }
+            banner.style.opacity = '0';
+            setTimeout(() => {
+                banner.style.display = 'none';
+            }, 300);
         }
-        
-        // Initialize on DOM ready
-        document.addEventListener('DOMContentLoaded', function() {
-            // Load the latest blog posts
-            loadLatestBlogPosts();
-            
-            // Initialize the accordion - open first item
-            const firstAccordion = document.querySelector('.accordion-item');
-            if (firstAccordion) {
-                firstAccordion.classList.add('active');
-                const accordionContent = firstAccordion.querySelector('.accordion-content');
-                const accordionContentInner = firstAccordion.querySelector('.accordion-content-inner');
-                if (accordionContent && accordionContentInner) {
-                    accordionContent.style.height = accordionContentInner.offsetHeight + 'px';
-                }
-            }
-
-            // Initialize progress connection
-            updateProgressConnection(0);
-            
-            // Add a 6th progress step
-            const progressContainer = document.querySelector('.calculator-progress');
-            if (progressContainer) {
-                // Create a 6th step element if not already present
-                if (!document.getElementById('progress-step-6')) {
-                    const sixthStep = document.createElement('div');
-                    sixthStep.className = 'progress-step';
-                    sixthStep.id = 'progress-step-6';
-                    sixthStep.textContent = '6';
-                    progressContainer.appendChild(sixthStep);
-                }
-            }
-
-            // Set up new request button event listener
-            const newRequestBtn = document.getElementById('new-request-btn');
-            if (newRequestBtn) {
-                newRequestBtn.addEventListener('click', function() {
-                    resetForm();
-                });
-            }
-            
-            // Initialize cookie consent
-            initCookieConsent();
-        });
     </script>
 </body>
 </html>
