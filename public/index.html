@@ -3570,6 +3570,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Get all necessary elements
     const track = document.querySelector('.testimonial-track');
     const slides = document.querySelectorAll('.testimonial-slide');
     const prevButton = document.querySelector('.slider-control.prev');
@@ -3579,82 +3580,101 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentIndex = 0;
     const slideCount = slides.length;
     
-    // Initialize slider
-    function initSlider() {
-        // Set clear widths for track and slides
-        track.style.width = `${slideCount * 100}%`;
-        
-        // Override any conflicting CSS with inline styles
-        slides.forEach(slide => {
-            // Make each slide take exact percentage of track width
-            slide.style.width = `${100 / slideCount}%`;
-            // Remove flex-basis to avoid conflicts
-            slide.style.flex = 'none';
-        });
-        
-        // Initial position
-        updateSliderPosition();
-        
-        // Add event listeners
-        prevButton.addEventListener('click', goPrev);
-        nextButton.addEventListener('click', goNext);
-        
-        // Add indicator click events
-        indicators.forEach((indicator, index) => {
-            indicator.addEventListener('click', () => {
-                currentIndex = parseInt(indicator.dataset.index);
-                updateSliderPosition();
-            });
-        });
-        
-        // Auto-advance every 5 seconds
-        setInterval(goNext, 5000);
-    }
+    console.log("Testimonial slider initializing with", slideCount, "slides");
     
+    // Set up the track width and slide widths
+    track.style.width = `${slideCount * 100}%`;
+    slides.forEach(slide => {
+        slide.style.width = `${100 / slideCount}%`;
+        slide.style.flex = '0 0 auto'; // Prevent flexbox from affecting size
+    });
+    
+    // Function to update the slider position
     function updateSliderPosition() {
-        track.style.transform = `translateX(-${currentIndex * (100 / slideCount)}%)`;
+        console.log("Moving to slide", currentIndex);
+        const translateValue = -currentIndex * (100 / slideCount);
+        track.style.transform = `translateX(${translateValue}%)`;
         
+        // Update indicators
         indicators.forEach((indicator, index) => {
             indicator.classList.toggle('active', index === currentIndex);
         });
     }
     
+    // Move to previous slide
     function goPrev() {
         currentIndex = (currentIndex - 1 + slideCount) % slideCount;
         updateSliderPosition();
     }
     
+    // Move to next slide
     function goNext() {
         currentIndex = (currentIndex + 1) % slideCount;
         updateSliderPosition();
-    }   
- 
-    // Touch events for mobile swipe
+    }
+    
+    // Add click events to buttons
+    if (prevButton) prevButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        goPrev();
+        console.log("Prev button clicked");
+    });
+    
+    if (nextButton) nextButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        goNext();
+        console.log("Next button clicked");
+    });
+    
+    // Add click events to indicators
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', function() {
+            currentIndex = index;
+            updateSliderPosition();
+            console.log("Indicator clicked for slide", index);
+        });
+    });
+    
+    // Initialize the first slide
+    updateSliderPosition();
+    
+    // Auto-advance the slider
+    const autoAdvanceInterval = setInterval(goNext, 5000);
+    
+    // Add touch support for mobile devices
     let touchStartX = 0;
     let touchEndX = 0;
     
-    track.addEventListener('touchstart', e => {
+    track.addEventListener('touchstart', function(e) {
         touchStartX = e.changedTouches[0].screenX;
-    });
+    }, false);
     
-    track.addEventListener('touchend', e => {
+    track.addEventListener('touchend', function(e) {
         touchEndX = e.changedTouches[0].screenX;
         handleSwipe();
-    });
+    }, false);
     
     function handleSwipe() {
-        const swipeThreshold = 50; // Minimum swipe distance
-        
+        const swipeThreshold = 50;
         if (touchEndX < touchStartX - swipeThreshold) {
-            // Swipe left, go next
-            goNext();
+            goNext(); // Swipe left
         } else if (touchEndX > touchStartX + swipeThreshold) {
-            // Swipe right, go prev
-            goPrev();
+            goPrev(); // Swipe right
         }
     }
-});
     
+    // Stop auto-advance when interacting with the slider
+    const sliderContainer = document.querySelector('.testimonials-slider');
+    if (sliderContainer) {
+        sliderContainer.addEventListener('mouseenter', function() {
+            clearInterval(autoAdvanceInterval);
+        });
+        
+        sliderContainer.addEventListener('mouseleave', function() {
+            autoAdvanceInterval = setInterval(goNext, 5000);
+        });
+    }
+});    
     // Helper function to get cookie by name
     function getCookie(name) {
         const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
