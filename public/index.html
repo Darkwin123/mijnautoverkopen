@@ -95,6 +95,28 @@
             transform: translateY(-5px);
             box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.1);
         }
+
+.testimonial-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.testimonial-indicators .indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(79, 70, 229, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.testimonial-indicators .indicator.active {
+    background: var(--primary);
+    transform: scale(1.2);
+}
         
         /* Buttons */
         .btn {
@@ -2455,40 +2477,78 @@ header.scrolled {
             <div class="testimonials-slider">
                 <div class="testimonial-slides">
                     <div class="testimonial-track">
-                        <div class="testimonial-slide">
-                            <div class="testimonial-content glass-card">
-                                <div class="testimonial-text">
-                                    "Ik was onder de indruk van het gemak waarmee ik mijn auto kon verkopen. Het bod was eerlijk, de afhandeling professioneel en het geld stond dezelfde dag nog op mijn rekening. Absoluut een aanrader!"
-                                </div>
-                                <div class="testimonial-author">
-                                    <div class="author-image">
-                                        <img src="/api/placeholder/60/60" alt="Klant foto">
-                                    </div>
-                                    <div class="author-info">
-                                        <h4>Jeroen de Vries</h4>
-                                        <p>Antwerpen</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-<div class="testimonial-slide">
-                            <div class="testimonial-content glass-card">
-                                <div class="testimonial-text">
-                                    "Ik was onder de indruk van het gemak waarmee ik mijn auto kon verkopen. Het bod was eerlijk, de afhandeling professioneel en het geld stond dezelfde dag nog op mijn rekening. Absoluut een aanrader!"
-                                </div>
-                                <div class="testimonial-author">
-                                    <div class="author-image">
-                                        <img src="/api/placeholder/60/60" alt="Klant foto">
-                                    </div>
-                                    <div class="author-info">
-                                        <h4>Jeroen de Vries</h4>
-                                        <p>Antwerpen</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+    <!-- First testimonial (existing one) -->
+    <div class="testimonial-slide">
+        <div class="testimonial-content glass-card">
+            <div class="testimonial-text">
+                "Ik was onder de indruk van het gemak waarmee ik mijn auto kon verkopen. Het bod was eerlijk, de afhandeling professioneel en het geld stond dezelfde dag nog op mijn rekening. Absoluut een aanrader!"
+            </div>
+            <div class="testimonial-author">
+                <div class="author-image">
+                    <img src="/api/placeholder/60/60" alt="Klant foto">
+                </div>
+                <div class="author-info">
+                    <h4>Jeroen de Vries</h4>
+                    <p>Antwerpen</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Second testimonial (new) -->
+    <div class="testimonial-slide">
+        <div class="testimonial-content glass-card">
+            <div class="testimonial-text">
+                "Na verschillende pogingen om mijn auto privé te verkopen, besloot ik het met Mijnautoverkopen te proberen. Binnen 24 uur had ik een bod dat hoger was dan wat ik op Marktplaats kreeg. De ophaalservice was stipt en de betaling direct. Zeer tevreden!"
+            </div>
+            <div class="testimonial-author">
+                <div class="author-image">
+                    <img src="/api/placeholder/60/60" alt="Klant foto">
+                </div>
+                <div class="author-info">
+                    <h4>Sophie Martens</h4>
+                    <p>Gent</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Third testimonial (new) -->
+    <div class="testimonial-slide">
+        <div class="testimonial-content glass-card">
+            <div class="testimonial-text">
+                "Ik was skeptisch over online auto verkopen, maar Mijnautoverkopen heeft me volledig overtuigd. Ondanks dat mijn auto wat schade had, kreeg ik een eerlijk bod. Het hele proces was transparant en de medewerkers waren zeer behulpzaam. Ik raad het iedereen aan!"
+            </div>
+            <div class="testimonial-author">
+                <div class="author-image">
+                    <img src="/api/placeholder/60/60" alt="Klant foto">
+                </div>
+                <div class="author-info">
+                    <h4>Thomas Janssens</h4>
+                    <p>Brugge</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Fourth testimonial (new) -->
+    <div class="testimonial-slide">
+        <div class="testimonial-content glass-card">
+            <div class="testimonial-text">
+                "Als drukke ondernemer had ik geen tijd om maanden bezig te zijn met mijn auto verkopen. Mijnautoverkopen maakte het proces ongelooflijk simpel. Formulier ingevuld, bod ontvangen, afspraak gemaakt, en binnen 48 uur was alles geregeld inclusief het geld op mijn rekening!"
+            </div>
+            <div class="testimonial-author">
+                <div class="author-image">
+                    <img src="/api/placeholder/60/60" alt="Klant foto">
+                </div>
+                <div class="author-info">
+                    <h4>Luc Vermeulen</h4>
+                    <p>Hasselt</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
                 </div>
                 
                 <div class="slider-controls">
@@ -2502,7 +2562,12 @@ header.scrolled {
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </div>
-                </div>
+                 <div class="testimonial-indicators">
+                <span class="indicator active" data-index="0"></span>
+                <span class="indicator" data-index="1"></span>
+                <span class="indicator" data-index="2"></span>
+                <span class="indicator" data-index="3"></span>
+            </div>
             </div>
         </div>
     </section>
@@ -3503,6 +3568,98 @@ document.addEventListener('DOMContentLoaded', function() {
             applyStoredCookiePreferences();
         }
     });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const track = document.querySelector('.testimonial-track');
+    const slides = document.querySelectorAll('.testimonial-slide');
+    const prevButton = document.querySelector('.slider-control.prev');
+    const nextButton = document.querySelector('.slider-control.next');
+    const indicators = document.querySelectorAll('.testimonial-indicators .indicator');
+    
+    let currentIndex = 0;
+    const slideWidth = 100; // 100% of container width
+    const slideCount = slides.length;
+    
+    // Initialize slider
+    initSlider();
+    
+    function initSlider() {
+        // Set up track width based on number of slides
+        track.style.width = `${slideCount * 100}%`;
+        
+        // Set each slide width
+        slides.forEach(slide => {
+            slide.style.width = `${100 / slideCount}%`;
+        });
+        
+        // Set initial position
+        updateSliderPosition();
+        
+        // Add event listeners
+        prevButton.addEventListener('click', goPrev);
+        nextButton.addEventListener('click', goNext);
+        
+        // Auto-advance every 5 seconds
+        setInterval(goNext, 5000);
+        
+        // Add indicator click events
+        if (indicators.length > 0) {
+            indicators.forEach(indicator => {
+                indicator.addEventListener('click', () => {
+                    currentIndex = parseInt(indicator.dataset.index);
+                    updateSliderPosition();
+                });
+            });
+        }
+    }
+    
+    function updateSliderPosition() {
+        // Move the track
+        track.style.transform = `translateX(-${currentIndex * (100 / slideCount)}%)`;
+        
+        // Update indicators
+        if (indicators.length > 0) {
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentIndex);
+            });
+        }
+    }
+    
+    function goPrev() {
+        currentIndex = (currentIndex - 1 + slideCount) % slideCount;
+        updateSliderPosition();
+    }
+    
+    function goNext() {
+        currentIndex = (currentIndex + 1) % slideCount;
+        updateSliderPosition();
+    }
+    
+    // Touch events for mobile swipe
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    track.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    track.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+    
+    function handleSwipe() {
+        const swipeThreshold = 50; // Minimum swipe distance
+        
+        if (touchEndX < touchStartX - swipeThreshold) {
+            // Swipe left, go next
+            goNext();
+        } else if (touchEndX > touchStartX + swipeThreshold) {
+            // Swipe right, go prev
+            goPrev();
+        }
+    }
+});
     
     // Helper function to get cookie by name
     function getCookie(name) {
