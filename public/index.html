@@ -3577,52 +3577,46 @@ document.addEventListener('DOMContentLoaded', function() {
     const indicators = document.querySelectorAll('.testimonial-indicators .indicator');
     
     let currentIndex = 0;
-    const slideWidth = 100; // 100% of container width
     const slideCount = slides.length;
     
     // Initialize slider
-    initSlider();
-    
     function initSlider() {
-        // Set up track width based on number of slides
+        // Set clear widths for track and slides
         track.style.width = `${slideCount * 100}%`;
         
-        // Set each slide width
+        // Override any conflicting CSS with inline styles
         slides.forEach(slide => {
+            // Make each slide take exact percentage of track width
             slide.style.width = `${100 / slideCount}%`;
+            // Remove flex-basis to avoid conflicts
+            slide.style.flex = 'none';
         });
         
-        // Set initial position
+        // Initial position
         updateSliderPosition();
         
         // Add event listeners
         prevButton.addEventListener('click', goPrev);
         nextButton.addEventListener('click', goNext);
         
+        // Add indicator click events
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                currentIndex = parseInt(indicator.dataset.index);
+                updateSliderPosition();
+            });
+        });
+        
         // Auto-advance every 5 seconds
         setInterval(goNext, 5000);
-        
-        // Add indicator click events
-        if (indicators.length > 0) {
-            indicators.forEach(indicator => {
-                indicator.addEventListener('click', () => {
-                    currentIndex = parseInt(indicator.dataset.index);
-                    updateSliderPosition();
-                });
-            });
-        }
     }
     
     function updateSliderPosition() {
-        // Move the track
         track.style.transform = `translateX(-${currentIndex * (100 / slideCount)}%)`;
         
-        // Update indicators
-        if (indicators.length > 0) {
-            indicators.forEach((indicator, index) => {
-                indicator.classList.toggle('active', index === currentIndex);
-            });
-        }
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === currentIndex);
+        });
     }
     
     function goPrev() {
@@ -3633,8 +3627,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function goNext() {
         currentIndex = (currentIndex + 1) % slideCount;
         updateSliderPosition();
-    }
-    
+    }   
+ 
     // Touch events for mobile swipe
     let touchStartX = 0;
     let touchEndX = 0;
