@@ -1630,15 +1630,8 @@ function setCanonicalUrl() {
 
 // Call the function when the DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    setCanonicalUrl();
+    // This needs to run AFTER your other scripts
     
-    // We also need to update it when loading content dynamically
-    // These are good places to call setCanonicalUrl() again:
-    // - After loading a blog post
-    // - After switching to a category or tag view
-});
-
-document.addEventListener('DOMContentLoaded', function() {
     // Get mobile menu elements
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
     const mobileNav = document.getElementById('mobile-nav');
@@ -1647,6 +1640,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to toggle mobile menu
     function toggleMobileMenu() {
+        console.log('Toggle menu clicked'); // Add this for testing
         mobileMenuToggle.classList.toggle('active');
         mobileNav.classList.toggle('active');
         mobileBackdrop.classList.toggle('active');
@@ -1658,10 +1652,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listeners
     if (mobileMenuToggle) {
         mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+        console.log('Added click listener to menu toggle'); // Add this for testing
     }
     
     if (mobileBackdrop) {
         mobileBackdrop.addEventListener('click', toggleMobileMenu);
+        console.log('Added click listener to backdrop'); // Add this for testing
     }
     
     // Close menu when clicking a link
