@@ -804,6 +804,17 @@ footer {
     }
 }
 
+/* Add these additional styles if needed */
+@media (min-width: 993px) {
+    .mobile-menu-toggle {
+        display: none !important; /* Force hide mobile toggle on larger screens */
+    }
+    
+    .nav-links {
+        display: flex !important; /* Force show desktop nav on larger screens */
+    }
+}
+
 @media (max-width: 768px) {
     .blog-grid {
         grid-template-columns: 1fr;
