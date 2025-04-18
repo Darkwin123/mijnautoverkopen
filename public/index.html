@@ -224,11 +224,11 @@ header.scrolled {
     border-bottom: 3px solid var(--primary) !important; /* Very visible border */
 }
         
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
         
         .logo {
             font-size: 28px;
@@ -239,18 +239,16 @@ header.scrolled {
             display: inline-block;
         }
         
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
+      .nav-links {
+    display: flex;
+    gap: 30px;
+}
         
-        .nav-links a {
-            color: var(--text-dark);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-        }
+       .nav-links a {
+    color: var(--text-dark);
+    text-decoration: none;
+    transition: color 0.3s;
+}
         
         .nav-links a::after {
             content: '';
@@ -266,6 +264,21 @@ header.scrolled {
         .nav-links a:hover::after {
             width: 100%;
         }
+
+/* Mobile Navigation */
+@media (max-width: 992px) {
+    .nav-links {
+        display: none;
+    }
+    
+    .mobile-menu-toggle {
+        display: flex;
+    }
+    
+    .mobile-nav.active {
+        right: 0;
+    }
+}
         
         /* Hero Section */
         .hero {
