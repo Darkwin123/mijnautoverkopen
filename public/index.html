@@ -215,7 +215,7 @@ header {
     background: transparent;
     transition: background-color 0.3s, box-shadow 0.3s;
     position: relative; /* Added for z-index context */
-z-index: 1000; /* Ensure header stays below mobile menu */
+z-index: 10; /* Ensure header stays below mobile menu */
 }
 
 header.scrolled {
@@ -1736,6 +1736,7 @@ header.scrolled {
 
  .mobile-menu-toggle {
         display: flex;
+ z-index: 1001;
     }
             
             .calculator-fields {
