@@ -1052,18 +1052,13 @@
         </div>
     </footer>
 
-    // Replace the entire script section at the bottom of your page with this:
-<script>
+    <script>
 document.addEventListener('DOMContentLoaded', async function() {
     const blogListView = document.getElementById('blog-list-view');
     const blogPostView = document.getElementById('blog-post-view');
     const blogLoading = document.getElementById('blog-loading');
     const postLoading = document.getElementById('post-loading');
     
-    // Fix the mobile menu first
-    setupMobileMenu();
-    
-    // Then continue with blog loading
     // Check for server-rendered content
     const body = document.body;
     const viewType = body.getAttribute('data-view-type');
@@ -1129,71 +1124,27 @@ document.addEventListener('DOMContentLoaded', async function() {
         
         // Only load if not pre-rendered
        if (!isPrerendered) {
-            await loadSingleBlog(slug);
-        } else {
-            // For pre-rendered content, still update the breadcrumb
-            // Extract the title from the pre-rendered content
-            const blogTitle = document.querySelector('.blog-header h1')?.textContent;
-            if (blogTitle) {
-                document.getElementById('current-blog-title').textContent = blogTitle;
-            }
-            
-            postLoading.style.display = 'none';
-            blogPostContent.style.display = 'block';
-        }
+    await loadSingleBlog(slug);
+} else {
+    // For pre-rendered content, still update the breadcrumb
+    // Extract the title from the pre-rendered content
+    const blogTitle = document.querySelector('.blog-header h1')?.textContent;
+    if (blogTitle) {
+        document.getElementById('current-blog-title').textContent = blogTitle;
+    }
+    
+    postLoading.style.display = 'none';
+    blogPostContent.style.display = 'block';
+}
     } else {
         // We're on the main blog listing
         const urlParams = new URLSearchParams(window.location.search);
         const page = parseInt(urlParams.get('page')) || 1;
         blogListView.style.display = 'block';
         blogPostView.style.display = 'none';
-        try {
-            await loadBlogList(page);
-        } catch (error) {
-            console.error("Error loading blog list:", error);
-            const blogError = document.getElementById('blog-error');
-            if (blogError) {
-                blogError.style.display = 'block';
-            }
-            if (blogLoading) {
-                blogLoading.style.display = 'none';
-            }
-        }
+        await loadBlogList(page);
     }
 });
-
-// Mobile menu setup function
-function setupMobileMenu() {
-    // Get mobile menu elements
-    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-    const mobileNav = document.getElementById('mobile-nav');
-    const mobileBackdrop = document.getElementById('mobile-backdrop');
-    const mobileLinks = document.querySelectorAll('#mobile-nav a');
-    
-    // Define the toggle function
-    function toggleMobileMenu() {
-        mobileMenuToggle.classList.toggle('active');
-        mobileNav.classList.toggle('active');
-        mobileBackdrop.classList.toggle('active');
-        
-        // Prevent body scrolling when menu is open
-        document.body.style.overflow = mobileMenuToggle.classList.contains('active') ? 'hidden' : '';
-    }
-    
-    // Add event listeners
-    if (mobileMenuToggle) {
-        mobileMenuToggle.addEventListener('click', toggleMobileMenu);
-    }
-    
-    if (mobileBackdrop) {
-        mobileBackdrop.addEventListener('click', toggleMobileMenu);
-    }
-    
-    // Close menu when clicking a link
-    mobileLinks.forEach(link => {
-        link.addEventListener('click', toggleMobileMenu);
-    });
-}
 
 // Modified loadSingleBlog function
 async function loadSingleBlog(slug) {
@@ -1299,8 +1250,8 @@ async function loadSingleBlog(slug) {
     }
 }
         
-// Load blog list
-async function loadBlogList(page = 1) {
+        // Load blog list
+      async function loadBlogList(page = 1) {
     const blogGrid = document.getElementById('blog-grid');
     const blogPagination = document.getElementById('blog-pagination');
     const blogLoading = document.getElementById('blog-loading');
@@ -1326,22 +1277,7 @@ async function loadBlogList(page = 1) {
         
         // Fetch all blog posts
         const response = await fetch('/api/blogs');
-        
-        if (!response.ok) {
-            throw new Error(`Failed to fetch blogs: ${response.status}`);
-        }
-        
-        const responseText = await response.text();
-        
-        // Try to parse the JSON, but handle potential errors
-        let blogs;
-        try {
-            blogs = JSON.parse(responseText);
-        } catch (e) {
-            console.error("Failed to parse JSON:", e);
-            console.log("Response received:", responseText.substring(0, 100) + "...");
-            throw new Error("Invalid JSON response");
-        }
+        let blogs = await response.json();
         
         // Filter only published blogs
         blogs = blogs.filter(blog => blog.status === 'published');
@@ -1409,7 +1345,6 @@ async function loadBlogList(page = 1) {
     }
 }
 
-// Rest of your functions...
 // Add this new function to load blogs by tag
 async function loadBlogsByTag(tag) {
     const blogGrid = document.getElementById('blog-grid');
@@ -1693,8 +1628,47 @@ function setCanonicalUrl() {
     canonicalLink.href = canonicalUrl;
 }
 
-// Call this function to set the canonical URL
-setCanonicalUrl();
-</script>
+// Call the function when the DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    setCanonicalUrl();
+    
+    // We also need to update it when loading content dynamically
+    // These are good places to call setCanonicalUrl() again:
+    // - After loading a blog post
+    // - After switching to a category or tag view
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get mobile menu elements
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileNav = document.getElementById('mobile-nav');
+    const mobileBackdrop = document.getElementById('mobile-backdrop');
+    const mobileLinks = document.querySelectorAll('#mobile-nav a');
+    
+    // Function to toggle mobile menu
+    function toggleMobileMenu() {
+        mobileMenuToggle.classList.toggle('active');
+        mobileNav.classList.toggle('active');
+        mobileBackdrop.classList.toggle('active');
+        
+        // Prevent body scrolling when menu is open
+        document.body.style.overflow = mobileMenuToggle.classList.contains('active') ? 'hidden' : '';
+    }
+    
+    // Add event listeners
+    if (mobileMenuToggle) {
+        mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+    }
+    
+    if (mobileBackdrop) {
+        mobileBackdrop.addEventListener('click', toggleMobileMenu);
+    }
+    
+    // Close menu when clicking a link
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', toggleMobileMenu);
+    });
+});
+    </script>
 </body>
 </html>

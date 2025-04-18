@@ -214,6 +214,8 @@ header {
     z-index: 1000;
     background: transparent;
     transition: background-color 0.3s, box-shadow 0.3s;
+    position: relative; /* Added for z-index context */
+z-index: 1000; /* Ensure header stays below mobile menu */
 }
 
 header.scrolled {
@@ -1567,16 +1569,7 @@ header.scrolled {
     visibility: visible;
 }
 
-@media (max-width: 992px) {
-    .nav-links {
-        display: none;
-    }
-    
-    .mobile-menu-toggle {
-        display: flex;
-    }
-    
-}
+
 
 .cookie-banner {
         display: none;
@@ -1727,6 +1720,10 @@ header.scrolled {
             .nav-links {
                 display: none;
             }
+
+ .mobile-menu-toggle {
+        display: flex;
+    }
             
             .calculator-fields {
                 grid-template-columns: 1fr;
