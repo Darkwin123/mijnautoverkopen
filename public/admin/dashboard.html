@@ -2087,17 +2087,44 @@ async function loadCategories() {
 function destroyQuillEditor() {
     if (quillEditor) {
         try {
-            // Clean up event listeners and DOM properly
+            // First save content if needed
+            const content = quillEditor.root.innerHTML;
+            document.getElementById('blog-content').value = content;
+            
+            // Properly destroy the editor instance
             quillEditor = null;
             
-            // Clear container content
+            // Instead of emptying the container completely, just reset it
             const container = document.getElementById('blog-content-container');
             if (container) {
-                // Make sure container is empty
-                container.innerHTML = '';
+                // Create a fresh div with the same ID
+                const newContainer = document.createElement('div');
+                newContainer.id = 'blog-content-container';
+                newContainer.style.height = '400px';
+                newContainer.style.borderRadius = '8px';
+                
+                // Replace the old container
+                container.parentNode.replaceChild(newContainer, container);
+            } else {
+                // If container doesn't exist, recreate it in the form-group
+                const formGroup = document.querySelector('.form-group:has(label[for="blog-content-container"])');
+                if (formGroup) {
+                    const newContainer = document.createElement('div');
+                    newContainer.id = 'blog-content-container';
+                    newContainer.style.height = '400px';
+                    newContainer.style.borderRadius = '8px';
+                    
+                    // Add after the label
+                    const label = formGroup.querySelector('label');
+                    if (label) {
+                        label.insertAdjacentElement('afterend', newContainer);
+                    } else {
+                        formGroup.appendChild(newContainer);
+                    }
+                }
             }
             
-            // Remove any Quill toolbars and containers from the DOM
+            // Remove any Quill toolbars that might be orphaned
             document.querySelectorAll('.ql-toolbar').forEach(el => el.remove());
             document.querySelectorAll('.ql-container').forEach(el => el.remove());
             
@@ -2105,7 +2132,8 @@ function destroyQuillEditor() {
             console.error('Error destroying editor:', e);
         }
     }
-}  
+}
+
      // Show blog editor for new blog
 function showBlogEditor() {
     // First destroy any existing editor
@@ -2140,20 +2168,46 @@ function showBlogEditor() {
     // Initialize Quill with a slight delay to ensure the container is visible
     setTimeout(() => {
         initializeQuillEditor();
-    }, 100);
+    }, 300);
 }
 
 function initializeQuillEditor() {
-    // Make sure the container exists and is visible
-    const container = document.getElementById('blog-content-container');
+    // Check if container exists, if not create it
+    let container = document.getElementById('blog-content-container');
+    
     if (!container) {
-        console.error('Blog content container not found');
-        return;
+        console.warn('Blog content container not found, attempting to create it');
+        
+        // Find the parent form group
+        const formGroup = document.querySelector('.form-group:has(input#blog-content)');
+        if (formGroup) {
+            // Create the container
+            container = document.createElement('div');
+            container.id = 'blog-content-container';
+            container.style.height = '400px';
+            container.style.borderRadius = '8px';
+            
+            // Insert before the hidden input
+            const hiddenInput = formGroup.querySelector('#blog-content');
+            if (hiddenInput) {
+                hiddenInput.parentNode.insertBefore(container, hiddenInput);
+            } else {
+                formGroup.appendChild(container);
+            }
+            
+            console.log('Created blog content container');
+        } else {
+            console.error('Could not find parent form group to create container');
+            return;
+        }
     }
     
     try {
         // Check if Quill is available
         if (typeof Quill !== 'undefined') {
+            // Make sure the container is empty
+            container.innerHTML = '';
+            
             quillEditor = new Quill('#blog-content-container', {
                 theme: 'snow',
                 modules: {
@@ -2178,7 +2232,6 @@ function initializeQuillEditor() {
         alert('Er is een probleem met het laden van de teksteditor. Probeer de pagina te verversen.');
     }
 }
-
 // New function to dynamically load Quill if needed
 function loadQuillDynamically() {
     // First add the CSS
@@ -2246,7 +2299,7 @@ async function editBlog(id) {
             if (quillEditor) {
                 quillEditor.root.innerHTML = blog.content;
             }
-        }, 100);
+        }, 300);
         
     } catch (error) {
         console.error('Error loading blog for editing:', error);
