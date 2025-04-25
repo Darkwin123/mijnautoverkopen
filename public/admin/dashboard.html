@@ -2137,23 +2137,27 @@ function showBlogEditor() {
     // Load categories
     loadCategories();
     
-    // IMPORTANT: Initialize Quill immediately after the view is visible
-    // This ensures the container is visible when Quill initializes
-    quillEditor = new Quill('#blog-content-container', {
-        theme: 'snow',
-        modules: {
-            toolbar: [
-                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                ['bold', 'italic', 'underline', 'strike'],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                ['link', 'image'],
-                ['clean']
-            ]
-        },
-        placeholder: 'Blog post inhoud...'
-    });
+    // Initialize Quill immediately after the view is visible
+    // Check if Quill is available - it should be from the <script> tag in the head
+    if (typeof window.Quill !== 'undefined') {
+        quillEditor = new window.Quill('#blog-content-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'image'],
+                    ['clean']
+                ]
+            },
+            placeholder: 'Blog post inhoud...'
+        });
+    } else {
+        console.error('Quill library not loaded. Check that the Quill script is properly included.');
+        alert('Error: Text editor could not be loaded. Please reload the page and try again.');
+    }
 }
-
       // Edit existing blog
 async function editBlog(id) {
     showLoader();
@@ -2189,23 +2193,28 @@ async function editBlog(id) {
         // Show delete button for existing blogs
         document.getElementById('btn-delete-blog').style.display = 'inline-flex';
         
-        // IMPORTANT: Initialize Quill immediately after the view is visible
-        quillEditor = new Quill('#blog-content-container', {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['link', 'image'],
-                    ['clean']
-                ]
-            },
-            placeholder: 'Blog post inhoud...'
-        });
-        
-        // Set content
-        quillEditor.root.innerHTML = blog.content;
+        // Initialize Quill and check if it's available
+        if (typeof window.Quill !== 'undefined') {
+            quillEditor = new window.Quill('#blog-content-container', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        ['link', 'image'],
+                        ['clean']
+                    ]
+                },
+                placeholder: 'Blog post inhoud...'
+            });
+            
+            // Set content
+            quillEditor.root.innerHTML = blog.content;
+        } else {
+            console.error('Quill library not loaded. Check that the Quill script is properly included.');
+            alert('Error: Text editor could not be loaded. Please reload the page and try again.');
+        }
         
     } catch (error) {
         console.error('Error loading blog for editing:', error);
@@ -2214,7 +2223,7 @@ async function editBlog(id) {
     } finally {
         hideLoader();
     }
-}        
+}
         // Back to blogs list
        function backToBlogs() {
     destroyQuillEditor();
@@ -2228,10 +2237,17 @@ async function saveBlog() {
     const blogId = document.getElementById('blog-id').value;
     const title = document.getElementById('blog-title').value;
     const excerpt = document.getElementById('blog-excerpt').value;
-    const featuredImage = document.getElementById('blog-featured-image').value; // Add this line
-    const imageAlt = document.getElementById('blog-image-alt').value;           // Add this line
-    // Get content from Quill instead of directly from textarea
-    const content = quillEditor ? quillEditor.root.innerHTML : '';
+    const featuredImage = document.getElementById('blog-featured-image').value;
+    const imageAlt = document.getElementById('blog-image-alt').value;
+    
+    // Get content from Quill editor if available
+    let content = '';
+    if (quillEditor) {
+        content = quillEditor.root.innerHTML;
+    } else {
+        content = document.getElementById('blog-content').value;
+    }
+    
     const tagsString = document.getElementById('blog-tags').value;
     const category = document.getElementById('blog-category').value;
     const status = document.getElementById('blog-status').value;
@@ -2256,8 +2272,8 @@ async function saveBlog() {
             title,
             excerpt,
             content,
-            featuredImage, // Add this line
-            imageAlt,      // Add this line
+            featuredImage,
+            imageAlt,
             tags,
             category,
             status
@@ -2302,8 +2318,7 @@ async function saveBlog() {
     } finally {
         hideLoader();
     }
-}
-        
+}        
         // Delete blog
        async function deleteBlog() {
     if (!currentBlogId) return;
