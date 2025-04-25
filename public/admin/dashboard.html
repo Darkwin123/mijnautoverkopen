@@ -2085,28 +2085,27 @@ async function loadCategories() {
 }
 
 function destroyQuillEditor() {
-    // Check if quillEditor exists
     if (quillEditor) {
-        // Remove the editor's container content including toolbar
-        const editorContainer = document.getElementById('blog-content-container');
-        if (editorContainer) {
-            // Clear the container
-            editorContainer.innerHTML = '';
-        }
-        
-        // Remove any extra toolbar that might have been created
-        const extraToolbars = document.querySelectorAll('.ql-toolbar');
-        extraToolbars.forEach(toolbar => {
-            if (toolbar.parentNode !== editorContainer) {
-                toolbar.remove();
+        try {
+            // Clean up event listeners and DOM properly
+            quillEditor = null;
+            
+            // Clear container content
+            const container = document.getElementById('blog-content-container');
+            if (container) {
+                // Make sure container is empty
+                container.innerHTML = '';
             }
-        });
-        
-        // Set quillEditor to null to indicate it's been destroyed
-        quillEditor = null;
+            
+            // Remove any Quill toolbars and containers from the DOM
+            document.querySelectorAll('.ql-toolbar').forEach(el => el.remove());
+            document.querySelectorAll('.ql-container').forEach(el => el.remove());
+            
+        } catch (e) {
+            console.error('Error destroying editor:', e);
+        }
     }
-}
-        
+}        
      // Show blog editor for new blog
 function showBlogEditor() {
     // First destroy any existing editor
@@ -2122,11 +2121,11 @@ function showBlogEditor() {
     document.getElementById('blog-title').value = '';
     document.getElementById('blog-slug').value = '';
     document.getElementById('blog-excerpt').value = '';
-    document.getElementById('blog-featured-image').value = ''; // Reset featured image field
-    document.getElementById('blog-image-alt').value = '';      // Reset image alt field
+    document.getElementById('blog-featured-image').value = '';
+    document.getElementById('blog-image-alt').value = '';
     document.getElementById('blog-content').value = '';
     document.getElementById('blog-tags').value = '';
-    document.getElementById('blog-category').value = 'algemeen'; // Set default category
+    document.getElementById('blog-category').value = 'algemeen';
     document.getElementById('blog-status').value = 'draft';
     
     // Hide delete button for new blogs
@@ -2138,23 +2137,23 @@ function showBlogEditor() {
     // Load categories
     loadCategories();
     
-    // Initialize Quill after the view is displayed
-    setTimeout(() => {
-        quillEditor = new Quill('#blog-content-container', {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['link', 'image'],
-                    ['clean']
-                ]
-            },
-            placeholder: 'Blog post inhoud...'
-        });
-    }, 100);
-}        
+    // IMPORTANT: Initialize Quill immediately after the view is visible
+    // This ensures the container is visible when Quill initializes
+    quillEditor = new Quill('#blog-content-container', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['link', 'image'],
+                ['clean']
+            ]
+        },
+        placeholder: 'Blog post inhoud...'
+    });
+}
+
       // Edit existing blog
 async function editBlog(id) {
     showLoader();
@@ -2181,34 +2180,32 @@ async function editBlog(id) {
         document.getElementById('blog-slug').value = blog.slug;
         document.getElementById('blog-excerpt').value = blog.excerpt || '';
         document.getElementById('blog-content').value = blog.content; // Keep this for the hidden field
-document.getElementById('blog-featured-image').value = blog.featuredImage || '';
-document.getElementById('blog-image-alt').value = blog.imageAlt || '';
+        document.getElementById('blog-featured-image').value = blog.featuredImage || '';
+        document.getElementById('blog-image-alt').value = blog.imageAlt || '';
         document.getElementById('blog-tags').value = Array.isArray(blog.tags) ? blog.tags.join(', ') : '';
-        document.getElementById('blog-category').value = blog.category || 'algemeen'; // Set category
+        document.getElementById('blog-category').value = blog.category || 'algemeen';
         document.getElementById('blog-status').value = blog.status;
         
         // Show delete button for existing blogs
         document.getElementById('btn-delete-blog').style.display = 'inline-flex';
         
-        // Initialize Quill with blog content
-        setTimeout(() => {
-            quillEditor = new Quill('#blog-content-container', {
-                theme: 'snow',
-                modules: {
-                    toolbar: [
-                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                        ['bold', 'italic', 'underline', 'strike'],
-                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                        ['link', 'image'],
-                        ['clean']
-                    ]
-                },
-                placeholder: 'Blog post inhoud...'
-            });
-            
-            // Set content
-            quillEditor.root.innerHTML = blog.content;
-        }, 100);
+        // IMPORTANT: Initialize Quill immediately after the view is visible
+        quillEditor = new Quill('#blog-content-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'image'],
+                    ['clean']
+                ]
+            },
+            placeholder: 'Blog post inhoud...'
+        });
+        
+        // Set content
+        quillEditor.root.innerHTML = blog.content;
         
     } catch (error) {
         console.error('Error loading blog for editing:', error);
@@ -2217,8 +2214,7 @@ document.getElementById('blog-image-alt').value = blog.imageAlt || '';
     } finally {
         hideLoader();
     }
-}
-        
+}        
         // Back to blogs list
        function backToBlogs() {
     destroyQuillEditor();
